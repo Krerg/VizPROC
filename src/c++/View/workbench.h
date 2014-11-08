@@ -15,11 +15,11 @@ class WorkBench : public QWidget
 public:
     explicit WorkBench(QWidget *parent = 0);
 private:
-    QVBoxLayout *v1;
-    OGLRender *canvas;
-    UpdateThread *refresher;
-    EventHandler *eventHandler;
-    ComponentManager *componentManager;
+    QVBoxLayout *v1; //размещение
+    OGLRender *canvas; //кнавас где все и рисуется
+    UpdateThread *refresher; //поток обновления экрана
+    EventHandler *eventHandler; //обработчик событий на экране
+    ComponentManager *componentManager; //менеджер элементов
 signals:
 
 public slots:

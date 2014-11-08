@@ -14,8 +14,8 @@ public:
     explicit WindowManager(QObject *parent = 0);
     void start();
 private:
-    WorkBench *wb;
-    StartScreen *sc;
+    WorkBench *wb; //экран самого "станка"
+    StartScreen *sc; //стартовый экран
 signals:
 
 public slots:

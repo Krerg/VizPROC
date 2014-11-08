@@ -6,13 +6,12 @@ UpdateThread::UpdateThread(QObject *parent) :
 
 }
 
-
-
 void UpdateThread::run()
 {
     while(true)
     {
         emit update();
+        //задержка
         this->msleep(125);
     }
 }

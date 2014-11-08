@@ -20,7 +20,6 @@ SOURCES += main.cpp\
     initcontroller.cpp \
     src/c++/View/oglrender.cpp \
     src/c++/View/componentmanager.cpp \
-    src/c++/Elements/listelement.cpp \
     src/c++/Elements/resistor.cpp \
     src/c++/View/updatethread.cpp \
     src/c++/Controller/eventhandler.cpp \
@@ -33,7 +32,6 @@ HEADERS  += src/c++/View/startscreen.h \
     initcontroller.h \
     src/c++/View/oglrender.h \
     src/c++/View/componentmanager.h \
-    src/c++/Elements/listelement.h \
     src/c++/Elements/resistor.h \
     src/c++/View/updatethread.h \
     src/c++/Controller/eventhandler.h \

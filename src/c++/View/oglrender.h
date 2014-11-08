@@ -18,17 +18,17 @@ public:
 private:
     UpdateThread* refreshThread;
 protected:
-    void paintGL();
-    void resizeGL(int width,int height);
+    void paintGL(); //рисование на эране
+    void resizeGL(int width,int height); //обновить весь виджет
     void mousePressEvent(QMouseEvent* event);
     void mouseMoveEvent(QMouseEvent* event);
     void mouseReleaseEvent(QMouseEvent* event);
 public slots:
     void update();
 signals:
-    void paintComponents();
-    void mouseClicked(QMouseEvent *event);
-    void mouseReleased(QMouseEvent *event);
+    void paintComponents(); //нарисовать все элементы
+    void mouseClicked(QMouseEvent *event); //нажатие мыши
+    void mouseReleased(QMouseEvent *event); //отпускание нажатой мыши
 };
 
 #endif // OGLRENDER_H

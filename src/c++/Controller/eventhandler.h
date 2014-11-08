@@ -13,10 +13,10 @@ public:
 private:
     ComponentManager* componentManger;
 signals:
-    void addResistor(int x, int y);
+    void addResistor(int x, int y); //добавление резистора
 public slots:
-    void mouseClicked(QMouseEvent* event);
-    void mouseReleased(QMouseEvent* event);
+    void mouseClicked(QMouseEvent* event); //нажатие мыши
+    void mouseReleased(QMouseEvent* event); //отпускание клавиши мыши
 };
 
 #endif // EVENTHANDLER_H

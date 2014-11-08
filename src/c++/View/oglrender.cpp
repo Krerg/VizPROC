@@ -37,8 +37,6 @@ void OGLRender::resizeGL(int width, int height)
 void OGLRender::paintGL()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-   // Resistor *r = new Resistor();
-   // r->paintComponent();
     emit paintComponents();
 }
 //Ивент который вызывается при нажатии на кнопку мыши

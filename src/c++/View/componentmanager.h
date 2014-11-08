@@ -16,8 +16,8 @@ private:
 signals:
 
 public slots:
-    void paintComponents();
-    void addResistor(int x, int y);
+    void paintComponents(); //отрисовка всех элементов на экран
+    void addResistor(int x, int y); //добавление резистора
 };
 
 #endif // COMPONENTMANAGER_H
