@@ -1,5 +1,6 @@
 #include "oglrender.h"
 #include "src/c++/Elements/resistor.h"
+#include <QDebug>
 
 OGLRender::OGLRender() :
     QGLWidget()
@@ -47,8 +48,7 @@ void OGLRender::mousePressEvent(QMouseEvent *event)
 //Ивент который вызывается при передвижении мыши и нажатии кнопки, удобно кстати оч
 void OGLRender::mouseMoveEvent(QMouseEvent *event)
 {
-    int dx = event->x();
-    int dy = event->y();
+    emit mouseMoved(event);
 }
 //Ивент который вызывается при отпускании клавиши мыши
 void OGLRender::mouseReleaseEvent(QMouseEvent *event)

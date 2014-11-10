@@ -29,6 +29,7 @@ signals:
     void paintComponents(); //нарисовать все элементы
     void mouseClicked(QMouseEvent *event); //нажатие мыши
     void mouseReleased(QMouseEvent *event); //отпускание нажатой мыши
+    void mouseMoved(QMouseEvent *event); //перетскивание мышью
 };
 
 #endif // OGLRENDER_H

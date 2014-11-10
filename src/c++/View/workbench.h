@@ -14,6 +14,7 @@ class WorkBench : public QWidget
     Q_OBJECT
 public:
     explicit WorkBench(QWidget *parent = 0);
+    void connectComponents();
 private:
     QVBoxLayout *v1; //размещение
     OGLRender *canvas; //кнавас где все и рисуется

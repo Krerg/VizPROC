@@ -17,3 +17,8 @@ void EventHandler::mouseReleased(QMouseEvent *event)
         emit addResistor(event->x(),event->y());
     }
 }
+
+void EventHandler::mouseMoved(QMouseEvent *event)
+{
+
+}

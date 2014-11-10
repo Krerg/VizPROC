@@ -21,3 +21,18 @@ void ComponentManager::addResistor(int x, int y)
     temp->setPosition(x,y);
     elements->insert(elements->end(),(Element*)temp);
 }
+
+void ComponentManager::mouseClick(int x, int y)
+{
+
+}
+
+void ComponentManager::moveElement(int x, int y)
+{
+
+}
+
+void ComponentManager::getElementByCoordinates(int x, int y)
+{
+
+}
