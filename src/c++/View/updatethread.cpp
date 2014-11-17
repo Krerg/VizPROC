@@ -12,6 +12,6 @@ void UpdateThread::run()
     {
         emit update();
         //задержка
-        this->msleep(125);
+        this->msleep(45);
     }
 }

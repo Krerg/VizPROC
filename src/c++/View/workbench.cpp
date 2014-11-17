@@ -23,13 +23,18 @@ WorkBench::WorkBench::WorkBench(QWidget *parent) :
    canvas->initializeGL();
    refresher->start();
 }
-WorkBench::connectComponents()
+void WorkBench::connectComponents()
 {
     //соединение сигналов и слотов
     QObject::connect(canvas,SIGNAL(mouseClicked(QMouseEvent*)),eventHandler,SLOT(mouseClicked(QMouseEvent*)));
     QObject::connect(canvas,SIGNAL(mouseReleased(QMouseEvent*)),eventHandler,SLOT(mouseReleased(QMouseEvent*)));
     QObject::connect(canvas,SIGNAL(mouseMoved(QMouseEvent*)),eventHandler,SLOT(mouseMoved(QMouseEvent*)));
+    QObject::connect(canvas,SIGNAL(mouseDoubleClicked(QMouseEvent*)),eventHandler,SLOT(mouseDoubleClicked(QMouseEvent*)));
     QObject::connect(eventHandler,SIGNAL(addResistor(int,int)),componentManager,SLOT(addResistor(int,int)));
+    QObject::connect(eventHandler,SIGNAL(click(int,int)),componentManager,SLOT(mouseClick(int,int)));
+    QObject::connect(eventHandler,SIGNAL(leftClickReleased()),componentManager,SLOT(leftClickReleased()));
+    QObject::connect(eventHandler,SIGNAL(changeOrientation(int,int)),componentManager,SLOT(changeOrientation(int,int)));
+    QObject::connect(eventHandler,SIGNAL(moveElement(int,int)),componentManager,SLOT(moveElement(int,int)));
     QObject::connect(canvas,SIGNAL(paintComponents()),componentManager,SLOT(paintComponents()));
     QObject::connect(refresher,SIGNAL(update()),canvas,SLOT(update()));
 }

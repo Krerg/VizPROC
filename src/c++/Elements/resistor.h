@@ -14,14 +14,25 @@ public:
     void setWidth(int width); //установка ширины
     int getWidth();
     int getHeight();
+    const QString HORIZONTAL_ORIENTATION = "HORIZONTAL";
+    const QString VERTICAL_ORIENTATION = "VERTICAL";
     virtual void setPosition(int x, int y); //установка позиции на экране
     virtual void connect(int x,int y); //присоединение другого проводника
+    virtual bool isSelected(int x, int y); //проверка на то, что мышь кликнула по резистору
+    virtual void disableSelected(); //снятие выделенеия с элемента
+    virtual void enableSelected();
+    virtual void changeOrientation();
+    virtual int getX();
+    virtual int getY();
     virtual ~Resistor();
 private:
+    bool selected;
     int x; //координаты
     int y;
     int height; //высота резистора
     int width; //ширина
+    int pinLength; //длина выводов резистора
+    QString orientation;
 signals:
 
 public slots:

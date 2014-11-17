@@ -55,3 +55,8 @@ void OGLRender::mouseReleaseEvent(QMouseEvent *event)
 {
     emit mouseReleased(event);
 }
+//Ивент который вызывается при двойном клике мышью
+void OGLRender::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    emit mouseDoubleClicked(event);
+}

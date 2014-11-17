@@ -23,6 +23,7 @@ protected:
     void mousePressEvent(QMouseEvent* event);
     void mouseMoveEvent(QMouseEvent* event);
     void mouseReleaseEvent(QMouseEvent* event);
+    void mouseDoubleClickEvent(QMouseEvent *event);
 public slots:
     void update();
 signals:
@@ -30,6 +31,7 @@ signals:
     void mouseClicked(QMouseEvent *event); //нажатие мыши
     void mouseReleased(QMouseEvent *event); //отпускание нажатой мыши
     void mouseMoved(QMouseEvent *event); //перетскивание мышью
+    void mouseDoubleClicked(QMouseEvent *event); //двойное нажатие мышью
 };
 
 #endif // OGLRENDER_H
