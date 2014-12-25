@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include "src/c++/Elements/element.h"
+#include "src/c++/Elements/connector.h"
 
 class Resistor : public QObject,Element
 {
@@ -27,12 +28,15 @@ public:
     virtual ~Resistor();
 private:
     bool selected;
+    bool pointed;
     int x; //координаты
     int y;
     int height; //высота резистора
     int width; //ширина
     int pinLength; //длина выводов резистора
     QString orientation;
+    Connector* c1;
+    Connector* c2;
 signals:
 
 public slots:

@@ -12,6 +12,10 @@ Resistor::Resistor(QObject *parent) :
     this->selected=false;
     this->pinLength=8;
     this->orientation=this->HORIZONTAL_ORIENTATION;
+    this->c1 = new Connector();
+    this->c2 = new Connector();
+    this->c1->setPosition(x,y+height/2);
+    this->c1->setPosition(x+width,y+height/2);
 }
 
 Element::~Element()
@@ -28,6 +32,9 @@ void Resistor::setPosition(int x, int y)
 {
     this->x=x;
     this->y=y;
+    //надо поменять
+    this->c1->setPosition(x,y+height/2);
+    this->c2->setPosition(x+width+2*pinLength,y+height/2);
 }
 
 void Resistor::setHeight(int height)
@@ -87,11 +94,39 @@ void Resistor::paintComponent()
 
         glVertex3f(x+pinLength+width, y+height/2, 0.0f);
         glVertex3f(x+pinLength+width+pinLength, y+height/2, 0.0f);
+
+        glColor3f(255,237,0); //желтый цвет
+
         } else {
+        glVertex3f(x+height/2,y, 0.0f);
+        glVertex3f(x+height/2,y+pinLength,0.0f);
+
+        glVertex3f(x+height/2,y+pinLength,0.0f);
+        glVertex3f(x,y+pinLength,0.0f);
+
+        glVertex3f(x,y+pinLength,0.0f);
+        glVertex3f(x,y+pinLength+width,0.0f);
+
+        glVertex3f(x,y+pinLength+width,0.0f);
+        glVertex3f(x+height/2,y+pinLength+width,0.0f);
+
+        glVertex3f(x+height/2,y+pinLength,0.0f);
+        glVertex3f(x+height,y+pinLength,0.0f);
+
+        glVertex3f(x+height,y+pinLength,0.0f);
+        glVertex3f(x+height,y+pinLength+width,0.0f);
+
+        glVertex3f(x+height,y+pinLength+width,0.0f);
+        glVertex3f(x+height/2,y+pinLength+width,0.0f);
+
+        glVertex3f(x+height/2,y+pinLength+width,0.0f);
+        glVertex3f(x+height/2,y+2*pinLength+width,0.0f);
 
         }
-        glEnd();
 
+        glEnd();
+        this->c1->drawComponent();
+        this->c2->drawComponent();
 }
 
 void Resistor::enableSelected()
@@ -116,11 +151,20 @@ void Resistor::disableSelected()
 
 bool Resistor::isSelected(int x, int y)
 {
-    if(x<this->x-pinLength || x>((this->x)+(this->width)+pinLength) || y<this->y-this->height/2 || y>this->y+this->height/2)
-    {
-        return false;
+    if(this->orientation==this->HORIZONTAL_ORIENTATION) {
+        if(x<this->x || x>((this->x)+(this->width)+2*pinLength) || y<this->y-this->height/2 || y>this->y+this->height/2)
+        {
+            return false;
+        } else {
+            return true;
+        }
     } else {
-        return true;
+        if(x<this->x || x>((this->x)+(this->height)) || y<this->y || y>this->y+this->width+2*pinLength)
+        {
+            return false;
+        } else {
+            return true;
+        }
     }
 }
 

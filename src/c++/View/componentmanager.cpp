@@ -1,5 +1,6 @@
 #include "componentmanager.h"
 #include <QDebug>
+#include "src/c++/Elements/emf.h"
 
 ComponentManager::ComponentManager(QObject *parent) :
     QObject(parent)
@@ -21,7 +22,7 @@ void ComponentManager::addResistor(int x, int y)
 {
     this->leftClick=false;
     Resistor* temp = new Resistor();
-    temp->setPosition(x,y);
+    temp->setPosition(x-temp->getWidth()/2,y-temp->getHeight()/2);
     elements->insert(elements->end(),(Element*)temp);
 }
 

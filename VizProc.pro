@@ -23,7 +23,10 @@ SOURCES += main.cpp\
     src/c++/Elements/resistor.cpp \
     src/c++/View/updatethread.cpp \
     src/c++/Controller/eventhandler.cpp \
-    src/c++/Elements/element.cpp
+    src/c++/Elements/element.cpp \
+    src/c++/Elements/emf.cpp \
+    src/c++/Elements/connector.cpp \
+    src/c++/View/mousetrackerthread.cpp
 
 HEADERS  += src/c++/View/startscreen.h \
     windowmanager.h \
@@ -35,6 +38,9 @@ HEADERS  += src/c++/View/startscreen.h \
     src/c++/Elements/resistor.h \
     src/c++/View/updatethread.h \
     src/c++/Controller/eventhandler.h \
-    src/c++/Elements/element.h
+    src/c++/Elements/element.h \
+    src/c++/Elements/emf.h \
+    src/c++/Elements/connector.h \
+    src/c++/View/mousetrackerthread.h
 
 FORMS    +=

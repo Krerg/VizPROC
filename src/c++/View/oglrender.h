@@ -16,7 +16,7 @@ public:
     void initializeGL();
     ~OGLRender();
 private:
-    UpdateThread* refreshThread;
+
 protected:
     void paintGL(); //рисование на эране
     void resizeGL(int width,int height); //обновить весь виджет

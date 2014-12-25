@@ -5,7 +5,7 @@
 OGLRender::OGLRender() :
     QGLWidget()
 {
-    this->refreshThread = new UpdateThread();
+    setMouseTracking(true);
 }
 OGLRender::~OGLRender()
 {

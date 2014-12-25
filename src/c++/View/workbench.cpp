@@ -15,13 +15,21 @@ WorkBench::WorkBench::WorkBench(QWidget *parent) :
    this->componentManager = new ComponentManager(this);
    this->eventHandler = new EventHandler(this);
    this->canvas = new OGLRender(); //сюда надо добавить родителя
-   //создаем поток для обновления изображения
+
+    //создаем потоки для обновления изображения
    this->refresher = new UpdateThread(this);
+   this->mouseTrackerThread = new MouseTrackerThread(canvas,this);
+
+   //соединяем сигналы и слоты
    this->connectComponents();
-   //добавления OpenGL виджет и инициализируем его
+
+   //добавляем OpenGL виджет и инициализируем его
    v1->addWidget(canvas);
    canvas->initializeGL();
+
+   //запуск потоков
    refresher->start();
+   mouseTrackerThread->start();
 }
 void WorkBench::connectComponents()
 {
