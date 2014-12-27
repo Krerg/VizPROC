@@ -8,6 +8,7 @@ EMF::EMF(QObject *parent) :
     this->y=0;
     this->height=26;
     this->width=20;
+    this->pointed=false;
     this->selected=false;
     this->pinLength=6;
     this->orientation=this->HORIZONTAL_ORIENTATION;
@@ -110,3 +111,12 @@ void EMF::changeOrientation()
     }
 }
 
+void EMF::enablePointing()
+{
+    this->pointed=true;
+}
+
+void EMF::disablePointing()
+{
+    this->pointed=false;
+}

@@ -5,37 +5,88 @@
 #include "src/c++/Elements/element.h"
 #include "src/c++/Elements/connector.h"
 
+/**
+ * @brief The Resistor class класс резистора
+ */
 class Resistor : public QObject,Element
 {
     Q_OBJECT
 public:
     explicit Resistor(QObject *parent = 0);
-    virtual void paintComponent(); //отрисовка резистора на экране
-    void setHeight(int height); //установка высоты
-    void setWidth(int width); //установка ширины
+    virtual void paintComponent();
+    void setHeight(int height);
+    void setWidth(int width);
     int getWidth();
     int getHeight();
-    const QString HORIZONTAL_ORIENTATION = "HORIZONTAL";
-    const QString VERTICAL_ORIENTATION = "VERTICAL";
-    virtual void setPosition(int x, int y); //установка позиции на экране
-    virtual void connect(int x,int y); //присоединение другого проводника
-    virtual bool isSelected(int x, int y); //проверка на то, что мышь кликнула по резистору
-    virtual void disableSelected(); //снятие выделенеия с элемента
+    virtual void setPosition(int x, int y);
+    virtual void connect(int x,int y);
+    virtual bool isSelected(int x, int y);
+    virtual void disableSelected();
     virtual void enableSelected();
+    virtual void enablePointing();
+    virtual void disablePointing();
     virtual void changeOrientation();
+    virtual Connector* connectorPointCheck(int x, int y);
     virtual int getX();
     virtual int getY();
     virtual ~Resistor();
+
+    /**
+     * @brief HORIZONTAL_ORIENTATION
+     */
+    const QString HORIZONTAL_ORIENTATION = "HORIZONTAL";
+
+    /**
+     * @brief VERTICAL_ORIENTATION
+     */
+    const QString VERTICAL_ORIENTATION = "VERTICAL";
+
 private:
-    bool selected;
     bool pointed;
-    int x; //координаты
+
+    /**
+     * @brief selected хранит состояние выделения элемента
+     */
+    bool selected;
+
+    /**
+     * @brief x координата по оси асцисс
+     */
+    int x;
+
+    /**
+     * @brief y координата по оси ординат
+     */
     int y;
-    int height; //высота резистора
-    int width; //ширина
-    int pinLength; //длина выводов резистора
+
+    /**
+     * @brief height высота резистора
+     */
+    int height;
+
+    /**
+     * @brief width ширина резистора
+     */
+    int width;
+
+    /**
+     * @brief pinLength длина выводов резистора
+     */
+    int pinLength;
+
+    /**
+     * @brief orientation ориентация резистора на экране
+     */
     QString orientation;
+
+    /**
+     * @brief c1 коннектор для присоединения проводов
+     */
     Connector* c1;
+
+    /**
+     * @brief c2 коннектор для присоединения проводов
+     */
     Connector* c2;
 signals:
 

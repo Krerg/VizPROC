@@ -10,6 +10,7 @@ Resistor::Resistor(QObject *parent) :
     this->height=14;
     this->width=30;
     this->selected=false;
+    this->pointed=false;
     this->pinLength=8;
     this->orientation=this->HORIZONTAL_ORIENTATION;
     this->c1 = new Connector();
@@ -60,6 +61,18 @@ int Resistor::getWidth()
 void Resistor::connect(int x, int y)
 {
 
+}
+
+Connector* Resistor::connectorPointCheck(int x, int y)
+{
+    if(this->c1->checkPointing(x,y))
+    {
+        return c1;
+    } else if (this->c2->checkPointing(x,y)) {
+        return c2;
+    } else {
+        return NULL;
+    }
 }
 
 void Resistor::paintComponent()
@@ -125,13 +138,21 @@ void Resistor::paintComponent()
         }
 
         glEnd();
+        if(this->pointed)
+        {
         this->c1->drawComponent();
         this->c2->drawComponent();
+        }
 }
 
 void Resistor::enableSelected()
 {
     this->selected=true;
+}
+
+void Resistor::enablePointing()
+{
+    this->pointed=true;
 }
 
 int Resistor::getX()
@@ -149,10 +170,16 @@ void Resistor::disableSelected()
     this->selected=false;
 }
 
+void Resistor::disablePointing()
+{
+    this->pointed=false;
+}
+
+
 bool Resistor::isSelected(int x, int y)
 {
     if(this->orientation==this->HORIZONTAL_ORIENTATION) {
-        if(x<this->x || x>((this->x)+(this->width)+2*pinLength) || y<this->y-this->height/2 || y>this->y+this->height/2)
+        if(x<this->x || x>((this->x)+(this->width)+2*pinLength) || y<this->y || y>this->y+this->height)
         {
             return false;
         } else {

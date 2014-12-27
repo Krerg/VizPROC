@@ -2,7 +2,6 @@
 #define CONNECTOR_H
 
 #include <QObject>
-#include "src/c++/Elements/element.h"
 
 /**
  * @brief The Connector class
@@ -19,9 +18,9 @@ public:
 
     /**
      * @brief setConnection связывание коннектора с элементом
-     * @param elem элемент с которым связываем
+     * @param
      */
-    void setConnection(Element* elem);
+    void setConnection();
 
     /**
      * @brief setPosition утсановка позиции коннектора
@@ -34,18 +33,35 @@ public:
 
     int getY();
 
-    Element* getConnectedElement();
+    /**
+     * @brief getConnectedElement возвращает присоединенный провод к коннектору
+     * @return
+     */
+    void getConnectedElement();
 
     /**
      * @brief drawComponent отрисовка на экране
      */
     void drawComponent();
-private:
-    /**
-     * @brief connectedWith указатель на элемент с которым соединен
-     */
-    Element* connectedWith;
 
+    /**
+     * @brief enablePointing делает коннектор наведенным
+     */
+    void enablePointing();
+
+    /**
+     * @brief disablePointing снимает наведение с коннектора
+     */
+    void disablePointing();
+
+    /**
+     * @brief checkPointing проверяет на то, что курсора наведен на коннектор
+     * @param x координата курсора по оси обсцисс
+     * @param y координата курсора по оси ординат
+     * @return
+     */
+    bool checkPointing(int x, int y);
+private:
     /**
      * @brief x координата на экране
      */
@@ -65,10 +81,15 @@ private:
      * @brief height высота коннектора
      */
     int height;
+
+    /**
+     * @brief pointed наведен ли курсор на коннектор
+     */
+    bool pointed;
 signals:
 
 public slots:
 
 };
-
+\
 #endif // CONNECTOR_H

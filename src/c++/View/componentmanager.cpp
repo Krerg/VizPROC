@@ -7,6 +7,8 @@ ComponentManager::ComponentManager(QObject *parent) :
 {
     this->elements = new QList<Element*>();
     this->selected = NULL;
+    this->pointed = NULL;
+    this->pointedConnector = NULL;
     this->leftClick = false;
 }
 void ComponentManager::paintComponents()
@@ -74,5 +76,27 @@ void ComponentManager::changeOrientation(int x, int y)
     if(selected!=NULL)
     {
         selected->changeOrientation();
+    }
+}
+
+void ComponentManager::mouseMoved(int x, int y)
+{
+    if(this->pointed!=NULL)
+    this->pointed->disablePointing();
+    if(this->pointedConnector!=NULL)
+    this->pointedConnector->disablePointing();
+
+    Element* temp = this->getElementByCoordinates(x,y);
+    if(temp!=NULL)
+    {
+       temp->enablePointing();
+       this->pointed=temp;
+
+       Connector* temp2 = temp->connectorPointCheck(x,y);
+       if(temp2!=NULL)
+       {
+           temp2->enablePointing();
+           this->pointedConnector=temp2;
+       }
     }
 }

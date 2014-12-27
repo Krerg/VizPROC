@@ -28,7 +28,7 @@ void MouseTrackerThread::run()
         qDebug() << newY;
         if(x!=newX || y!=newY)
         {
-         //   emit mouseMoved(newX, newY);
+            emit mouseMoved(newX, newY);
             x = newX;
             y = newY;
         }

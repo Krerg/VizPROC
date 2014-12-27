@@ -4,7 +4,6 @@
 Connector::Connector(QObject *parent) :
     QObject(parent)
 {
-    this->connectedWith=NULL;
     this->width=5;
     this->height=5;
 }
@@ -13,7 +12,12 @@ void Connector::drawComponent()
 {
     glBegin(GL_LINES);
 
-       glColor3f(255,237,0); //желтый цвет
+        if(!pointed)
+        {
+         glColor3f(255,237,0); //желтый цвет
+        } else {
+         glColor3f(255,0,0); //красный цвет
+        }
 
         //Рисуем крест
         glVertex3f(x-width/2,y-height/2,0.0f);
@@ -41,12 +45,32 @@ void Connector::setPosition(int x, int y)
     this->y=y;
 }
 
-void Connector::setConnection(Element *elem)
+void Connector::setConnection()
 {
-    this->connectedWith = elem;
+
 }
 
-Element* Connector::getConnectedElement()
+void Connector::getConnectedElement()
 {
-    return this->connectedWith;
+
+}
+
+bool Connector::checkPointing(int x, int y)
+{
+    if(x<this->x-width/2 || x>this->x+width/2 || y<this->y-height/2 || y>this->y+height/2)
+    {
+        return false;
+    } else {
+        return true;
+    }
+}
+
+void Connector::enablePointing()
+{
+    this->pointed=true;
+}
+
+void Connector::disablePointing()
+{
+    this->pointed=false;
 }
