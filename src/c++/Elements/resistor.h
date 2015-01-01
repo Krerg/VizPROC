@@ -88,6 +88,11 @@ private:
      * @brief c2 коннектор для присоединения проводов
      */
     Connector* c2;
+
+    /**
+     * @brief setConnectorPosition устанавливает позицию коннекторов
+     */
+    void setConnectorPosition();
 signals:
 
 public slots:

@@ -1,10 +1,19 @@
 #include "oglrender.h"
 #include "src/c++/Elements/resistor.h"
 #include <QDebug>
+#include <QVBoxLayout>
 
 OGLRender::OGLRender() :
     QGLWidget()
 {
+    elementList = new QComboBox(this);
+    elementList->addItem("Резистор-хуистор");
+    elementList->addItem("ЭДС нет рифмы");
+    elementList->addItem("Провод ссаный");
+    QVBoxLayout *g = new QVBoxLayout(this);
+    g->setAlignment(Qt::AlignBottom);
+    g->addWidget(elementList);
+    this->setLayout(g);
     setMouseTracking(true);
 }
 OGLRender::~OGLRender()

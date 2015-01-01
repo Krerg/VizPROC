@@ -5,6 +5,9 @@
 #include <QMainWindow>
 #include <QPushButton>
 
+/**
+ * @brief The StartScreen class стартоевое окно приложения
+ */
 class StartScreen : public QWidget
 {
     Q_OBJECT
@@ -14,8 +17,19 @@ public:
     ~StartScreen();
     void setSignals(QObject *l);
 private:
+    /**
+     * @brief newProject кнопка создания нового проекта
+     */
     QPushButton* newProject;
+
+    /**
+     * @brief loadProject кнопка загрузки проекта
+     */
     QPushButton* loadProject;
+
+    /**
+     * @brief Exit кнопка выхода
+     */
     QPushButton* Exit;
 
 };

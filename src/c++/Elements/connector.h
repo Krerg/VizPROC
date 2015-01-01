@@ -29,8 +29,16 @@ public:
      */
     void setPosition(int x, int y);
 
+    /**
+     * @brief getX возвращает координатц позиции коннектора по оси абсцисс
+     * @return
+     */
     int getX();
 
+    /**
+     * @brief getY возвращает координату позиции коннектора по оси ординат
+     * @return
+     */
     int getY();
 
     /**

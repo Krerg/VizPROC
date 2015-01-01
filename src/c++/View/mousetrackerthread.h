@@ -5,7 +5,7 @@
 #include <QGLWidget>
 
 /**
- * @brief The mouseTrackerThread class класс-поток, который следит за
+ * @brief The mouseTrackerThread class класс-поток, который следит за перемещением мыши
  */
 class MouseTrackerThread : public QThread
 {

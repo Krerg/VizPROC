@@ -10,6 +10,7 @@ ComponentManager::ComponentManager(QObject *parent) :
     this->pointed = NULL;
     this->pointedConnector = NULL;
     this->leftClick = false;
+    this->drawingWire = false;
 }
 void ComponentManager::paintComponents()
 {
@@ -99,4 +100,18 @@ void ComponentManager::mouseMoved(int x, int y)
            this->pointedConnector=temp2;
        }
     }
+}
+
+void ComponentManager::addElement(QString elem, int x, int y)
+{
+    if(elem == "res")
+    {
+        this->addResistor(x,y);
+    }
+}
+
+void ComponentManager::connect(int x, int y)
+{
+
+
 }

@@ -17,7 +17,7 @@ void EventHandler::mouseReleased(QMouseEvent *event)
 {
     if(event->button() == Qt::RightButton)
     {
-        emit addResistor(event->x(),event->y());
+        emit addElement("res",event->x(),event->y());
     } else if(event->button() == Qt::LeftButton)
     {
         emit leftClickReleased();

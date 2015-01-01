@@ -78,7 +78,7 @@ public:
     virtual int getX()=0;
 
     /**
-     * @brief getY возвращает y координату элементв
+     * @brief getY возвращает y координату элемента
      * @return
      */
     virtual int getY()=0;

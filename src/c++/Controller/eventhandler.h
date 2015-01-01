@@ -5,6 +5,9 @@
 #include <QMouseEvent>
 #include "src/c++/View/componentmanager.h"
 
+/**
+ * @brief The EventHandler class обрабатывает события мыши и передает данные менеджеру компоненты
+ */
 class EventHandler : public QObject
 {
     Q_OBJECT
@@ -13,16 +16,61 @@ public:
 private:
 
 signals:
-    void addResistor(int x, int y); //добавление резистора
-    void click(int x, int y); //клик левой кнопкой мыши
-    void moveElement(int x, int y); //перетаскивание элемента
-    void leftClickReleased(); //событие отпускания левой кнопки мыши
-    void changeOrientation(int,int); //изменение ориентации эллемента
+    /**
+     * @brief addElement добавление элемента
+     * @param elem название элемента
+     * @param x координата курсора по оси абсцисс
+     * @param y координата курсора по оси ординат
+     */
+    void addElement(QString elem,int x, int y);
+
+    /**
+     * @brief click нажатие левой кнопки мыши
+     * @param x координата курсора по оси абсцисс
+     * @param y координата курсора по оси ординат
+     */
+    void click(int x, int y);
+
+    /**
+     * @brief moveElement перемещение элемента
+     * @param x координата курсора по оси асцисс
+     * @param y координата курсора по оси ординат
+     */
+    void moveElement(int x, int y);
+
+    /**
+     * @brief leftClickReleased событие отпуска левой кнопки мыши
+     */
+    void leftClickReleased();
+
+    /**
+     * @brief changeOrientation изменение ориентациии положения элемента
+     */
+    void changeOrientation(int,int);
 public slots:
-    void mouseClicked(QMouseEvent* event); //нажатие мыши
-    void mouseReleased(QMouseEvent* event); //отпускание клавиши мыши
-    void mouseMoved(QMouseEvent* event); //перетаскивание мышью
-    void mouseDoubleClicked(QMouseEvent *event); //двойное нажатие мыши
+    /**
+     * @brief mouseClicked слот который вызываетя при нажатии любой кнопки мыши
+     * @param event событие нажатия кнопки
+     */
+    void mouseClicked(QMouseEvent* event);
+
+    /**
+     * @brief mouseReleased слот который вызывается при отпускании любой кнопки мыши
+     * @param event событие мыши
+     */
+    void mouseReleased(QMouseEvent* event);
+
+    /**
+     * @brief mouseMoved слот который вызывается при нажатии кнопки мыши и ее перемещении (перетаскивание)
+     * @param event событие мыши
+     */
+    void mouseMoved(QMouseEvent* event);
+
+    /**
+     * @brief mouseDoubleClicked слот который вызывается при двойном нажатии любой кнопки мыши
+     * @param event событие мыши
+     */
+    void mouseDoubleClicked(QMouseEvent *event);
 };
 
 #endif // EVENTHANDLER_H

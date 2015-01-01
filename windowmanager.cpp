@@ -15,6 +15,6 @@ void WindowManager::start()
 }
 void WindowManager::openWorkBench()
 {
-  wb = new WorkBench();
   delete sc;
+  wb = new WorkBench();
 }

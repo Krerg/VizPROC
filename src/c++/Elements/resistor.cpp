@@ -16,7 +16,7 @@ Resistor::Resistor(QObject *parent) :
     this->c1 = new Connector();
     this->c2 = new Connector();
     this->c1->setPosition(x,y+height/2);
-    this->c1->setPosition(x+width,y+height/2);
+    this->c2->setPosition(x+width,y+height/2);
 }
 
 Element::~Element()
@@ -33,9 +33,7 @@ void Resistor::setPosition(int x, int y)
 {
     this->x=x;
     this->y=y;
-    //надо поменять
-    this->c1->setPosition(x,y+height/2);
-    this->c2->setPosition(x+width+2*pinLength,y+height/2);
+    this->setConnectorPosition();
 }
 
 void Resistor::setHeight(int height)
@@ -202,5 +200,19 @@ void Resistor::changeOrientation()
         this->orientation=this->VERTICAL_ORIENTATION;
     } else {
         this->orientation=this->HORIZONTAL_ORIENTATION;
+
     }
+    this->setConnectorPosition();
+}
+
+void Resistor::setConnectorPosition()
+{
+    if(this->orientation==this->HORIZONTAL_ORIENTATION)
+    {
+        this->c1->setPosition(x,y+height/2);
+        this->c2->setPosition(x+width+2*pinLength,y+height/2);
+    } else {
+        this->c1->setPosition(x+height/2,y);
+        this->c2->setPosition(x+height/2,y+2*pinLength+width);
+      }
 }

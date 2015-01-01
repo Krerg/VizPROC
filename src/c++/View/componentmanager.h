@@ -19,6 +19,14 @@ public:
      */
     explicit ComponentManager(QObject *parent = 0);
 private:
+
+    /**
+     * @brief addResistor добавление резистора
+     * @param x координата добавления по оси абсцисс
+     * @param y координата добавления по оси ординат
+     */
+    void addResistor(int x, int y);
+
     /**
      * @brief dx разница координат мыши и элемента по оси абсцисс
      */
@@ -33,6 +41,11 @@ private:
      * @brief leftClick говорит нажата ли левая кнопка мыши
      */
     bool leftClick;
+
+    /**
+     * @brief drawingWire режим соединения элементов проводом
+     */
+    bool drawingWire;
 
     /**
      * @brief elements стуктура, которая хранит все элементы
@@ -72,13 +85,6 @@ public slots:
     void paintComponents();
 
     /**
-     * @brief addResistor добавление резистора
-     * @param x координата добавления по оси абсцисс
-     * @param y координата добавления по оси ординат
-     */
-    void addResistor(int x, int y);
-
-    /**
      * @brief moveElement перемещениие элемента
      * @param x
      * @param y
@@ -105,6 +111,22 @@ public slots:
      * @param y
      */
     void changeOrientation(int x, int y);
+
+
+    /**
+     * @brief addElement
+     * @param elem
+     * @param x
+     * @param y
+     */
+    void addElement(QString elem, int x, int y);
+
+    /**
+     * @brief connect вызывается при соединении элементов проводом
+     * @param x координата курсора по оси абсции
+     * @param y координата курсора по оси ординат
+     */
+    void connect(int x, int y);
 };
 
 #endif // COMPONENTMANAGER_H

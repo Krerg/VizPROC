@@ -14,8 +14,15 @@ public:
     explicit WindowManager(QObject *parent = 0);
     void start();
 private:
-    WorkBench *wb; //экран самого "станка"
-    StartScreen *sc; //стартовый экран
+    /**
+     * @brief wb главнй экране приложения где происходит основная работа
+     */
+    WorkBench *wb;
+
+    /**
+     * @brief sc стартовый экране приложения
+     */
+    StartScreen *sc;
 signals:
 
 public slots:

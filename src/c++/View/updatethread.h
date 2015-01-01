@@ -4,6 +4,9 @@
 #include <QObject>
 #include <QThread>
 
+/**
+ * @brief The UpdateThread class класс-потокб который обновляет избражение на экране с заданной частотой
+ */
 class UpdateThread : public QThread
 {
     Q_OBJECT
