@@ -28,6 +28,13 @@ private:
     void addResistor(int x, int y);
 
     /**
+     * @brief addEMF добавление ЭДС
+     * @param x координата курсора по оси абсцисс
+     * @param y координата курсора по оси ординат
+     */
+    void addEMF(int x, int y);
+
+    /**
      * @brief dx разница координат мыши и элемента по оси абсцисс
      */
     int dx;

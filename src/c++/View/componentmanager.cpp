@@ -12,6 +12,7 @@ ComponentManager::ComponentManager(QObject *parent) :
     this->leftClick = false;
     this->drawingWire = false;
 }
+
 void ComponentManager::paintComponents()
 {
 
@@ -21,10 +22,19 @@ void ComponentManager::paintComponents()
         elements->at(i)->paintComponent();
     }
 }
+
 void ComponentManager::addResistor(int x, int y)
 {
     this->leftClick=false;
-    Resistor* temp = new Resistor();
+    Resistor* temp = new Resistor(this);
+    temp->setPosition(x-temp->getWidth()/2,y-temp->getHeight()/2);
+    elements->insert(elements->end(),(Element*)temp);
+}
+
+void ComponentManager::addEMF(int x, int y)
+{
+    this->leftClick=false;
+    EMF *temp = new EMF(this);
     temp->setPosition(x-temp->getWidth()/2,y-temp->getHeight()/2);
     elements->insert(elements->end(),(Element*)temp);
 }
@@ -104,9 +114,13 @@ void ComponentManager::mouseMoved(int x, int y)
 
 void ComponentManager::addElement(QString elem, int x, int y)
 {
-    if(elem == "res")
+    if(elem == "Резистор")
     {
         this->addResistor(x,y);
+    }
+    else if(elem == "ЭДС")
+    {
+        this->addEMF(x,y);
     }
 }
 
@@ -115,3 +129,4 @@ void ComponentManager::connect(int x, int y)
 
 
 }
+

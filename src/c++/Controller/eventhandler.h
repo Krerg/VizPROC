@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QMouseEvent>
 #include "src/c++/View/componentmanager.h"
+#include <QComboBox>
 
 /**
  * @brief The EventHandler class обрабатывает события мыши и передает данные менеджеру компоненты
@@ -13,8 +14,14 @@ class EventHandler : public QObject
     Q_OBJECT
 public:
     explicit EventHandler(QObject *parent = 0);
-private:
 
+    /**
+     * @brief setQComboBox
+     * @param c
+     */
+    void setQComboBox(QComboBox *c);
+private:
+    QComboBox *selectedElem;
 signals:
     /**
      * @brief addElement добавление элемента

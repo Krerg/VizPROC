@@ -16,10 +16,24 @@ class OGLRender : public QGLWidget
     Q_OBJECT
 
 public:
+    /**
+     * @brief OGLRender конструктор класса
+     */
     OGLRender();
+
+    /**
+     * @brief getComboBox
+     * @return
+     */
+    QComboBox* getComboBox();
+
     void initializeGL();
+
     ~OGLRender();
 private:
+    /**
+     * @brief elementList список элементов для работы
+     */
     QComboBox *elementList;
 protected:
     /**

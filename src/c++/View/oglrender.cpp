@@ -7,9 +7,9 @@ OGLRender::OGLRender() :
     QGLWidget()
 {
     elementList = new QComboBox(this);
-    elementList->addItem("Резистор-хуистор");
-    elementList->addItem("ЭДС нет рифмы");
-    elementList->addItem("Провод ссаный");
+    elementList->addItem("Резистор");
+    elementList->addItem("ЭДС");
+    elementList->addItem("Провод");
     QVBoxLayout *g = new QVBoxLayout(this);
     g->setAlignment(Qt::AlignBottom);
     g->addWidget(elementList);
@@ -68,4 +68,9 @@ void OGLRender::mouseReleaseEvent(QMouseEvent *event)
 void OGLRender::mouseDoubleClickEvent(QMouseEvent *event)
 {
     emit mouseDoubleClicked(event);
+}
+
+QComboBox* OGLRender::getComboBox()
+{
+    return elementList;
 }

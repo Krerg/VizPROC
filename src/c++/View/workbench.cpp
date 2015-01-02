@@ -15,7 +15,6 @@ WorkBench::WorkBench::WorkBench(QWidget *parent) :
    this->componentManager = new ComponentManager(this);
    this->eventHandler = new EventHandler(this);
    this->canvas = new OGLRender(); //сюда надо добавить родителя
-
     //создаем потоки для обновления изображения
    this->refresher = new UpdateThread(this);
    this->mouseTrackerThread = new MouseTrackerThread(canvas,this);
@@ -33,6 +32,10 @@ WorkBench::WorkBench::WorkBench(QWidget *parent) :
 }
 void WorkBench::connectComponents()
 {
+    //соединение гуи и обработчика событий
+    this->eventHandler->setQComboBox(canvas->getComboBox());
+
+
     //соединение сигналов и слотов
     QObject::connect(canvas,SIGNAL(mouseClicked(QMouseEvent*)),eventHandler,SLOT(mouseClicked(QMouseEvent*)));
     QObject::connect(canvas,SIGNAL(mouseReleased(QMouseEvent*)),eventHandler,SLOT(mouseReleased(QMouseEvent*)));

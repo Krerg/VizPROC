@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include "src/c++/Elements/element.h"
+#include "src/c++/Elements/connector.h"
+
 /**
  * @brief The EMF класс ЭДС
  */
@@ -26,10 +28,13 @@ public:
     virtual void disableSelected();
     virtual void enableSelected();
     virtual void changeOrientation();
+    virtual Connector* connectorPointCheck(int x, int y);
     virtual int getX();
     virtual int getY();
     virtual ~EMF();
 private:
+    Connector *c1;
+    Connector *c2;
     bool pointed;
     bool selected;
     int x;
@@ -41,7 +46,14 @@ private:
      */
     int pinLength;
     QString orientation;
+
+    /**
+     * @brief setConnectorPosition устанавливает позицию коннекторов
+     */
+    void setConnectorPosition();
+
 signals:
+
 
 public slots:
 
