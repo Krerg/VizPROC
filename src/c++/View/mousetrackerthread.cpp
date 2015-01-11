@@ -19,13 +19,12 @@ void MouseTrackerThread::run()
     int newX=0;
     int newY=0;
 
-    QPoint mousePoint;
     while(true)
     {
         newX = widget->mapFromGlobal(QCursor::pos()).x();;
         newY = widget->mapFromGlobal(QCursor::pos()).y();;
-        qDebug() << newX;
-        qDebug() << newY;
+        //qDebug() << newX;
+        //qDebug() << newY;
         if(x!=newX || y!=newY)
         {
             emit mouseMoved(newX, newY);

@@ -4,7 +4,7 @@ InitController::InitController(QObject *parent) :
     QObject(parent)
 {
     //Инициализация менеджера окон
-    this->main = new WindowManager();
+    this->main = new WindowManager(this);
 }
 void InitController::startProgramm()
 {

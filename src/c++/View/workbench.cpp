@@ -35,7 +35,6 @@ void WorkBench::connectComponents()
     //соединение гуи и обработчика событий
     this->eventHandler->setQComboBox(canvas->getComboBox());
 
-
     //соединение сигналов и слотов
     QObject::connect(canvas,SIGNAL(mouseClicked(QMouseEvent*)),eventHandler,SLOT(mouseClicked(QMouseEvent*)));
     QObject::connect(canvas,SIGNAL(mouseReleased(QMouseEvent*)),eventHandler,SLOT(mouseReleased(QMouseEvent*)));

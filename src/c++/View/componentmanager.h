@@ -5,6 +5,7 @@
 #include <QList>
 #include "src/c++/Elements/resistor.h"
 #include "src/c++/Elements/element.h"
+#include "src/c++/Elements/wire.h"
 
 /**
  * @brief The ComponentManager class менеджер элементов
@@ -60,6 +61,11 @@ private:
     QList<Element*> *elements;
 
     /**
+     * @brief wires структура, которая хранит все провода
+     */
+    QList<Wire*> *wires;
+
+    /**
      * @brief getElementByCoordinates возвращает элемент по координатам курсора
      * @param x координата по оси абсцисс
      * @param y координата по оси ординат
@@ -81,6 +87,26 @@ private:
      * @brief pointedConnector коннектор, на который наведен курссор
      */
     Connector* pointedConnector;
+
+    /**
+     * @brief wireEnd1 точка для предпросмотра поведения провода при присоединении
+     */
+    QPoint* wireEnd1;
+
+    /**
+     * @brief wireEnd2 точка для предпросмотра поведения провода при присоедтинении
+     */
+    QPoint* wireEnd2;
+
+    /**
+     * @brief drawWire провод, который чертит пользователь в данный момент
+     */
+    Wire *drawWire;
+
+    /**
+     * @brief type говорит какого будет поведение провода при препросмотре
+     */
+    bool drawType;
 signals:
 
 public slots:

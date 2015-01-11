@@ -4,7 +4,7 @@
 #include <QObject>
 
 /**
- * @brief The Connector class
+ * @brief The Connector class коннектор, который соединяет провод и элемент
  */
 class Connector : public QObject
 {

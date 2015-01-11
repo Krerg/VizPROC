@@ -27,10 +27,33 @@ public:
     void addPoint(int x, int y);
 
     /**
+     * @brief addPoint добавление точки отрисовки к проводу
+     * @param point сама точка
+     */
+    void addPoint(QPoint* point);
+
+    /**
      * @brief setNumber утсановка номера
      * @param number
      */
     void setNumber(int number);
+
+    /**
+     * @brief paintComponent отрисовка провода на экране
+     */
+    void paintComponent();
+
+    /**
+     * @brief startConnection начало соединения проводом элементов
+     * @param c коннектор, к которому провод должен быть присоединен
+     */
+    void startConnection(Connector* c);
+
+    /**
+     * @brief endConnection заверщенеие соединения проводом
+     * @param c коннектор, к которому провод должен быть присоединен
+     */
+    void endConnection(Connector* c);
 private:
     /**
      * @brief path путь, по которому будет рисоваться провод
@@ -40,12 +63,12 @@ private:
     /**
      * @brief connected1 присоединенный к проводу элемент
      */
-    Element *connected1;
+    Connector *connected1;
 
     /**
      * @brief connected2 присоединенный к проводу элемент
      */
-    Element *connected2;
+    Connector *connected2;
 
     /**
      * @brief wires присоединенный к проводу другие провода
