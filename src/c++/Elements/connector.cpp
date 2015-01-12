@@ -41,6 +41,7 @@ int Connector::getY()
 
 void Connector::setPosition(int x, int y)
 {
+    emit changePosition(this->x,this->y,x,y);
     this->x=x;
     this->y=y;
 }
@@ -74,3 +75,5 @@ void Connector::disablePointing()
 {
     this->pointed=false;
 }
+
+

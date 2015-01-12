@@ -181,7 +181,7 @@ void ComponentManager::connect(int x, int y)
             this->wireEnd2 = new QPoint(x,y);
             drawWire->addPoint(wireEnd1);
             drawWire->addPoint(wireEnd2);
-            this->drawType=true;
+            this->drawType=pointed->getType();
 
             this->wires->insert(wires->end(),drawWire);
         }

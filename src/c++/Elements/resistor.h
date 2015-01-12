@@ -29,6 +29,7 @@ public:
     virtual Connector* connectorPointCheck(int x, int y);
     virtual int getX();
     virtual int getY();
+    virtual bool getType();
     virtual ~Resistor();
 
     /**
@@ -42,6 +43,9 @@ public:
     const QString VERTICAL_ORIENTATION = "VERTICAL";
 
 private:
+    /**
+     * @brief pointed состоягие наведения на элемент
+     */
     bool pointed;
 
     /**

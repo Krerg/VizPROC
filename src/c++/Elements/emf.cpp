@@ -179,3 +179,8 @@ void EMF::setConnectorPosition()
         this->c2->setPosition(x+height/2,y+2*pinLength+width/4);
     }
 }
+
+bool EMF::getType()
+{
+    return false;
+}

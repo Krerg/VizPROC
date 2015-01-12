@@ -31,6 +31,7 @@ public:
     virtual Connector* connectorPointCheck(int x, int y);
     virtual int getX();
     virtual int getY();
+    virtual bool getType();
     virtual ~EMF();
 private:
     Connector *c1;

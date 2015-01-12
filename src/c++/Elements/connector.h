@@ -17,7 +17,7 @@ public:
     explicit Connector(QObject *parent = 0);
 
     /**
-     * @brief setConnection связывание коннектора с элементом
+     * @brief setConnection связывание коннектора с проводом
      * @param
      */
     void setConnection();
@@ -69,6 +69,14 @@ public:
      * @return
      */
     bool checkPointing(int x, int y);
+
+    /**
+     * @brief changePosition оповещает подключенные провода о том, что позиция
+     * элемента изменилась
+     * @param x координата курсора по оси абсцисс
+     * @param y координата курсора по оси ординат
+     */
+    void changePosition(int x, int y);
 private:
     /**
      * @brief x координата на экране
@@ -95,7 +103,14 @@ private:
      */
     bool pointed;
 signals:
-
+    /**
+     * @brief changePosition
+     * @param oldX
+     * @param oldY
+     * @param newX
+     * @param newY
+     */
+    void changePosition(int oldX, int oldY, int newX, int newY);
 public slots:
 
 };

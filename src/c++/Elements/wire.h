@@ -54,6 +54,14 @@ public:
      * @param c коннектор, к которому провод должен быть присоединен
      */
     void endConnection(Connector* c);
+
+    /**
+     * @brief isSelected проверет нажал ли пользователь на этот провод
+     * @param x координата курсора по оси абсцисс
+     * @param y координата курсора по оси ординат
+     * @return
+     */
+    bool isSelected(int x, int y);
 private:
     /**
      * @brief path путь, по которому будет рисоваться провод
@@ -80,10 +88,21 @@ private:
      */
     int number;
 
+    /**
+     * @brief selected выделен ли провод или нет
+     */
+    bool selected;
 signals:
 
 public slots:
-
+    /**
+     * @brief changePosition
+     * @param oldX
+     * @param oldY
+     * @param newX
+     * @param newY
+     */
+    void changePosition(int oldX, int oldY, int newX, int newY);
 };
 
 #endif // WIRE_H

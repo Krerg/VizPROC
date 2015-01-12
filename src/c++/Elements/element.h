@@ -83,6 +83,8 @@ public:
      */
     virtual int getY()=0;
 
+    virtual bool getType()=0;
+
     /**
      * @brief ~Element деструктор
      */

@@ -31,6 +31,7 @@ Resistor::~Resistor()
 
 void Resistor::setPosition(int x, int y)
 {
+
     this->x=x;
     this->y=y;
     this->setConnectorPosition();
@@ -215,4 +216,14 @@ void Resistor::setConnectorPosition()
         this->c1->setPosition(x+height/2,y);
         this->c2->setPosition(x+height/2,y+2*pinLength+width);
       }
+}
+
+bool Resistor::getType()
+{
+    if(this->orientation == this->HORIZONTAL_ORIENTATION)
+    {
+        return true;
+    } else {
+        return false;
+    }
 }
