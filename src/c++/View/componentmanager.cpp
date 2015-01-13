@@ -2,6 +2,7 @@
 #include <QDebug>
 #include "src/c++/Elements/emf.h"
 #include "src/c++/Elements/wire.h"
+#include "src/c++/Elements/ground.h"
 
 ComponentManager::ComponentManager(QObject *parent) :
     QObject(parent)
@@ -15,6 +16,7 @@ ComponentManager::ComponentManager(QObject *parent) :
     this->drawingWire = false;
     this->wireEnd1 = NULL;
     this->wireEnd2 = NULL;
+    this->ground = NULL;
 }
 
 void ComponentManager::paintComponents()
@@ -32,6 +34,13 @@ void ComponentManager::paintComponents()
     {
         wires->at(j)->paintComponent();
     }
+
+    //отрисовка зазелмения, если оно есть
+    if(this->ground!=NULL)
+    {
+        this->ground->paintComponent();
+    }
+
 
 }
 
@@ -161,6 +170,8 @@ void ComponentManager::addElement(QString elem, int x, int y)
         this->addEMF(x,y);
     } else if(elem == "Провод") {
         this->connect(x,y);
+    } else if(elem == "Заземление") {
+        this->addGround(x,y);
     }
 }
 
@@ -204,6 +215,16 @@ void ComponentManager::connect(int x, int y)
     qDebug()<<"Соединение проводом";
 }
 
+void ComponentManager::addGround(int x, int y)
+{
+    if(this->ground==NULL)
+    {
+    this->leftClick=false;
+    Ground *temp = new Ground(this);
+    temp->setPosition(x-temp->getWidth()/2,y-temp->getHeight()/2);
+    this->ground = temp;
+    }
+}
 
 
 

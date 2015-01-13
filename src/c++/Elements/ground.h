@@ -36,6 +36,26 @@ public:
      * @return
      */
     bool isSelected(int x, int y);
+
+    /**
+     * @brief getHeight возвращает высоту элемента
+     * @return высота элемента
+     */
+    int getHeight();
+
+    /**
+     * @brief getWidth возвращает ширину элемента
+     * @return ширина элемента
+     */
+    int getWidth();
+
+    void enablePointing();
+
+    void disablePointing();
+
+    void enableSelection();
+
+    void disableSelection();
 private:
     /**
      * @brief x координата элемента по оси абсцисс
@@ -61,6 +81,21 @@ private:
      * @brief pointed указывает на то, наведен ли курсор на элемент
      */
     bool pointed;
+
+    /**
+     * @brief width ширина элемента
+     */
+    int width;
+
+    /**
+     * @brief height высота элемента
+     */
+    int height;
+
+    /**
+     * @brief setConnectorPosition
+     */
+    void setConnectorPosition();
 signals:
 
 public slots:

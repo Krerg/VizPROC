@@ -10,6 +10,7 @@ OGLRender::OGLRender() :
     elementList->addItem("Резистор");
     elementList->addItem("ЭДС");
     elementList->addItem("Провод");
+    elementList->addItem("Заземление");
     QVBoxLayout *g = new QVBoxLayout(this);
     g->setAlignment(Qt::AlignBottom);
     g->addWidget(elementList);

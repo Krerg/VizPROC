@@ -6,6 +6,7 @@
 #include "src/c++/Elements/resistor.h"
 #include "src/c++/Elements/element.h"
 #include "src/c++/Elements/wire.h"
+#include "src/c++/Elements/ground.h"
 
 /**
  * @brief The ComponentManager class менеджер элементов
@@ -36,6 +37,13 @@ private:
     void addEMF(int x, int y);
 
     /**
+     * @brief addGround добавление заземления
+     * @param x координата курсора по оси абсцисс
+     * @param y координата курсора по оси ординат
+     */
+    void addGround(int x, int y);
+
+    /**
      * @brief dx разница координат мыши и элемента по оси абсцисс
      */
     int dx;
@@ -59,6 +67,11 @@ private:
      * @brief elements стуктура, которая хранит все элементы
      */
     QList<Element*> *elements;
+
+    /**
+     * @brief ground заземление (пока что одно)
+     */
+    Ground *ground;
 
     /**
      * @brief wires структура, которая хранит все провода

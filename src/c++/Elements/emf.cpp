@@ -182,5 +182,10 @@ void EMF::setConnectorPosition()
 
 bool EMF::getType()
 {
-    return false;
+    if(this->orientation == this->HORIZONTAL_ORIENTATION)
+    {
+        return true;
+    } else {
+        return false;
+    }
 }
