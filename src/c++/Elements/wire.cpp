@@ -9,9 +9,11 @@ Wire::Wire(QObject *parent) :
     QObject(parent)
 {
     this->path = new QList<QPoint*>;
+    this->wires = new QList<Wire*>;
     this->connected1 = NULL;
     this->connected2 = NULL;
     this->selected = false;
+    this->pointed = false;
 }
 
 void Wire::addPoint(QPoint *point)
@@ -40,7 +42,7 @@ void Wire::paintComponent()
     glBegin(GL_LINES);
 
     //если наведен провод выделен то будет отображен синим цветом
-    if(!selected) {
+    if(!pointed && !selected) {
     glColor3f(0,0,0);
     } else {
         glColor3f(0,0,8.0f);
@@ -70,10 +72,42 @@ void Wire::endConnection(Connector *c)
     this->connected2=c;
 }
 
-bool Wire::isSelected(int x, int y)
+int Wire::isSelected(int x, int y)
 {
     //требуется реализация
-    return false;
+    //ну окей поехали
+    int m=0;
+    QList<QPoint*>::iterator i;
+    for(i=path->begin(); i != path->end();)
+    {
+        ++m;
+        QPoint* tmp1 = (*i);
+        ++i;
+        QPoint* tmp2 = (*i);
+        if(tmp2 == NULL)
+        {
+            break;
+        }
+        if(tmp1->x() == tmp2->x())
+        {
+            //если 2 точки на одной линии по оси абсцисс
+            if(abs(x-tmp1->x())>2 || (y>tmp1->y() && y>tmp2->y()) || (y<tmp1->y() && y<tmp2->y()))
+            {
+                continue;
+            } else {
+                return m;
+            }
+        } else {
+            //если 2 точки на одной линии по оси ординат
+            if(abs(y-tmp1->y())>2 || (x>tmp1->x() && x>tmp2->x()) || (x<tmp1->x() && x<tmp2->x()))
+            {
+                continue;
+            } else {
+                return m;
+            }
+        }
+    }
+    return 0;
 }
 
 void Wire::changePosition(int oldX, int oldY, int newX, int newY)
@@ -91,7 +125,7 @@ void Wire::changePosition(int oldX, int oldY, int newX, int newY)
             QPoint* second = this->path->at(1);
             if(second->x()==temp->x())
             {
-                if(abs(second->y()-newY)<2)
+                if(abs(second->y()-newY)<3)
                 {
                     //двигаем 3 точку если оно нужно
                     QPoint* third = this->path->at(2);
@@ -104,7 +138,7 @@ void Wire::changePosition(int oldX, int oldY, int newX, int newY)
                 temp->setX(newX);
                 temp->setY(newY);
             } else {
-                if(abs(second->x()-newX)<2)
+                if(abs(second->x()-newX)<3)
                 {
                     //двигаем 3 точку если оно нужно
                     QPoint* third = this->path->at(2);
@@ -124,7 +158,7 @@ void Wire::changePosition(int oldX, int oldY, int newX, int newY)
             QPoint* second = this->path->at(path->size()-2);
             if(second->x()==temp->x())
             {
-                if(abs(second->y()-newY)<2)
+                if(abs(second->y()-newY)<3)
                 {
                     //двигаем 3 точку если оно нужно
                     QPoint* third = this->path->at(path->size()-3);
@@ -137,7 +171,7 @@ void Wire::changePosition(int oldX, int oldY, int newX, int newY)
                 temp->setX(newX);
                 temp->setY(newY);
             } else {
-                if(abs(second->x()-newX)<2)
+                if(abs(second->x()-newX)<3)
                 {
                     //двигаем 3 точку если оно нужно
                     QPoint* third = this->path->at(path->size()-3);
@@ -153,4 +187,47 @@ void Wire::changePosition(int oldX, int oldY, int newX, int newY)
         }
     }
     mut.unlock();
+}
+
+void Wire::connectWire(Wire *w, int wirePart)
+{
+    this->wires->append(w);
+
+    QPoint *tmp1 = this->path->at(--wirePart);
+    QPoint *tmp2 = this->path->at(++wirePart);
+
+    if(tmp1->x() == tmp2->x())
+    {
+        w->getPath()->last()->setX(tmp1->x());
+    }
+    else
+    {
+        w->getPath()->last()->setY(tmp1->y());
+    }
+}
+
+
+void Wire::enableSelection()
+{
+    this->selected = true;
+}
+
+void Wire::enablePointing()
+{
+    this->pointed = true;
+}
+
+void Wire::disablePointing()
+{
+    this->pointed = false;
+}
+
+void Wire::disableSelection()
+{
+    this->selected = false;
+}
+
+QList<QPoint*>* Wire::getPath()
+{
+    return this->path;
 }

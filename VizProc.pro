@@ -29,7 +29,8 @@ SOURCES += main.cpp\
     src/c++/View/mousetrackerthread.cpp \
     src/c++/Elements/wire.cpp \
     src/c++/Elements/ground.cpp \
-    src/c++/Util/geometry.cpp
+    src/c++/Util/geometry.cpp \
+    src/c++/Model/graph.cpp
 
 HEADERS  += src/c++/View/startscreen.h \
     windowmanager.h \
@@ -47,6 +48,7 @@ HEADERS  += src/c++/View/startscreen.h \
     src/c++/View/mousetrackerthread.h \
     src/c++/Elements/wire.h \
     src/c++/Elements/ground.h \
-    src/c++/Util/geometry.h
+    src/c++/Util/geometry.h \
+    src/c++/Model/graph.h
 
 FORMS    +=

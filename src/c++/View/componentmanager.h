@@ -92,9 +92,19 @@ private:
     Element* selected;
 
     /**
+     * @brief selectedWire выделенный провод если есть
+     */
+    Wire* selectedWire;
+
+    /**
      * @brief pointed элемент, на который наведена мышь
      */
     Element* pointed;
+
+    /**
+     * @brief pointed провод, на который наведена мышь
+     */
+    Wire* pointedWire;
 
     /**
      * @brief pointedConnector коннектор, на который наведен курссор
@@ -120,6 +130,11 @@ private:
      * @brief type говорит какого будет поведение провода при препросмотре
      */
     bool drawType;
+
+    /**
+     * @brief wireConnect
+     */
+    int wirePart;
 signals:
 
 public slots:

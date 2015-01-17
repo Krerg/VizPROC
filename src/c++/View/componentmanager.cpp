@@ -12,6 +12,8 @@ ComponentManager::ComponentManager(QObject *parent) :
     this->selected = NULL;
     this->pointed = NULL;
     this->pointedConnector = NULL;
+    this->pointedWire = NULL;
+    this->selectedWire = NULL;
     this->leftClick = false;
     this->drawingWire = false;
     this->wireEnd1 = NULL;
@@ -23,16 +25,16 @@ void ComponentManager::paintComponents()
 {
     //отрисовка элементов схемы
     QList<Element*>::iterator i;
-    for(int i=0;i<elements->size();i++)
+    for(i=elements->begin();i!=elements->end();i++)
     {
-        elements->at(i)->paintComponent();
+        (*i)->paintComponent();
     }
 
     //отрисовка проводов
     QList<Wire*>::iterator j;
-    for(int j=0;j<wires->size();j++)
+    for(j=wires->begin();j!=wires->end();j++)
     {
-        wires->at(j)->paintComponent();
+        (*j)->paintComponent();
     }
 
     //отрисовка зазелмения, если оно есть
@@ -40,8 +42,6 @@ void ComponentManager::paintComponents()
     {
         this->ground->paintComponent();
     }
-
-
 }
 
 void ComponentManager::addResistor(int x, int y)
@@ -64,18 +64,27 @@ void ComponentManager::mouseClick(int x, int y)
 {
     this->leftClick=true;
     if(selected!=NULL)
-    this->selected->disableSelected();
-    this->selected=NULL;
-
-    Element* temp = this->getElementByCoordinates(x,y);
-
-    if(temp!=NULL)
     {
-        dx = x-temp->getX();
-        dy = y-temp->getY();
-        temp->enableSelected();
-        this->selected=temp;
+        this->selected->disableSelected();
+        this->selected = NULL;
     }
+
+    if(selectedWire!=NULL)
+    {
+        this->selectedWire->disableSelection();
+        this->selectedWire = NULL;
+    }
+
+    if(pointed!=NULL)
+    {
+        dx = x-pointed->getX();
+        dy = y-pointed->getY();
+        pointed->enableSelected();
+        this->selected=pointed;
+    } else if(pointedWire!=NULL) {
+        pointedWire->enableSelection();
+        this->selectedWire = pointedWire;
+   }
 }
 
 void ComponentManager::moveElement(int x, int y)
@@ -127,6 +136,12 @@ void ComponentManager::mouseMoved(int x, int y)
         this->pointedConnector = NULL;
     }
 
+    if(this->pointedWire!=NULL)
+    {
+        this->pointedWire->disablePointing();
+        this->pointedWire = NULL;
+    }
+
     //если в данный момент мы риисуем провод
     if(this->drawingWire)
     {
@@ -159,6 +174,17 @@ void ComponentManager::mouseMoved(int x, int y)
            temp2->enablePointing();
            this->pointedConnector=temp2;
        }
+    } else  {
+         QList<Wire*>::iterator j;
+         for(j=wires->begin();j!=wires->end();j++)
+         {
+            if((this->wirePart=(*j)->isSelected(x,y))>0 && (*j)!=drawWire)
+            {
+                this->pointedWire = (*j);
+                (*j)->enablePointing();
+                break;
+            }
+         }
     }
 }
 
@@ -204,6 +230,11 @@ void ComponentManager::connect(int x, int y)
             this->drawingWire = false;
             this->wireEnd1 = NULL;
             this->wireEnd2 = NULL;
+        } else if(pointedWire!=NULL) {
+            pointedWire->connectWire(drawWire,this->wirePart);
+            this->drawingWire = false;
+            this->wireEnd1 = NULL;
+            this->wireEnd2 = NULL;
         } else {
             //в другом случае мы продолжаем его рисовать
             this->drawType=!this->drawType;
@@ -212,7 +243,7 @@ void ComponentManager::connect(int x, int y)
             this->drawWire->addPoint(wireEnd2);
         }
     }
-    qDebug()<<"Соединение проводом";
+
 }
 
 void ComponentManager::addGround(int x, int y)

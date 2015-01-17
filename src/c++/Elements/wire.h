@@ -33,6 +33,12 @@ public:
     void addPoint(QPoint* point);
 
     /**
+     * @brief getPath
+     * @return
+     */
+    QList<QPoint*>* getPath();
+
+    /**
      * @brief setNumber утсановка номера
      * @param number
      */
@@ -61,7 +67,33 @@ public:
      * @param y координата курсора по оси ординат
      * @return
      */
-    bool isSelected(int x, int y);
+    int isSelected(int x, int y);
+
+    /**
+     * @brief enablePointing
+     */
+    void enablePointing();
+
+    /**
+     * @brief enableSelection
+     */
+    void enableSelection();
+
+    /**
+     * @brief disablePointing
+     */
+    void disablePointing();
+
+    /**
+     * @brief disableSelection
+     */
+    void disableSelection();
+
+    /**
+     * @brief connectWire присоединение другого провода
+     * @param w провод, который хотим присоединить
+     */
+    void connectWire(Wire* w, int wirePart);
 private:
     /**
      * @brief path путь, по которому будет рисоваться провод
@@ -92,6 +124,11 @@ private:
      * @brief selected выделен ли провод или нет
      */
     bool selected;
+
+    /**
+     * @brief pointed наведена ли мышь на провод
+     */
+    bool pointed;
 signals:
 
 public slots:
