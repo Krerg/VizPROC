@@ -6,6 +6,8 @@
 OGLRender::OGLRender() :
     QGLWidget()
 {
+    startButton = new QPushButton("Поехали",this);
+    QObject::connect(startButton,SIGNAL(clicked()),this,SLOT(startButtonPressed()));
     elementList = new QComboBox(this);
     elementList->addItem("Резистор");
     elementList->addItem("ЭДС");
@@ -14,6 +16,7 @@ OGLRender::OGLRender() :
     QVBoxLayout *g = new QVBoxLayout(this);
     g->setAlignment(Qt::AlignBottom);
     g->addWidget(elementList);
+    g->addWidget(startButton);
     this->setLayout(g);
     setMouseTracking(true);
 }
@@ -74,4 +77,9 @@ void OGLRender::mouseDoubleClickEvent(QMouseEvent *event)
 QComboBox* OGLRender::getComboBox()
 {
     return elementList;
+}
+
+void OGLRender::startButtonPressed()
+{
+    emit startVisualisation();
 }

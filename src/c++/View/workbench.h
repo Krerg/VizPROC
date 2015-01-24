@@ -9,6 +9,7 @@
 #include "src/c++/Controller/eventhandler.h"
 #include "src/c++/View/componentmanager.h"
 #include "src/c++/View/mousetrackerthread.h"
+#include "src/c++/Model/graph.h"
 
 /**
  * @brief The WorkBench class окно где происходит вся ралота с программой
@@ -57,6 +58,11 @@ private:
      * @brief mouseTrackerThread поток наблюдения перемещени курсора
      */
     MouseTrackerThread *mouseTrackerThread;
+
+    /**
+     * @brief g граф для расчета значений потенциалов схемы
+     */
+    Graph *g;
 signals:
 
 public slots:

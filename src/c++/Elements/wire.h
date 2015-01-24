@@ -94,6 +94,32 @@ public:
      * @param w провод, который хотим присоединить
      */
     void connectWire(Wire* w, int wirePart);
+
+    /**
+     * @brief getConnectedWires возвращает список присоединенный проводов
+     * @return
+     */
+    QList<Wire*>* getConnectedWires();
+
+    /**
+     * @brief setWireList
+     * @param t
+     */
+    void setWireList(QList<Wire*>* t);
+
+    /**
+     * @brief getConnectedElements
+     * @return
+     */
+    QList<Element*> getConnectedElements();
+
+    /**
+     * @brief getAllConnectedElements возвращает все элементы соединенные
+     *  с данным потенциалом
+     * @return
+     */
+    QList<Element*> getAllConnectedElements();
+
 private:
     /**
      * @brief path путь, по которому будет рисоваться провод
@@ -129,6 +155,11 @@ private:
      * @brief pointed наведена ли мышь на провод
      */
     bool pointed;
+
+    /**
+     * @brief connectedPointNumber номер точки, которая присоединена к другому проводу
+     */
+    int connectedPointNumber;
 signals:
 
 public slots:

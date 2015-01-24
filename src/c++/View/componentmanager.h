@@ -132,11 +132,19 @@ private:
     bool drawType;
 
     /**
-     * @brief wireConnect
+     * @brief wirePart указывает на номер отрезка,
+     *  к которому присоединяется другой провод
      */
     int wirePart;
 signals:
-
+    /**
+     * @brief WireAdded сигнал, который вызывается когда добавляется
+     * новый элемент (сигнал подается на логиику для построения графа
+     * потенциалов)
+     *
+     * @param w добавляемый провод
+     */
+    void wireAdded(Wire* w);
 public slots:
     void leftClickReleased();
 
@@ -147,38 +155,38 @@ public slots:
 
     /**
      * @brief moveElement перемещениие элемента
-     * @param x
-     * @param y
+     * @param x координата курсора по оси абсцисс
+     * @param y координата курсора по оси ординат
      */
     void moveElement(int x, int y);
 
     /**
      * @brief mouseClick клик левой кнопкой мыши
-     * @param x
-     * @param y
+     * @param x координата курсора по оси абсцисс
+     * @param y координата курсора по оси ординат
      */
     void mouseClick(int x, int y);
 
     /**
      * @brief mouseMoved простое перемещение мыши
-     * @param x
-     * @param y
+     * @param x координата курсора по оси абсцисс
+     * @param y координата курсора по оси ординат ы
      */
     void mouseMoved(int x, int y);
 
     /**
      * @brief changeOrientation изменение ориентации элмента по координатам курсора
-     * @param x
-     * @param y
+     * @param x координата курсора по оси абсцисс
+     * @param y координата курсора по оси ординат
      */
     void changeOrientation(int x, int y);
 
 
     /**
-     * @brief addElement
-     * @param elem
-     * @param x
-     * @param y
+     * @brief addElement слот для добавления элемента по названию
+     * @param elem название элемента
+     * @param x координата курсора по оси абсцисс
+     * @param y координата курсора по оси ординат
      */
     void addElement(QString elem, int x, int y);
 

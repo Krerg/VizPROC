@@ -19,6 +19,8 @@ WorkBench::WorkBench::WorkBench(QWidget *parent) :
    this->refresher = new UpdateThread(this);
    this->mouseTrackerThread = new MouseTrackerThread(canvas,this);
 
+   this->g = new Graph(this);
+
    //соединяем сигналы и слоты
    this->connectComponents();
 
@@ -48,4 +50,6 @@ void WorkBench::connectComponents()
     QObject::connect(eventHandler,SIGNAL(moveElement(int,int)),componentManager,SLOT(moveElement(int,int)));
     QObject::connect(canvas,SIGNAL(paintComponents()),componentManager,SLOT(paintComponents()));
     QObject::connect(refresher,SIGNAL(update()),canvas,SLOT(update()));
+    QObject::connect(componentManager,SIGNAL(wireAdded(Wire*)),g,SLOT(addVertex(Wire*)));
+    QObject::connect(canvas,SIGNAL(startVisualisation()),g,SLOT(start());
 }

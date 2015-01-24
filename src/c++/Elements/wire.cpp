@@ -3,7 +3,9 @@
 #include <math.h>
 #include <QDebug>
 #include <QMutex>
+#include <QPainter>
 #include "src/c++/Util/geometry.h"
+#include <math.h>
 
 Wire::Wire(QObject *parent) :
     QObject(parent)
@@ -14,6 +16,7 @@ Wire::Wire(QObject *parent) :
     this->connected2 = NULL;
     this->selected = false;
     this->pointed = false;
+    this->connectedPointNumber = 0;
 }
 
 void Wire::addPoint(QPoint *point)
@@ -38,7 +41,6 @@ void Wire::paintComponent()
     if(this->path->size()>1) {
     QPoint *start = this->path->at(0);
 
-
     glBegin(GL_LINES);
 
     //если наведен провод выделен то будет отображен синим цветом
@@ -52,7 +54,6 @@ void Wire::paintComponent()
     {
          glVertex3f(start->x(),start->y(),0.0f);
          glVertex3f(path->at(i)->x(),path->at(i)->y(),0.0f);
-
          start = path->at(i);
     }
     glEnd();
@@ -82,9 +83,9 @@ int Wire::isSelected(int x, int y)
     {
         ++m;
         QPoint* tmp1 = (*i);
-        ++i;
+        i++;
         QPoint* tmp2 = (*i);
-        if(tmp2 == NULL)
+        if(tmp1 == (*path->end()))
         {
             break;
         }
@@ -191,11 +192,13 @@ void Wire::changePosition(int oldX, int oldY, int newX, int newY)
 
 void Wire::connectWire(Wire *w, int wirePart)
 {
+    //добавляем провод в список проводов
     this->wires->append(w);
+    //устанавливаем такой же список и на присоединяемый провод
+    w->setWireList(wires);
 
     QPoint *tmp1 = this->path->at(--wirePart);
     QPoint *tmp2 = this->path->at(++wirePart);
-
     if(tmp1->x() == tmp2->x())
     {
         w->getPath()->last()->setX(tmp1->x());
@@ -230,4 +233,14 @@ void Wire::disableSelection()
 QList<QPoint*>* Wire::getPath()
 {
     return this->path;
+}
+
+QList<Wire*>* Wire::getConnectedWires()
+{
+    return this->wires;
+}
+
+void Wire::setWireList(QList<Wire *> *t)
+{
+    this->wires = t;
 }

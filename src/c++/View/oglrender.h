@@ -6,6 +6,7 @@
 #include "src/c++/View/updatethread.h"
 #include <QObject>
 #include <QComboBox>
+#include <QPushButton>
 
 /**
  * @brief The OGLRender class
@@ -35,6 +36,11 @@ private:
      * @brief elementList список элементов для работы
      */
     QComboBox *elementList;
+
+    /**
+     * @brief startVisualisation кнопка, которая запускает визуализацию схемы
+     */
+    QPushButton *startButton;
 protected:
     /**
      * @brief paintGL отрисовка фигур на экране
@@ -52,6 +58,7 @@ protected:
     void mouseReleaseEvent(QMouseEvent* event);
     void mouseDoubleClickEvent(QMouseEvent *event);
 public slots:
+    void startButtonPressed();
     void update();
 signals:
     /**
@@ -82,6 +89,11 @@ signals:
      * @param event
      */
     void mouseDoubleClicked(QMouseEvent *event);
+
+    /**
+     * @brief startVisualisation
+     */
+    void startVisualisation();
 };
 
 #endif // OGLRENDER_H

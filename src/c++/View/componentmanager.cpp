@@ -178,7 +178,9 @@ void ComponentManager::mouseMoved(int x, int y)
          QList<Wire*>::iterator j;
          for(j=wires->begin();j!=wires->end();j++)
          {
-            if((this->wirePart=(*j)->isSelected(x,y))>0 && (*j)!=drawWire)
+             qDebug()<<((*j)!=drawWire);
+             qDebug()<<drawWire;
+            if((*j)!=drawWire && (this->wirePart=(*j)->isSelected(x,y))>0)
             {
                 this->pointedWire = (*j);
                 (*j)->enablePointing();
@@ -221,20 +223,25 @@ void ComponentManager::connect(int x, int y)
             this->drawType=pointed->getType();
 
             this->wires->insert(wires->end(),drawWire);
+
         }
     } else {
-        //заверившаем отрисовку проводв
+        //заверившаем отрисовку провода
         if(pointedConnector!=NULL)
         {
             drawWire->endConnection(pointedConnector);
             this->drawingWire = false;
             this->wireEnd1 = NULL;
             this->wireEnd2 = NULL;
+            this->drawWire==NULL;
+            emit wireAdded(drawWire);
+            this->drawWire=NULL;
         } else if(pointedWire!=NULL) {
             pointedWire->connectWire(drawWire,this->wirePart);
             this->drawingWire = false;
             this->wireEnd1 = NULL;
             this->wireEnd2 = NULL;
+            this->drawWire = NULL;
         } else {
             //в другом случае мы продолжаем его рисовать
             this->drawType=!this->drawType;
