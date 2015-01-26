@@ -46,9 +46,14 @@ void Connector::setPosition(int x, int y)
     this->y=y;
 }
 
-void Connector::setConnection()
+void Connector::setConnection(Wire* w)
 {
+    this->connectedWire = w;
+}
 
+Wire* Connector::getConnectedWire()
+{
+    return this->connectedWire;
 }
 
 void Connector::getConnectedElement()
@@ -76,4 +81,12 @@ void Connector::disablePointing()
     this->pointed=false;
 }
 
+void Connector::setParentElement(Element *parent)
+{
+    this->parent = parent;
+}
 
+Element* Connector::getParentElement()
+{
+    return this->parent;
+}

@@ -1,7 +1,14 @@
 #ifndef CONNECTOR_H
 #define CONNECTOR_H
 
+class Element;
+class Wire;
+
 #include <QObject>
+#include "src/c++/Elements/element.h"
+#include "src/c++/Elements/wire.h"
+
+
 
 /**
  * @brief The Connector class коннектор, который соединяет провод и элемент
@@ -20,7 +27,7 @@ public:
      * @brief setConnection связывание коннектора с проводом
      * @param
      */
-    void setConnection();
+    void setConnection(Wire* w);
 
     /**
      * @brief setPosition утсановка позиции коннектора
@@ -48,6 +55,12 @@ public:
     void getConnectedElement();
 
     /**
+     * @brief getConnectedWire
+     * @return
+     */
+    Wire* getConnectedWire();
+
+    /**
      * @brief drawComponent отрисовка на экране
      */
     void drawComponent();
@@ -61,6 +74,19 @@ public:
      * @brief disablePointing снимает наведение с коннектора
      */
     void disablePointing();
+
+    /**
+     * @brief setParentElement устанавливает элемент, с которым
+     * связан конннектор
+     * @param parent
+     */
+    void setParentElement(Element* parent);
+
+    /**
+     * @brief getParentElement
+     * @return элемент, с которым связан коннектор
+     */
+    Element* getParentElement();
 
     /**
      * @brief checkPointing проверяет на то, что курсора наведен на коннектор
@@ -77,7 +103,7 @@ public:
      * @param y координата курсора по оси ординат
      */
     void changePosition(int x, int y);
-private:
+private:    
     /**
      * @brief x координата на экране
      */
@@ -102,6 +128,17 @@ private:
      * @brief pointed наведен ли курсор на коннектор
      */
     bool pointed;
+
+    /**
+     * @brief parent элемент, с которым соединен коннектор
+     */
+    Element* parent;
+
+    /**
+     * @brief connectedWire присоединенный к коннектору провод
+     */
+    Wire* connectedWire;
+
 signals:
     /**
      * @brief changePosition

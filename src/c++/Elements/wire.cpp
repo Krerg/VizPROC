@@ -30,9 +30,20 @@ void Wire::addPoint(int x, int y)
     this->path->insert(this->path->end(),temp);
 }
 
-void Wire::setNumber(int number)
+void Wire::setNumber(int number, bool root)
 {
-    this->number = number;
+    if(this->wires->size() == 0 || !root)
+    {
+        this->number = number;
+    }
+    else if (root)
+    {
+        QList<Wire*>::iterator i;
+        for(i=wires->begin();i!=wires->end();i++)
+        {
+            (*i)->setNumber(number,false);
+        }
+    }
 }
 
 void Wire::paintComponent()
@@ -85,7 +96,7 @@ int Wire::isSelected(int x, int y)
         QPoint* tmp1 = (*i);
         i++;
         QPoint* tmp2 = (*i);
-        if(tmp1 == (*path->end()))
+        if(m>=path->length())
         {
             break;
         }
@@ -243,4 +254,42 @@ QList<Wire*>* Wire::getConnectedWires()
 void Wire::setWireList(QList<Wire *> *t)
 {
     this->wires = t;
+}
+
+QList<Element*>* Wire::getConnectedElements()
+{
+    QList<Element*>* list = new QList<Element*>();
+    if(this->connected1!=NULL)
+    {
+       // list->append(qobject_cast<Element*>(this->connected1->parent()));
+    }
+    if(this->connected2!=NULL)
+    {
+       // list->append(qobject_cast<Element*>(this->connected2->parent()));
+    }
+    return list;
+}
+
+QList<Element*>* Wire::getAllConnectedElements()
+{
+    QList<Element*>* list = new QList<Element*>();
+
+    if(this->wires->size()!=0)
+    {
+        QList<Wire*>::iterator i;
+        for(i=wires->begin();i!=wires->end();i++)
+        {
+            list->append(*((*i)->getConnectedElements()));
+        }
+    } else {
+        list->append(this->connected1->getParentElement());
+        list->append(this->connected2->getParentElement());
+        QString name = this->connected1->getParentElement()->getName();
+    }
+    return list;
+}
+
+int Wire::getNumber()
+{
+    return this->number;
 }

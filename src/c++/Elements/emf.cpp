@@ -13,7 +13,9 @@ EMF::EMF(QObject *parent) :
     this->pinLength=6;
     this->orientation=this->HORIZONTAL_ORIENTATION;
     this->c1 = new Connector(this);
+    this->c1->setParentElement(this);
     this->c2 = new Connector(this);
+    this->c2->setParentElement(this);
     this->setConnectorPosition();
 }
 
@@ -187,5 +189,26 @@ bool EMF::getType()
         return true;
     } else {
         return false;
+    }
+}
+
+QString EMF::getName()
+{
+    return this->name;
+}
+
+bool EMF::isGround(int numb)
+{
+    if(number == this->c1->getConnectedWire()->getNumber())
+    {
+        return false;
+    }
+    else if(number == this->c2->getConnectedWire()->getNumber())
+    {
+        return true;
+    }
+    else
+    {
+        return NULL;
     }
 }

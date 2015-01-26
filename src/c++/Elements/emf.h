@@ -31,9 +31,12 @@ public:
     virtual Connector* connectorPointCheck(int x, int y);
     virtual int getX();
     virtual int getY();
+    bool isGround(int numb);
+    virtual QString getName();
     virtual bool getType();
     virtual ~EMF();
 private:
+    const QString name = "emf";
     Connector *c1;
     Connector *c2;
     bool pointed;

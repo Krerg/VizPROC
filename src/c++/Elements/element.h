@@ -1,6 +1,8 @@
 #ifndef ELEMENT_H
 #define ELEMENT_H
 
+class Connector;
+
 #include <QObject>
 #include "src/c++/Elements/connector.h"
 
@@ -83,7 +85,13 @@ public:
      */
     virtual int getY()=0;
 
+    /**
+     * @brief getType
+     * @return
+     */
     virtual bool getType()=0;
+
+    virtual QString getName()=0;
 
     /**
      * @brief ~Element деструктор

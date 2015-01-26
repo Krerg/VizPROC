@@ -1,6 +1,8 @@
 #ifndef WIRE_H
 #define WIRE_H
 
+class Connector;
+
 #include <QObject>
 #include <QPoint>
 #include <QList>
@@ -40,9 +42,16 @@ public:
 
     /**
      * @brief setNumber утсановка номера
+     * @brief root
      * @param number
      */
-    void setNumber(int number);
+    void setNumber(int number, bool root);
+
+    /**
+     * @brief getNumber возвращает номер элемента
+     * @return
+     */
+    int getNumber();
 
     /**
      * @brief paintComponent отрисовка провода на экране
@@ -111,14 +120,14 @@ public:
      * @brief getConnectedElements
      * @return
      */
-    QList<Element*> getConnectedElements();
+    QList<Element*>* getConnectedElements();
 
     /**
      * @brief getAllConnectedElements возвращает все элементы соединенные
      *  с данным потенциалом
      * @return
      */
-    QList<Element*> getAllConnectedElements();
+    QList<Element*>* getAllConnectedElements();
 
 private:
     /**

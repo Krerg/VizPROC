@@ -48,6 +48,7 @@ private:
      */
     QList<Wire*> *graph;
 
+    void showMatrix(int n);
 signals:
 
 public slots:

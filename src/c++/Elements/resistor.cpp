@@ -13,8 +13,10 @@ Resistor::Resistor(QObject *parent) :
     this->pointed=false;
     this->pinLength=8;
     this->orientation=this->HORIZONTAL_ORIENTATION;
-    this->c1 = new Connector();
-    this->c2 = new Connector();
+    this->c1 = new Connector(this);
+    this->c2 = new Connector(this);
+    this->c1->setParentElement(this);
+    this->c2->setParentElement(this);
     this->c1->setPosition(x,y+height/2);
     this->c2->setPosition(x+width,y+height/2);
 }
@@ -225,5 +227,43 @@ bool Resistor::getType()
         return true;
     } else {
         return false;
+    }
+}
+
+QString Resistor::getName()
+{
+    return this->name;
+}
+
+int Resistor::getValue()
+{
+    return 1;
+}
+
+Connector* Resistor::getAnotherConnector(Connector *c)
+{
+    if(c == this->c1)
+    {
+        return c2;
+    }
+    else if(c == this->c2)
+    {
+        return c1;
+    } else {
+        return NULL;
+    }
+}
+
+Wire* Resistor::getAnotherWire(int number)
+{
+    if(number == this->c1->getConnectedWire()->getNumber())
+    {
+        return c2->getConnectedWire();
+    }
+    else if(number == this->c2->getConnectedWire()->getNumber())
+    {
+        return c1->getConnectedWire();
+    } else {
+        return NULL;
     }
 }

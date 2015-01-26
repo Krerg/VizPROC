@@ -51,5 +51,5 @@ void WorkBench::connectComponents()
     QObject::connect(canvas,SIGNAL(paintComponents()),componentManager,SLOT(paintComponents()));
     QObject::connect(refresher,SIGNAL(update()),canvas,SLOT(update()));
     QObject::connect(componentManager,SIGNAL(wireAdded(Wire*)),g,SLOT(addVertex(Wire*)));
-    QObject::connect(canvas,SIGNAL(startVisualisation()),g,SLOT(start());
+    QObject::connect(canvas,SIGNAL(startVisualisation()),g,SLOT(start()));
 }

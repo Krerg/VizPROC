@@ -5,6 +5,7 @@
 #include "src/c++/Elements/element.h"
 #include "src/c++/Elements/connector.h"
 
+
 /**
  * @brief The Resistor class класс резистора
  */
@@ -29,6 +30,14 @@ public:
     virtual Connector* connectorPointCheck(int x, int y);
     virtual int getX();
     virtual int getY();
+    virtual QString getName();
+    Connector* getAnotherConnector(Connector *c);
+    Wire* getAnotherWire(int number);
+    /**
+     * @brief getValue
+     * @return проводимость элемента
+     */
+    int getValue();
     virtual bool getType();
     virtual ~Resistor();
 
@@ -43,6 +52,12 @@ public:
     const QString VERTICAL_ORIENTATION = "VERTICAL";
 
 private:
+
+    /**
+     * @brief name
+     */
+    const QString name = "Res";
+
     /**
      * @brief pointed состоягие наведения на элемент
      */

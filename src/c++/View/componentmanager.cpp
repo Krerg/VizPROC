@@ -213,8 +213,8 @@ void ComponentManager::connect(int x, int y)
         {
             drawWire = new Wire(this);
             drawWire->startConnection(pointedConnector);
+            pointedConnector->setConnection(drawWire);
             drawingWire=true;
-
             //делаем 2 точки для построения провода
             this->wireEnd1 = new QPoint(x,y);
             this->wireEnd2 = new QPoint(x,y);
@@ -230,6 +230,7 @@ void ComponentManager::connect(int x, int y)
         if(pointedConnector!=NULL)
         {
             drawWire->endConnection(pointedConnector);
+            pointedConnector->setConnection(drawWire);
             this->drawingWire = false;
             this->wireEnd1 = NULL;
             this->wireEnd2 = NULL;

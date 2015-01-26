@@ -1,4 +1,6 @@
 #include "graph.h"
+#include "src/c++/Elements/resistor.h"
+#include <QDebug>
 
 Graph::Graph(QObject *parent) :
     QObject(parent)
@@ -32,5 +34,61 @@ int Graph::getNewNumber()
 
 void Graph::start()
 {
+    //если мы имемм 2 потенциала и больше
+    if(this->graph->size()>1)
+    {
+        QList<Wire*>::iterator i;
+        int numb=0;
+        //пронумеровываем все потенциалы
+        for(i=graph->begin();i!=graph->end();i++)
+        {
+            (*i)->setNumber(numb++,true);
+        }
+        //выделяем память по массив
+        this->array = new float*[numb];
+        for(int count=0;count<numb;count++)
+        {
+            array[count] = new float [numb+1];
+        }
+        //заполняем массив нулями
+        for(int i=0;i<numb;i++)
+        {
+            for(int j=0;j<numb+1;j++)
+            {
+                array[i][j] = 0.0;
+            }
+        }
+        //ну а теперь заполняем ссответсвенно
+        QList<Element*> *temp;
+        QList<Element*>::iterator j;
+        for(i=graph->begin();i!=graph->end();i++)
+        {
+            temp = (*i)->getAllConnectedElements();
+            for(j=temp->begin();j!=temp->end();j++)
+            {
+                if((*j)->getName()=="Res")
+                {
+                    Resistor* y = (Resistor*)(*j);
+                    array[(*i)->getNumber()][(*i)->getNumber()] += y->getValue();
+                    array[(*i)->getNumber()][y->getAnotherWire((*i)->getNumber())->getNumber()] -= y->getValue();
+                }
+                else
+                {
 
+                }
+            }
+        }
+        this->showMatrix(numb);
+    }
+}
+
+void Graph::showMatrix(int n)
+{
+    for(int i=0;i<n;i++)
+    {
+        for(int j=0;j<n;j++)
+        {
+            qDebug()<<array[i][j];
+        }
+    }
 }
