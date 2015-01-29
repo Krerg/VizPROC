@@ -40,15 +40,29 @@ void Graph::start()
         QList<Wire*>::iterator i;
         int numb=0;
         //пронумеровываем все потенциалы
+        int tmp;
         for(i=graph->begin();i!=graph->end();i++)
         {
-            (*i)->setNumber(numb++,true);
-        }
+            tmp=(*i)->isGround();
+            if(tmp==1)
+            {
+                continue;
+            }
+            else if (tmp==2)
+            {
+                (*i)->setNumber(-2,true);
+            }
+            else
+            {
+                (*i)->setNumber(numb++,true);
+            }
+     }
         //выделяем память по массив
-        this->array = new float*[numb];
+        this->array = new float*[--numb];
+        numb++;
         for(int count=0;count<numb;count++)
         {
-            array[count] = new float [numb+1];
+            array[count] = new float [numb];
         }
         //заполняем массив нулями
         for(int i=0;i<numb;i++)
@@ -63,14 +77,27 @@ void Graph::start()
         QList<Element*>::iterator j;
         for(i=graph->begin();i!=graph->end();i++)
         {
+            if((*i)->getNumber()<0)
+            {
+                continue;
+            }
             temp = (*i)->getAllConnectedElements();
             for(j=temp->begin();j!=temp->end();j++)
             {
                 if((*j)->getName()=="Res")
                 {
                     Resistor* y = (Resistor*)(*j);
+                    tmp = y->getAnotherWire((*i)->getNumber())->getNumber();
                     array[(*i)->getNumber()][(*i)->getNumber()] += y->getValue();
-                    array[(*i)->getNumber()][y->getAnotherWire((*i)->getNumber())->getNumber()] -= y->getValue();
+                    if(tmp==-2)
+                    {
+                        //заменить двойку блеа
+                      array[(*i)->getNumber()][numb-1]=2;
+                    }
+                    else
+                    {
+                        array[(*i)->getNumber()][tmp] -= y->getValue();
+                    }
                 }
                 else
                 {

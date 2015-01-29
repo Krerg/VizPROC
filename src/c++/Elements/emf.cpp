@@ -197,18 +197,17 @@ QString EMF::getName()
     return this->name;
 }
 
-bool EMF::isGround(int numb)
+bool EMF::isGround(Wire* w)
 {
-    if(number == this->c1->getConnectedWire()->getNumber())
+    QList<Wire*>* temp1 = this->c2->getConnectedWire()->getConnectedWires();
+
+    QList<Wire*>::iterator i;
+    for(i=temp1->begin();i!=temp1->end();i++)
     {
-        return false;
+        if((*i)==this->c2->getConnectedWire())
+        {
+            return true;
+        }
     }
-    else if(number == this->c2->getConnectedWire()->getNumber())
-    {
-        return true;
-    }
-    else
-    {
-        return NULL;
-    }
+    return false;
 }

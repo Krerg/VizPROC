@@ -129,6 +129,11 @@ public:
      */
     QList<Element*>* getAllConnectedElements();
 
+    /**
+     * @brief isGround
+     * @return
+     */
+    int isGround();
 private:
     /**
      * @brief path путь, по которому будет рисоваться провод

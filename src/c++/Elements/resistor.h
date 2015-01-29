@@ -31,13 +31,31 @@ public:
     virtual int getX();
     virtual int getY();
     virtual QString getName();
-    Connector* getAnotherConnector(Connector *c);
-    Wire* getAnotherWire(int number);
+
     /**
-     * @brief getValue
+     * @brief getAnotherConnector
+     * @param c
+     * @return
+     */
+    Connector* getAnotherConnector(Connector *c);
+
+    /**
+     * @brief getAnotherWire
+     * @param number
+     * @return
+     */
+    Wire* getAnotherWire(int number);
+
+    /**
+     * @brief getValue метод получения проводимости резистора
      * @return проводимость элемента
      */
     int getValue();
+
+    /**
+     * @brief getType текущая ориентация на экране
+     * @return
+     */
     virtual bool getType();
     virtual ~Resistor();
 

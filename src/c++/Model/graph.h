@@ -48,6 +48,10 @@ private:
      */
     QList<Wire*> *graph;
 
+    /**
+     * @brief showMatrix вывод матрицы на экран (для отладки)
+     * @param n размерность
+     */
     void showMatrix(int n);
 signals:
 

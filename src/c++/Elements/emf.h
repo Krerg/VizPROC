@@ -31,12 +31,18 @@ public:
     virtual Connector* connectorPointCheck(int x, int y);
     virtual int getX();
     virtual int getY();
-    bool isGround(int numb);
+
+    /**
+     * @brief isGround проверяет заземлен ли проводо или нет
+     * @param w
+     * @return
+     */
+    bool isGround(Wire* w);
     virtual QString getName();
     virtual bool getType();
     virtual ~EMF();
 private:
-    const QString name = "emf";
+    const QString name = "Emf";
     Connector *c1;
     Connector *c2;
     bool pointed;

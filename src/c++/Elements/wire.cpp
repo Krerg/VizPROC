@@ -6,10 +6,12 @@
 #include <QPainter>
 #include "src/c++/Util/geometry.h"
 #include <math.h>
+#include "src/c++/Elements/emf.h"
 
 Wire::Wire(QObject *parent) :
     QObject(parent)
 {
+    this->number = -1;
     this->path = new QList<QPoint*>;
     this->wires = new QList<Wire*>;
     this->connected1 = NULL;
@@ -292,4 +294,24 @@ QList<Element*>* Wire::getAllConnectedElements()
 int Wire::getNumber()
 {
     return this->number;
+}
+
+int Wire::isGround()
+{
+    QList<Element*>* list = this->getAllConnectedElements();
+    QList<Element*>::iterator i;
+    for(i = list->begin();i!=list->end();i++)
+    {
+        if((*i)->getName()=="Emf")
+        {
+            EMF* temp = (EMF*)(*i);
+            if(temp->isGround(this))
+            {
+                return 1;
+            } else {
+                return 2;
+            }
+        }
+    }
+    return 0;
 }
