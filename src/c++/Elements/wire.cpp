@@ -14,6 +14,7 @@ Wire::Wire(QObject *parent) :
     this->number = -1;
     this->path = new QList<QPoint*>;
     this->wires = new QList<Wire*>;
+    //wires->append(this);
     this->connected1 = NULL;
     this->connected2 = NULL;
     this->selected = false;

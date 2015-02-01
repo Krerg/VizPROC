@@ -58,11 +58,11 @@ void Graph::start()
             }
      }
         //выделяем память по массив
-        this->array = new float*[--numb];
-        numb++;
+        this->array = new float*[numb];
+
         for(int count=0;count<numb;count++)
         {
-            array[count] = new float [numb];
+            array[count] = new float [numb+1];
         }
         //заполняем массив нулями
         for(int i=0;i<numb;i++)
@@ -92,7 +92,11 @@ void Graph::start()
                     if(tmp==-2)
                     {
                         //заменить двойку блеа
-                      array[(*i)->getNumber()][numb-1]=2;
+                      array[(*i)->getNumber()][numb]=2;
+                    }
+                    else if(tmp==-1)
+                    {
+
                     }
                     else
                     {
@@ -113,7 +117,7 @@ void Graph::showMatrix(int n)
 {
     for(int i=0;i<n;i++)
     {
-        for(int j=0;j<n;j++)
+        for(int j=0;j<n+1;j++)
         {
             qDebug()<<array[i][j];
         }
