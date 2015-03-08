@@ -175,11 +175,10 @@ void ComponentManager::mouseMoved(int x, int y)
            this->pointedConnector=temp2;
        }
     } else  {
+         //проверяем провода
          QList<Wire*>::iterator j;
          for(j=wires->begin();j!=wires->end();j++)
          {
-             qDebug()<<((*j)!=drawWire);
-             qDebug()<<drawWire;
             if((*j)!=drawWire && (this->wirePart=(*j)->isSelected(x,y))>0)
             {
                 this->pointedWire = (*j);
@@ -216,8 +215,8 @@ void ComponentManager::connect(int x, int y)
             pointedConnector->setConnection(drawWire);
             drawingWire=true;
             //делаем 2 точки для построения провода
-            this->wireEnd1 = new QPoint(x,y);
-            this->wireEnd2 = new QPoint(x,y);
+            this->wireEnd1 = new QPoint(pointedConnector->getX(),pointedConnector->getY());
+            this->wireEnd2 = new QPoint(pointedConnector->getX(),pointedConnector->getY());
             drawWire->addPoint(wireEnd1);
             drawWire->addPoint(wireEnd2);
             this->drawType=pointed->getType();

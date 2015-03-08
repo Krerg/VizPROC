@@ -30,7 +30,8 @@ SOURCES += main.cpp\
     src/c++/Elements/wire.cpp \
     src/c++/Elements/ground.cpp \
     src/c++/Util/geometry.cpp \
-    src/c++/Model/graph.cpp
+    src/c++/Model/graph.cpp \
+    src/c++/Model/lumatrix.cpp
 
 HEADERS  += src/c++/View/startscreen.h \
     windowmanager.h \
@@ -49,6 +50,7 @@ HEADERS  += src/c++/View/startscreen.h \
     src/c++/Elements/wire.h \
     src/c++/Elements/ground.h \
     src/c++/Util/geometry.h \
-    src/c++/Model/graph.h
+    src/c++/Model/graph.h \
+    src/c++/Model/lumatrix.h
 
 FORMS    +=

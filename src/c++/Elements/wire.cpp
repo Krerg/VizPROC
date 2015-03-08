@@ -14,7 +14,7 @@ Wire::Wire(QObject *parent) :
     this->number = -1;
     this->path = new QList<QPoint*>;
     this->wires = new QList<Wire*>;
-    //wires->append(this);
+    this->wires->append(this);
     this->connected1 = NULL;
     this->connected2 = NULL;
     this->selected = false;
@@ -142,12 +142,21 @@ void Wire::changePosition(int oldX, int oldY, int newX, int newY)
             {
                 if(abs(second->y()-newY)<3)
                 {
+                    qDebug()<<"A1";
                     //двигаем 3 точку если оно нужно
                     QPoint* third = this->path->at(2);
+                    if(path->size()==3) {
+                        //добавляем еще одну точку если не хватает
+                        QPoint* extendPoint = new QPoint();
+                        extendPoint->setX(third->x());
+                        extendPoint->setY(third->y());
+                        path->append(extendPoint);
+                    }
                     int diff = newY - oldY;
                     third->setY(newY+diff*5);
                     second->setY(newY+diff*5);
                 }
+                qDebug()<<"A2";
                 second->setX(newX);
 
                 temp->setX(newX);
@@ -155,8 +164,15 @@ void Wire::changePosition(int oldX, int oldY, int newX, int newY)
             } else {
                 if(abs(second->x()-newX)<3)
                 {
-                    //двигаем 3 точку если оно нужно
+                    //двигаем 3 точку если вторая точка достигла её
                     QPoint* third = this->path->at(2);
+                    if(path->size()==3) {
+                        //добавляем еще одну точку если не хватает
+                        QPoint* extendPoint = new QPoint();
+                        extendPoint->setX(third->x());
+                        extendPoint->setY(third->y());
+                        path->append(extendPoint);
+                    }
                     int diff = newX - oldX;
                     third->setX(newX+diff*5);
                     second->setX(newX+diff*5);
@@ -177,6 +193,13 @@ void Wire::changePosition(int oldX, int oldY, int newX, int newY)
                 {
                     //двигаем 3 точку если оно нужно
                     QPoint* third = this->path->at(path->size()-3);
+                    if(path->size()==3) {
+                        //добавляем еще одну точку если не хватает
+                        QPoint* extendPoint = new QPoint();
+                        extendPoint->setX(third->x());
+                        extendPoint->setY(third->y());
+                        path->insert(0,extendPoint);
+                    }
                     int diff = newY - oldY;
                     third->setY(newY+diff*5);
                     second->setY(newY+diff*5);
@@ -190,6 +213,13 @@ void Wire::changePosition(int oldX, int oldY, int newX, int newY)
                 {
                     //двигаем 3 точку если оно нужно
                     QPoint* third = this->path->at(path->size()-3);
+                    if(path->size()==3) {
+                        //добавляем еще одну точку если не хватает
+                        QPoint* extendPoint = new QPoint();
+                        extendPoint->setX(third->x());
+                        extendPoint->setY(third->y());
+                        path->insert(0,extendPoint);
+                    }
                     int diff = newX - oldX;
                     third->setX(newX+diff*5);
                     second->setX(newX+diff*5);
@@ -264,11 +294,11 @@ QList<Element*>* Wire::getConnectedElements()
     QList<Element*>* list = new QList<Element*>();
     if(this->connected1!=NULL)
     {
-       // list->append(qobject_cast<Element*>(this->connected1->parent()));
+        list->append(this->connected1->getParentElement());
     }
     if(this->connected2!=NULL)
     {
-       // list->append(qobject_cast<Element*>(this->connected2->parent()));
+        list->append(this->connected2->getParentElement());
     }
     return list;
 }

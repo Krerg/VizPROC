@@ -11,7 +11,7 @@ Graph::Graph(QObject *parent) :
 
 void Graph::addVertex(Wire *w)
 {
-    if(w->getConnectedWires()->size()==0)
+    if(w->getConnectedWires()->size()==1)
     {
         /*
          * Добавлем в граф только те провода, который не присоединены к дургим,
