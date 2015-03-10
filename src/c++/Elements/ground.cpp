@@ -12,6 +12,11 @@ Ground::Ground(QObject *parent) :
     this->setConnectorPosition();
 }
 
+Ground::~Ground()
+{
+
+}
+
 void Ground::setPosition(int x, int y)
 {
     this->x = x;
@@ -67,6 +72,16 @@ int Ground::getWidth()
     return this->width;
 }
 
+int Ground::getY()
+{
+    return this->y;
+}
+
+int Ground::getX()
+{
+    return this->x;
+}
+
 void Ground::enablePointing()
 {
     this->pointed = true;
@@ -77,12 +92,42 @@ void Ground::disablePointing()
     this->pointed = false;
 }
 
-void Ground::enableSelection()
+void Ground::enableSelected()
 {
     this->selected = true;
 }
 
-void Ground::disableSelection()
+void Ground::disableSelected()
 {
     this->selected = false;
+}
+
+Connector* Ground::connectorPointCheck(int x, int y)
+{
+    if(this->c1->checkPointing(x,y)) {
+        return c1;
+    } else {
+        return NULL;
+    }
+}
+
+void Ground::connect(int x, int y)
+{
+
+}
+
+QString Ground::getName()
+{
+    return "ground";
+}
+
+void Ground::changeOrientation()
+{
+
+}
+
+bool Ground::getType()
+{
+    //требует доработки)
+    return true;
 }

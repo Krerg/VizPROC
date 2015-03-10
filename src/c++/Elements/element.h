@@ -91,6 +91,10 @@ public:
      */
     virtual bool getType()=0;
 
+    /**
+     * @brief getName возвращает тип элемента
+     * @return
+     */
     virtual QString getName()=0;
 
     /**

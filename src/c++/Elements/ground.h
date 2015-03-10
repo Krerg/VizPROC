@@ -7,7 +7,7 @@
 /**
  * @brief The Ground class заземление
  */
-class Ground : public QObject
+class Ground : public QObject, Element
 {
     Q_OBJECT
 public:
@@ -16,46 +16,23 @@ public:
      * @param parent указатель на родительский элемент
      */
     explicit Ground(QObject *parent = 0);
-
-    /**
-     * @brief paintComponent отрисовка заземления на экране
-     */
-    void paintComponent();
-
-    /**
-     * @brief setPosition установка позиции на элемента
-     * @param x координата по оси абсцисс
-     * @param y координата по оси ординат
-     */
-    void setPosition(int x, int y);
-
-    /**
-     * @brief isSelected
-     * @param x
-     * @param y
-     * @return
-     */
-    bool isSelected(int x, int y);
-
-    /**
-     * @brief getHeight возвращает высоту элемента
-     * @return высота элемента
-     */
+    virtual void paintComponent();
+    virtual void setPosition(int x, int y);
+    virtual bool isSelected(int x, int y);
     int getHeight();
-
-    /**
-     * @brief getWidth возвращает ширину элемента
-     * @return ширина элемента
-     */
     int getWidth();
-
-    void enablePointing();
-
-    void disablePointing();
-
-    void enableSelection();
-
-    void disableSelection();
+    virtual void enablePointing();
+    virtual void disablePointing();
+    virtual void enableSelected();
+    virtual void disableSelected();
+    virtual void connect(int x, int y);
+    virtual void changeOrientation();
+    virtual Connector* connectorPointCheck(int x, int y);
+    virtual int getX();
+    virtual int getY();
+    virtual bool getType();
+    virtual QString getName();
+    virtual ~Ground();
 private:
     /**
      * @brief x координата элемента по оси абсцисс

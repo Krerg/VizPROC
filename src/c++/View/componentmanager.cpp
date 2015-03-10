@@ -258,12 +258,11 @@ void ComponentManager::addGround(int x, int y)
     if(this->ground==NULL)
     {
     this->leftClick=false;
-    Ground *temp = new Ground(this);
+    Ground *temp = new Ground();
     temp->setPosition(x-temp->getWidth()/2,y-temp->getHeight()/2);
-    this->ground = temp;
+    //this->ground = temp;
+    this->elements->append((Element*)temp);
     }
 }
-
-
 
 //поскорее бы все это закончить
