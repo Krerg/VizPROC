@@ -133,7 +133,7 @@ public:
      * @brief isGround
      * @return
      */
-    int isGround();
+    bool isGround();
 private:
     /**
      * @brief path путь, по которому будет рисоваться провод

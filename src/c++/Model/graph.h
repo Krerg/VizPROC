@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QVector>
 #include <QList>
+#include <QMap>
 #include "src/c++/Elements/wire.h"
 #include "src/c++/Elements/element.h"
 
@@ -46,7 +47,7 @@ private:
      * @brief graph граф схемы,
      * который содержит потенциалы
      */
-    QList<Wire*> *graph;
+    QMap<Wire*,int*> *graph;
 
     /**
      * @brief showMatrix вывод матрицы на экран (для отладки)

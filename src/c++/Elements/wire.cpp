@@ -327,22 +327,16 @@ int Wire::getNumber()
     return this->number;
 }
 
-int Wire::isGround()
+bool Wire::isGround()
 {
     QList<Element*>* list = this->getAllConnectedElements();
     QList<Element*>::iterator i;
     for(i = list->begin();i!=list->end();i++)
     {
-        if((*i)->getName()=="Emf")
+        if((*i)->getName()=="Ground")
         {
-            EMF* temp = (EMF*)(*i);
-            if(temp->isGround(this))
-            {
-                return 1;
-            } else {
-                return 2;
-            }
+            return true;
         }
     }
-    return 0;
+    return false;
 }

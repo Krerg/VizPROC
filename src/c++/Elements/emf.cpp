@@ -194,7 +194,7 @@ bool EMF::getType()
 
 QString EMF::getName()
 {
-    return this->name;
+    return "Emf";
 }
 
 bool EMF::isGround(Wire* w)
