@@ -17,6 +17,8 @@ EMF::EMF(QObject *parent) :
     this->c2 = new Connector(this);
     this->c2->setParentElement(this);
     this->setConnectorPosition();
+    this->conductivity = 100000;
+    this->voltage = 10;
 }
 
 EMF::~EMF()
@@ -97,7 +99,7 @@ void EMF::paintComponent()
         }
 }
 
-void EMF::enableSelected()
+void EMF::enableSelection()
 {
     this->selected=true;
 }
@@ -112,7 +114,7 @@ int EMF::getY()
     return this->y;
 }
 
-void EMF::disableSelected()
+void EMF::disableSelection()
 {
     this->selected=false;
 }
@@ -225,3 +227,47 @@ bool EMF::isGround(Wire* w)
      }
     return false;
 }
+
+Wire* EMF::getAnotherWire(int number)
+{
+    if(number == this->c1->getConnectedWire()->getNumber())
+    {
+        return c2->getConnectedWire();
+    }
+    else if(number == this->c2->getConnectedWire()->getNumber())
+    {
+        return c1->getConnectedWire();
+    } else {
+        return NULL;
+    }
+}
+
+int EMF::getConductivity()
+{
+    return this->conductivity;
+}
+
+void EMF::setConductivity(int conductivity)
+{
+    this->conductivity = conductivity;
+}
+
+int EMF::getVoltage()
+{
+    return this->voltage;
+}
+
+void EMF::setVoltage(int voltage)
+{
+    this->voltage = voltage;
+}
+
+int EMF::getEmfDirection(int wireNumber)
+{
+    if(this->c1->getConnectedWire()->getNumber()==wireNumber) {
+        return 1;
+    } else if(this->c2->getConnectedWire()->getNumber()==wireNumber) {
+        return -1;
+    }
+}
+

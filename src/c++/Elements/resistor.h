@@ -22,8 +22,8 @@ public:
     virtual void setPosition(int x, int y);
     virtual void connect(int x,int y);
     virtual bool isSelected(int x, int y);
-    virtual void disableSelected();
-    virtual void enableSelected();
+    virtual void disableSelection();
+    virtual void enableSelection();
     virtual void enablePointing();
     virtual void disablePointing();
     virtual void changeOrientation();

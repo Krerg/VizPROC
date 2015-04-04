@@ -92,12 +92,12 @@ void Ground::disablePointing()
     this->pointed = false;
 }
 
-void Ground::enableSelection()
+void Ground::enableSelected()
 {
     this->selected = true;
 }
 
-void Ground::disableSelection()
+void Ground::disableSelected()
 {
     this->selected = false;
 }

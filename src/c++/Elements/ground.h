@@ -23,8 +23,8 @@ public:
     int getWidth();
     virtual void enablePointing();
     virtual void disablePointing();
-    virtual void enableSelected();
-    virtual void disableSelected();
+    virtual void enableSelection();
+    virtual void disableSelection();
     virtual void connect(int x, int y);
     virtual void changeOrientation();
     virtual Connector* connectorPointCheck(int x, int y);

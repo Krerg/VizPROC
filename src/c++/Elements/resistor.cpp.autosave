@@ -138,7 +138,7 @@ void Resistor::paintComponent()
 
         }
 
-        glEnd();
+     glEnd();
         if(this->pointed)
         {
         this->c1->drawComponent();

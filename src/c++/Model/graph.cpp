@@ -89,17 +89,23 @@ void Graph::start()
                     //прибавляем проводимость резистора к диагональному элементу
                     array[i.key()->getNumber()][i.key()->getNumber()] += y->getValue();
                     if(tmp>0) {
-                    array[(*i)->getNumber()][tmp] -= y->getValue();
+                    array[i.key()->getNumber()][tmp] -= y->getValue();
                     }
                 } else if((*j)->getName()=="Emf") {
                     EMF* emfTemp = (EMF*)(*j);
+                    tmp = emfTemp->getAnotherWire(i.key()->getNumber())->getNumber();
                     //прибавляем к правой части помноженная на проводимость (большое число будет)
                     //не забываем про направление
+                    array[i.key()->getNumber()][numb]=emfTemp->getEmfDirection(i.key()->getNumber())*emfTemp->getConductivity()*emfTemp->getVoltage();
 
                     //прибавляем к диагональному элементу
+                    array[i.key()->getNumber()][i.key()->getNumber()] += emfTemp->getConductivity();
+
 
                     //и соответсвенно к тому элементу через который он присоединен
-
+                    if(tmp>0) {
+                    array[i.key()->getNumber()][tmp] -= emfTemp->getConductivity();
+                    }
                 }
             }
         }

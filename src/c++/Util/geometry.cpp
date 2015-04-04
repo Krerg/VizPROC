@@ -17,7 +17,6 @@ bool Geometry::pointCrossX(int oldX, int staticX, int newX)
 
     if((temp1>0 && temp2<0) || (temp1<0 && temp2>0))
     {
-        qDebug()<< "Fuf";
         return true;
     }
     return false;

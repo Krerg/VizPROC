@@ -41,14 +41,14 @@ public:
     virtual bool isSelected(int x,int y)=0;
 
     /**
-     * @brief disableSelected удаление выделения с элемента
+     * @brief disableSelection удаление выделения с элемента
      */
-    virtual void disableSelected()=0;
+    virtual void disableSelection()=0;
 
     /**
-     * @brief enableSelected делает элемент выделенным
+     * @brief enableSelection делает элемент выделенным
      */
-    virtual void enableSelected()=0;
+    virtual void enableSelection()=0;
 
     /**
      * @brief enablePointing делает элемент наведенным

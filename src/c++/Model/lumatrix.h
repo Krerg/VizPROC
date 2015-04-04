@@ -33,6 +33,13 @@ public:
      * @return
      */
     double* compute(int n);
+
+    /**
+     * @brief printMatrix вывод матрицы размерности n*n
+     * @param matrix
+     * @param n
+     */
+    void printMatrix(double** matrix, int n);
 private:
     /**
      * @brief a

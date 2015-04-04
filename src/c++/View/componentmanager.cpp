@@ -65,7 +65,7 @@ void ComponentManager::mouseClick(int x, int y)
     this->leftClick=true;
     if(selected!=NULL)
     {
-        this->selected->disableSelected();
+        this->selected->disableSelection();
         this->selected = NULL;
     }
 
@@ -79,7 +79,7 @@ void ComponentManager::mouseClick(int x, int y)
     {
         dx = x-pointed->getX();
         dy = y-pointed->getY();
-        pointed->enableSelected();
+        pointed->enableSelection();
         this->selected=pointed;
     } else if(pointedWire!=NULL) {
         pointedWire->enableSelection();
@@ -250,7 +250,6 @@ void ComponentManager::connect(int x, int y)
             this->drawWire->addPoint(wireEnd2);
         }
     }
-
 }
 
 void ComponentManager::addGround(int x, int y)

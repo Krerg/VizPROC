@@ -12,8 +12,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = VizProc
 TEMPLATE = app
 
-
-SOURCES += main.cpp\
+SOURCES += main.cpp \
         src/c++/View/startscreen.cpp \
     windowmanager.cpp \
     src/c++/View/workbench.cpp \
@@ -31,7 +30,8 @@ SOURCES += main.cpp\
     src/c++/Elements/ground.cpp \
     src/c++/Util/geometry.cpp \
     src/c++/Model/graph.cpp \
-    src/c++/Model/lumatrix.cpp
+    src/c++/Model/lumatrix.cpp \
+    src/c++/Elements/diode.cpp
 
 HEADERS  += src/c++/View/startscreen.h \
     windowmanager.h \
@@ -51,6 +51,7 @@ HEADERS  += src/c++/View/startscreen.h \
     src/c++/Elements/ground.h \
     src/c++/Util/geometry.h \
     src/c++/Model/graph.h \
-    src/c++/Model/lumatrix.h
+    src/c++/Model/lumatrix.h \
+    src/c++/Elements/diode.h
 
 FORMS    +=
