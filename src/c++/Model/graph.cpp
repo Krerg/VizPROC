@@ -1,6 +1,7 @@
 #include "graph.h"
 #include "src/c++/Elements/resistor.h"
 #include "src/c++/Elements/emf.h"
+#include "src/c++/Elements/diode.h"
 #include <QDebug>
 
 Graph::Graph(QObject *parent) :
@@ -12,17 +13,16 @@ Graph::Graph(QObject *parent) :
 
 void Graph::addVertex(Wire *w)
 {
-    if(w->getConnectedWires()->size()==1)
+    int *i = new int[3]; //первый бит номер ветки, второй бит диодная ветка или нет и третий нужно ли при рпсчетах прибавлять
+    i[0]=0;
+    i[1]=0;
+    this->graph->insert(w,i);
+
+    if(w->getConnectedWires()->size()!=1)
     {
-        /*
-         * Добавлем в граф только те провода, который не присоединены к дургим,
-         * то есть который образуют новый потенциал
-         *
-         */
-        int *i = new int[2];
-        i[0]=0;
-        i[1]=0;
-        this->graph->insert(w,i);
+       i[2]=1;
+     } else {
+       i[2]=0;
     }
 }
 
@@ -47,6 +47,9 @@ void Graph::start()
         int tmp;
         for(i=graph->begin();i!=graph->end();i++)
         {
+            if(i.value()[2]==1) {
+                continue;
+            }
             if(i.key()->isGround()) {
                 i.key()->setNumber(-1,true);
                 continue;
@@ -88,7 +91,7 @@ void Graph::start()
                     tmp = y->getAnotherWire(i.key()->getNumber())->getNumber();
                     //прибавляем проводимость резистора к диагональному элементу
                     array[i.key()->getNumber()][i.key()->getNumber()] += y->getValue();
-                    if(tmp>0) {
+                    if(tmp>=0) {
                     array[i.key()->getNumber()][tmp] -= y->getValue();
                     }
                 } else if((*j)->getName()=="Emf") {
@@ -96,6 +99,9 @@ void Graph::start()
                     tmp = emfTemp->getAnotherWire(i.key()->getNumber())->getNumber();
                     //прибавляем к правой части помноженная на проводимость (большое число будет)
                     //не забываем про направление
+                    qDebug()<<"Direction"<<emfTemp->getEmfDirection(i.key()->getNumber());
+                    qDebug()<<"Value"<<emfTemp->getConductivity()*emfTemp->getVoltage();
+
                     array[i.key()->getNumber()][numb]=emfTemp->getEmfDirection(i.key()->getNumber())*emfTemp->getConductivity()*emfTemp->getVoltage();
 
                     //прибавляем к диагональному элементу
@@ -103,7 +109,7 @@ void Graph::start()
 
 
                     //и соответсвенно к тому элементу через который он присоединен
-                    if(tmp>0) {
+                    if(tmp>=0) {
                     array[i.key()->getNumber()][tmp] -= emfTemp->getConductivity();
                     }
                 }
@@ -122,5 +128,35 @@ void Graph::showMatrix(int n)
             qDebug()<<array[i][j];
         }
         qDebug()<<endl;
+    }
+}
+
+void Graph::processGraph(Wire* first,int number)
+{
+    if(this->graph->value(first)[0]>=0) {
+        return;
+    }
+    this->graph->value(first)[0]=number;
+    QList<Element*>* connectedElems = first->getConnectedElements();
+    QList<Element*>::iterator i;
+    for(i=connectedElems->begin();i!=connectedElems->end();i++) {
+        if((*i)->getName()=="Diode") {
+            qDebug()<<"diode";
+           Diode* y = (Diode*)(*i);
+           //требует реализации
+        } else if((*i)->getName()=="Emf") {
+            EMF* emfTemp = (EMF*)(*i);
+            //требует реализации
+        } else if((*i)->getName()=="Res") {
+            Resistor* resTemp = (Resistor*)(*i);
+            //требует реализации
+        }
+
+    }
+    if(first->getConnectedWires()->size()>=2) {
+        QList<Wire*>::iterator i;
+        for(i=first->getConnectedWires()->begin();i!=first->getConnectedWires()->end();i++) {
+            processGraph((*i),this->getNewNumber());
+        }
     }
 }

@@ -3,6 +3,7 @@
 #include "src/c++/Elements/emf.h"
 #include "src/c++/Elements/wire.h"
 #include "src/c++/Elements/ground.h"
+#include "src/c++/Elements/diode.h"
 
 ComponentManager::ComponentManager(QObject *parent) :
     QObject(parent)
@@ -58,6 +59,22 @@ void ComponentManager::addEMF(int x, int y)
     EMF *temp = new EMF(this);
     temp->setPosition(x-temp->getWidth()/2,y-temp->getHeight()/2);
     elements->insert(elements->end(),(Element*)temp);
+}
+
+void ComponentManager::addDiode(int x, int y)
+{
+    this->leftClick=false;
+    Diode *temp = new Diode(this);
+    temp->setPosition(x-temp->getWidth()/2,y-temp->getHeight()/2);
+    elements->append((Element*)temp);
+}
+
+void ComponentManager::addGround(int x, int y)
+{
+    this->leftClick=false;
+    Ground *temp = new Ground();
+    temp->setPosition(x-temp->getWidth()/2,y-temp->getHeight()/2);
+    this->elements->append((Element*)temp);
 }
 
 void ComponentManager::mouseClick(int x, int y)
@@ -199,6 +216,8 @@ void ComponentManager::addElement(QString elem, int x, int y)
         this->connect(x,y);
     } else if(elem == "Заземление") {
         this->addGround(x,y);
+    } else if(elem == "Диод") {
+        this->addDiode(x,y);
     }
 }
 
@@ -249,18 +268,6 @@ void ComponentManager::connect(int x, int y)
             this->wireEnd2 = new QPoint(x,y);
             this->drawWire->addPoint(wireEnd2);
         }
-    }
-}
-
-void ComponentManager::addGround(int x, int y)
-{
-    if(this->ground==NULL)
-    {
-    this->leftClick=false;
-    Ground *temp = new Ground();
-    temp->setPosition(x-temp->getWidth()/2,y-temp->getHeight()/2);
-    //this->ground = temp;
-    this->elements->append((Element*)temp);
     }
 }
 

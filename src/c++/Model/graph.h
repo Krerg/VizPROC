@@ -7,6 +7,7 @@
 #include <QMap>
 #include "src/c++/Elements/wire.h"
 #include "src/c++/Elements/element.h"
+#include "src/c++/Model/lumatrix.h"
 
 /**
  * @brief The Graph class класс, который представляет схему в виде графа
@@ -44,6 +45,11 @@ private:
     float **array;
 
     /**
+     * @brief leftpart
+     */
+    float **leftpart;
+
+    /**
      * @brief graph граф схемы,
      * который содержит потенциалы
      */
@@ -54,6 +60,18 @@ private:
      * @param n размерность
      */
     void showMatrix(int n);
+
+    /**
+     * @brief processGraph обработка графа для нумерации веток и нахождения диодных веток
+     * @param first провод для обработки (обход в ширину)
+     * @param number номер, с которого начинается нумерация
+     */
+    void processGraph(Wire* first, int number);
+
+    /**
+     * @brief matrixResolver
+     */
+    LUMatrix* matrixResolver;
 signals:
 
 public slots:

@@ -37,6 +37,13 @@ private:
     void addEMF(int x, int y);
 
     /**
+     * @brief addDiode добавление диода
+     * @param x координата курсора по оси абсцисс
+     * @param y координата курсора по оси ординат
+     */
+    void addDiode(int x, int y);
+
+    /**
      * @brief addGround добавление заземления
      * @param x координата курсора по оси абсцисс
      * @param y координата курсора по оси ординат

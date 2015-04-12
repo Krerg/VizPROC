@@ -10,6 +10,7 @@ OGLRender::OGLRender() :
     QObject::connect(startButton,SIGNAL(clicked()),this,SLOT(startButtonPressed()));
     elementList = new QComboBox(this);
     elementList->addItem("Резистор");
+    elementList->addItem("Диод");
     elementList->addItem("ЭДС");
     elementList->addItem("Провод");
     elementList->addItem("Заземление");

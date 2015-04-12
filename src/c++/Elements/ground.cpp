@@ -9,6 +9,7 @@ Ground::Ground(QObject *parent) :
     this->selected = false;
     this->pointed = false;
     this->c1 = new Connector();
+    c1->setParentElement(this);
     this->setConnectorPosition();
 }
 
@@ -45,6 +46,11 @@ void Ground::paintComponent()
         glVertex3f(x+3*width/4,y+height,0.0f);
 
     glEnd();
+
+    if(this->pointed)
+    {
+    this->c1->drawComponent();
+    }
 }
 
 bool Ground::isSelected(int x, int y)
@@ -118,7 +124,7 @@ void Ground::connect(int x, int y)
 
 QString Ground::getName()
 {
-    return "ground";
+    return "Ground";
 }
 
 void Ground::changeOrientation()
@@ -129,5 +135,5 @@ void Ground::changeOrientation()
 bool Ground::getType()
 {
     //требует доработки)
-    return true;
+    return false;
 }

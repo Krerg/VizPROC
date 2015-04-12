@@ -7,11 +7,12 @@
 #include "src/c++/Util/geometry.h"
 #include <math.h>
 #include "src/c++/Elements/emf.h"
+#include "src/c++/Elements/wireconnector.h"
 
 Wire::Wire(QObject *parent) :
     QObject(parent)
 {
-    this->number = -1;
+    this->number = -2;
     this->path = new QList<QPoint*>;
     this->wires = new QList<Wire*>;
     this->wires->append(this);
@@ -240,16 +241,61 @@ void Wire::connectWire(Wire *w, int wirePart)
     this->wires->append(w);
     //устанавливаем такой же список и на присоединяемый провод
     w->setWireList(wires);
+    QPoint* last = w->getPath()->last();
+    QPoint* beforeLast = w->getPath()->at(w->getPath()->size()-2);
 
+    //присоединяем в ближайшей точке
     QPoint *tmp1 = this->path->at(--wirePart);
     QPoint *tmp2 = this->path->at(++wirePart);
-    if(tmp1->x() == tmp2->x())
-    {
-        w->getPath()->last()->setX(tmp1->x());
+    if(abs(tmp1->x()-last->x())+abs(tmp1->y()-last->y())<abs(tmp2->x()-last->x())+abs(tmp2->y()-last->y())) {
+        if(last->x()==beforeLast->x()) {
+            last->setX(tmp1->x());
+            last->setY(tmp1->y());
+            beforeLast->setX(tmp1->x());
+        } else {
+            last->setX(tmp1->x());
+            last->setY(tmp1->y());
+            beforeLast->setY(tmp1->y());
+        }
+    } else {
+        if(last->x()==beforeLast->x()) {
+            last->setX(tmp2->x());
+            last->setY(tmp2->y());
+            beforeLast->setX(tmp2->x());
+        } else {
+            last->setX(tmp2->x());
+            last->setY(tmp2->y());
+            beforeLast->setY(tmp2->y());
+        }
     }
-    else
-    {
-        w->getPath()->last()->setY(tmp1->y());
+//    if(tmp1->x() == tmp2->x())
+//    {
+//        w->getPath()->last()->setX(tmp1->x());
+//    }
+//    else
+//    {
+//        w->getPath()->last()->setY(tmp1->y());
+//    }
+
+    //делим провод на 2
+    Wire* secondWire = new Wire();
+
+    //надо добавить в список отрисовываемых объектов
+    WireConnector* wireConnector = new WireConnector(last->x(),last->y());
+    --wirePart;
+
+    for(int i=wirePart;i<this->path->size();i++) {
+        QPoint* temp = path->at(i);
+        secondWire->addPoint(new QPoint(temp->x(),temp->y()));
+    }
+    secondWire->endConnection(this->connected2);
+    //вот это поворот
+    QObject::disconnect(connected2,SIGNAL(changePosition(int,int,int,int)),this,SLOT(changePosition(int,int,int,int)));
+    this->connected2=NULL;
+    this->wires->append(secondWire);
+    secondWire->setWireList(wires);
+    for(int i=wirePart;i<this->path->size();i++) {
+        path->removeLast();
     }
 }
 

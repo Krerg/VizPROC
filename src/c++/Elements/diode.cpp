@@ -1,6 +1,7 @@
 #include "diode.h"
 #include <QtOpenGL/QGLWidget>
 
+
 Diode::Diode(QObject *parent) : QObject(parent)
 {
     this->selected = false;
@@ -9,6 +10,10 @@ Diode::Diode(QObject *parent) : QObject(parent)
     this->c2 = new Connector(this);
     this->c1->setParentElement(this);
     this->c2->setParentElement(this);
+    this->width = 18;
+    this->height = 14;
+    this->pinLength = 5;
+    this->render - new QPainter();
 }
 
 void Diode::paintComponent()
@@ -150,6 +155,16 @@ int Diode::getX()
 int Diode::getY()
 {
     return this->y;
+}
+
+int Diode::getWidth()
+{
+    return this->width;
+}
+
+int Diode::getHeight()
+{
+    return this->height;
 }
 
 QString Diode::getName()

@@ -4,6 +4,7 @@
 #include <QObject>
 #include <src/c++/Elements/element.h>
 #include <src/c++/Elements/connector.h>
+#include <QPainter>
 
 /**
  * @brief The Diode class класс диода
@@ -26,6 +27,8 @@ public:
     virtual Connector* connectorPointCheck(int x, int y);
     virtual int getX();
     virtual int getY();
+    int getWidth();
+    int getHeight();
     virtual QString getName();
     virtual bool getType();
     int getOpeningThreshold();
@@ -53,6 +56,7 @@ private:
     bool pointed;
     bool selected;
     int height;
+    QPainter* render;
     int width;
     int pinLength;
     QString orientation;
