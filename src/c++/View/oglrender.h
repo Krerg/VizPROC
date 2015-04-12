@@ -42,10 +42,6 @@ private:
      */
     QPushButton *startButton;
 protected:
-    /**
-     * @brief paintGL отрисовка фигур на экране
-     */
-    void paintGL();
 
     /**
      * @brief resizeGL обновление всего виджета (в том числе включает paintGL)
@@ -57,9 +53,11 @@ protected:
     void mouseMoveEvent(QMouseEvent* event);
     void mouseReleaseEvent(QMouseEvent* event);
     void mouseDoubleClickEvent(QMouseEvent *event);
+    void paintEvent(QPaintEvent *event);
+    void wheelEvent(QWheelEvent *event);
+
 public slots:
     void startButtonPressed();
-    void update();
 signals:
     /**
      * @brief paintComponents

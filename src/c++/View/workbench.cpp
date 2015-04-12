@@ -2,7 +2,7 @@
 #include <QVBoxLayout>
 #include <QMovie>
 #include <QLabel>
-
+#include <QPainter>
 
 WorkBench::WorkBench::WorkBench(QWidget *parent) :
     QWidget(parent)
@@ -26,11 +26,14 @@ WorkBench::WorkBench::WorkBench(QWidget *parent) :
 
    //добавляем OpenGL виджет и инициализируем его
    v1->addWidget(canvas);
-   canvas->initializeGL();
+   //canvas->initializeGL();
 
    //запуск потоков
    refresher->start();
    mouseTrackerThread->start();
+
+//   QPainter *painter = new QPainter(canvas);
+//   componentManager->setPainter(painter);
 }
 void WorkBench::connectComponents()
 {

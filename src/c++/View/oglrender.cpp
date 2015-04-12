@@ -2,10 +2,12 @@
 #include "src/c++/Elements/resistor.h"
 #include <QDebug>
 #include <QVBoxLayout>
+#include <QPainter>
 
 OGLRender::OGLRender() :
     QGLWidget()
 {
+    //setFormat(QGLFormat(QGL::SampleBuffers));
     startButton = new QPushButton("Поехали",this);
     QObject::connect(startButton,SIGNAL(clicked()),this,SLOT(startButtonPressed()));
     elementList = new QComboBox(this);
@@ -20,6 +22,7 @@ OGLRender::OGLRender() :
     g->addWidget(startButton);
     this->setLayout(g);
     setMouseTracking(true);
+    setAutoFillBackground(false);
 }
 OGLRender::~OGLRender()
 {
@@ -33,11 +36,6 @@ void OGLRender::initializeGL()
     //Установка размера виджета
     this->resizeGL(400,400);
 }
-void OGLRender::update()
-{
-    this->paintGL();
-    this->updateGL();
-}
 
 void OGLRender::resizeGL(int width, int height)
 {
@@ -46,14 +44,13 @@ void OGLRender::resizeGL(int width, int height)
     glLoadIdentity();
     glViewport(0,0,width,height); //размер порта на котором будем рисовать вроде
     glOrtho(0,width,height,0,-1,1);
-
 }
 //paintGL вызывается каждый раз когда требуется перерисовать окно
-void OGLRender::paintGL()
-{
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    emit paintComponents();
-}
+//void OGLRender::paintGL()
+//{
+//    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//    //emit paintComponents();
+//}
 //Ивент который вызывается при нажатии на кнопку мыши
 void OGLRender::mousePressEvent(QMouseEvent *event)
 {
@@ -73,6 +70,26 @@ void OGLRender::mouseReleaseEvent(QMouseEvent *event)
 void OGLRender::mouseDoubleClickEvent(QMouseEvent *event)
 {
     emit mouseDoubleClicked(event);
+}
+
+void OGLRender::paintEvent(QPaintEvent *event)
+{
+    QPainter painter;
+    painter.begin(this);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    painter.beginNativePainting();
+    emit paintComponents();
+    painter.endNativePainting();
+painter.end();
+
+
+    //qDebug()<<"Paiint";
+    //swapBuffers();
+}
+
+void OGLRender::wheelEvent(QWheelEvent *event)
+{
+    qDebug()<<"Wheel";
 }
 
 QComboBox* OGLRender::getComboBox()

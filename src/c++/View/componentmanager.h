@@ -7,6 +7,7 @@
 #include "src/c++/Elements/element.h"
 #include "src/c++/Elements/wire.h"
 #include "src/c++/Elements/ground.h"
+#include <QPainter>
 
 /**
  * @brief The ComponentManager class менеджер элементов
@@ -20,6 +21,12 @@ public:
      * @param parentуказатель на родительский элемент
      */
     explicit ComponentManager(QObject *parent = 0);
+
+    /**
+     * @brief setPainter
+     * @param painter
+     */
+    void setPainter(QPainter *painter);
 private:
 
     /**
@@ -143,6 +150,14 @@ private:
      *  к которому присоединяется другой провод
      */
     int wirePart;
+
+    /**
+     * @brief painter отрисовщик на OpenGL виджете
+     */
+    QPainter *painter;
+
+protected:
+
 signals:
     /**
      * @brief WireAdded сигнал, который вызывается когда добавляется

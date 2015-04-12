@@ -66,6 +66,7 @@ void ComponentManager::addDiode(int x, int y)
     this->leftClick=false;
     Diode *temp = new Diode(this);
     temp->setPosition(x-temp->getWidth()/2,y-temp->getHeight()/2);
+    temp->setPainter(painter);
     elements->append((Element*)temp);
 }
 
@@ -75,6 +76,11 @@ void ComponentManager::addGround(int x, int y)
     Ground *temp = new Ground();
     temp->setPosition(x-temp->getWidth()/2,y-temp->getHeight()/2);
     this->elements->append((Element*)temp);
+}
+
+void ComponentManager::setPainter(QPainter *painter)
+{
+    this->painter = painter;
 }
 
 void ComponentManager::mouseClick(int x, int y)

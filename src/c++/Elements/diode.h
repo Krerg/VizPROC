@@ -33,6 +33,7 @@ public:
     virtual bool getType();
     int getOpeningThreshold();
     void setOpeningThreshold();
+    void setPainter(QPainter* painter);
     ~Diode();
 private:
 
@@ -62,6 +63,7 @@ private:
     QString orientation;
     Connector* c1;
     Connector* c2;
+    QPainter* painter;
 
     void setConnectorPosition();
 

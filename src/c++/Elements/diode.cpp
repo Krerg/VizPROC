@@ -1,6 +1,6 @@
 #include "diode.h"
 #include <QtOpenGL/QGLWidget>
-
+#include <QPainter>
 
 Diode::Diode(QObject *parent) : QObject(parent)
 {
@@ -18,53 +18,62 @@ Diode::Diode(QObject *parent) : QObject(parent)
 
 void Diode::paintComponent()
 {
-    glBegin(GL_LINES);
-        if(!selected) {
-        glColor3f(0,0,0);
-        } else {
-            glColor3f(0,0,8.0f);
-        }
+//    glBegin(GL_LINES);
+//        if(!selected) {
+//        glColor3f(0,0,0);
+//        } else {
+//            glColor3f(0,0,8.0f);
+//        }
         if(this->orientation==this->HORIZONTAL_ORIENTATION) {
-            glVertex3f(x,y+height/2,0.0f);
-            glVertex3f(x+pinLength,y+height/2,0.0f);
+//            glVertex3f(x,y+height/2,0.0f);
+//            glVertex3f(x+pinLength,y+height/2,0.0f);
 
-            glVertex3f(x+pinLength,y+height/2,0.0f);
-            glVertex3f(x+pinLength,y+height,0.0f);
+//            glVertex3f(x+pinLength,y+height/2,0.0f);
+//            glVertex3f(x+pinLength,y+height,0.0f);
 
-            glVertex3f(x+pinLength,y+height,0.0f);
-            glVertex3f(x+pinLength+width,y+height/2,0.0f);
+//            glVertex3f(x+pinLength,y+height,0.0f);
+//            glVertex3f(x+pinLength+width,y+height/2,0.0f);
 
-            glVertex3f(x+pinLength,y+height/2,0.0f);
-            glVertex3f(x+pinLength,y,0.0f);
+//            glVertex3f(x+pinLength,y+height/2,0.0f);
+//            glVertex3f(x+pinLength,y,0.0f);
 
-            glVertex3f(x+pinLength,y,0.0f);
-            glVertex3f(x+pinLength+width,y+height/2,0.0f);
+//            glVertex3f(x+pinLength,y,0.0f);
+//            glVertex3f(x+pinLength+width,y+height/2,0.0f);
 
-            glVertex3f(x+pinLength+width,y+height/2,0.0f);
-            glVertex3f(x+2*pinLength+width,y+height/2,0.0f);
+//            glVertex3f(x+pinLength+width,y+height/2,0.0f);
+//            glVertex3f(x+2*pinLength+width,y+height/2,0.0f);
 
-            glVertex3f(x+pinLength,y+height/2,0.0f);
-            glVertex3f(x+pinLength+width,y+height/2,0.0f);
+//            glVertex3f(x+pinLength,y+height/2,0.0f);
+//            glVertex3f(x+pinLength+width,y+height/2,0.0f);
         } else {
-            glVertex3f(x+height/2,y,0.0f);
-            glVertex3f(x+height/2,y+pinLength,0.0f);
+            //glBegin(GL_LINES);
+            painter->setPen(QPen(Qt::black));
+            painter->drawLine(0, 0, 100, 10);
+            painter->drawLine(10, 10, 30, 10+5);
+           // painter->drawEllipse(50,50,50,50);
+            painter->setPen(QPen(Qt::red));
+            painter->drawLine(30, 10+5, 50, 10);
+            glEndList();
+           // glEnd();
+//            glVertex3f(x+height/2,y,0.0f);
+//            glVertex3f(x+height/2,y+pinLength,0.0f);
 
-            glVertex3f(x+height/2,y+pinLength,0.0f);
-            glVertex3f(x+height,y+pinLength,0.0f);
+//            glVertex3f(x+height/2,y+pinLength,0.0f);
+//            glVertex3f(x+height,y+pinLength,0.0f);
 
-            glVertex3f(x+height,y+pinLength,0.0f);
-            glVertex3f(x+height/2,y+pinLength+width,0.0f);
+//            glVertex3f(x+height,y+pinLength,0.0f);
+//            glVertex3f(x+height/2,y+pinLength+width,0.0f);
 
-            glVertex3f(x+height/2,y+pinLength,0.0f);
-            glVertex3f(x,y+pinLength,0.0f);
+//            glVertex3f(x+height/2,y+pinLength,0.0f);
+//            glVertex3f(x,y+pinLength,0.0f);
 
-            glVertex3f(x,y+pinLength,0.0f);
-            glVertex3f(x+height/2,y+pinLength+width,0.0f);
+//            glVertex3f(x,y+pinLength,0.0f);
+//            glVertex3f(x+height/2,y+pinLength+width,0.0f);
 
-            glVertex3f(x+height/2,y+pinLength,0.0f);
-            glVertex3f(x+height/2,y+pinLength+width,0.0f);
+//            glVertex3f(x+height/2,y+pinLength,0.0f);
+//            glVertex3f(x+height/2,y+pinLength+width,0.0f);
         }
-    glEnd();
+//    glEnd();
 
     if(this->pointed)
     {
@@ -180,6 +189,11 @@ bool Diode::getType()
     } else {
         return false;
     }
+}
+
+void Diode::setPainter(QPainter *painter)
+{
+    this->painter = painter;
 }
 
 Diode::~Diode()

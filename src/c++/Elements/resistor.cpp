@@ -78,6 +78,7 @@ Connector* Resistor::connectorPointCheck(int x, int y)
 
 void Resistor::paintComponent()
 {
+
     glBegin(GL_LINES);
         if(!selected) {
         glColor3f(0,0,0);
@@ -137,7 +138,6 @@ void Resistor::paintComponent()
         glVertex3f(x+height/2,y+2*pinLength+width,0.0f);
 
         }
-
      glEnd();
         if(this->pointed)
         {
