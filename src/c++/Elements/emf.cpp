@@ -114,6 +114,90 @@ int EMF::getY()
     return this->y;
 }
 
+void EMF::visualisation(int *container1, int *container2, QPainter *painter, int radius)
+{
+//    glColor3f(container1[0],container1[1],container1[2]);
+//    glLineWidth(2.0f);
+//    glBegin(GL_LINES);
+
+        if(this->orientation==this->HORIZONTAL_ORIENTATION) {
+            painter->setPen(QPen(QColor(container1[0],container1[1],container1[2]),2));
+
+            painter->drawLine(x,y+height/2,x+pinLength,y+height/2);
+            painter->drawLine(x+pinLength,y,x+pinLength,y+height);
+
+            painter->setPen(QPen(QColor(container2[0],container2[1],container2[2]),2));
+
+            painter->drawLine(x+pinLength+width/4,y+height/4,x+pinLength+width/4,y+3*height/4);
+            painter->drawLine(x+pinLength+width/4,y+height/2,x+2*pinLength+width/4,y+height/2);
+
+
+//            glVertex3f(x,y+height/2,0.0f);
+//            glVertex3f(x+pinLength,y+height/2,0.0f);
+
+//            glVertex3f(x+pinLength,y,0.0f);
+//            glVertex3f(x+pinLength,y+height,0.0f);
+
+//            glColor3f(container2[0],container2[1],container2[2]);
+//            glVertex3f(x+pinLength+width/4,y+height/4,0.0f);
+//            glVertex3f(x+pinLength+width/4,y+3*height/4,0.0f);
+
+//            glVertex3f(x+pinLength+width/4,y+height/2,0.0f);
+//            glVertex3f(x+2*pinLength+width/4,y+height/2,0.0f);
+        } else {
+
+            painter->setPen(QPen(QColor(container1[0],container1[1],container1[2]),2));
+
+            painter->drawLine(x+height/2,y,x+height/2,y+pinLength);
+            painter->drawLine(x,y+pinLength,x+height,y+pinLength);
+
+            painter->setPen(QPen(QColor(container2[0],container2[1],container2[2]),2));
+
+            painter->drawLine(x+height/4,y+pinLength+width/4,x+3*height/4,y+pinLength+width/4);
+            painter->drawLine(x+height/2,y+pinLength+width/4,x+height/2,y+2*pinLength+width/4);
+
+//            glVertex3f(x+height/2,y,0.0f);
+//            glVertex3f(x+height/2,y+pinLength,0.0f);
+
+//            glVertex3f(x,y+pinLength,0.0f);
+//            glVertex3f(x+height,y+pinLength,0.0f);
+
+//            glColor3f(container2[0],container2[1],container2[2]);
+//            glVertex3f(x+height/4,y+pinLength+width/4,0.0f);
+//            glVertex3f(x+3*height/4,y+pinLength+width/4,0.0f);
+
+//            glVertex3f(x+height/2,y+pinLength+width/4,0.0f);
+//            glVertex3f(x+height/2,y+2*pinLength+width/4,0.0f);
+        }
+        //glEnd();
+        if(this->pointed)
+        {
+        //this->c1->drawComponent();
+        //this->c2->drawComponent();
+        }
+}
+
+Wire *EMF::getConnectedWire1()
+{
+    return this->c1->getConnectedWire();
+}
+
+Wire *EMF::getConnectedWire2()
+{
+    return this->c2->getConnectedWire();
+}
+
+Wire *EMF::getAnotherWire(Wire *w)
+{
+    if(this->c1->getConnectedWire()==w) {
+        return c2->getConnectedWire();
+    } else if(this->c2->getConnectedWire()==w) {
+        return c1->getConnectedWire();
+    } else {
+        return NULL;
+    }
+}
+
 void EMF::disableSelection()
 {
     this->selected=false;

@@ -10,6 +10,7 @@
 #include "src/c++/View/componentmanager.h"
 #include "src/c++/View/mousetrackerthread.h"
 #include "src/c++/Model/graph.h"
+#include "src/c++/View/visualisationmanager.h"
 
 /**
  * @brief The WorkBench class окно где происходит вся ралота с программой
@@ -63,6 +64,11 @@ private:
      * @brief g граф для расчета значений потенциалов схемы
      */
     Graph *g;
+
+    /**
+     * @brief visualisationManager обработчик визуализации
+     */
+    VisualisationManager* visualisationManager;
 signals:
 
 public slots:

@@ -18,6 +18,14 @@ Ground::~Ground()
 
 }
 
+void Ground::visualisation(QPainter *painter)
+{
+    painter->setPen(QPen(QColor(0,0,0),2));
+    painter->drawLine(x+width/2,y,x+width/2,y+height*3/4);
+    painter->drawLine(x,y+height*3/4,x+width,y+height*3/4);
+    painter->drawLine(x+width/4,y+height,x+3*width/4,y+height);
+}
+
 void Ground::setPosition(int x, int y)
 {
     this->x = x;

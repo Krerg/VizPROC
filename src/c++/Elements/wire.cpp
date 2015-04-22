@@ -7,6 +7,7 @@
 #include "src/c++/Util/geometry.h"
 #include <math.h>
 #include "src/c++/Elements/emf.h"
+#include "src/c++/Elements/resistor.h"
 #include "src/c++/Elements/wireconnector.h"
 
 Wire::Wire(QObject *parent) :
@@ -15,12 +16,14 @@ Wire::Wire(QObject *parent) :
     this->number = -2;
     this->path = new QList<QPoint*>;
     this->wires = new QList<Wire*>;
+    this->particleList = new QList<Particle*>;
     this->wires->append(this);
     this->connected1 = NULL;
     this->connected2 = NULL;
     this->selected = false;
     this->pointed = false;
     this->connectedPointNumber = 0;
+    this->lastStep = 0;
 }
 
 void Wire::addPoint(QPoint *point)
@@ -55,7 +58,7 @@ void Wire::paintComponent()
     //рисуем если длина провода хотя бы больше 1
     if(this->path->size()>1) {
     QPoint *start = this->path->at(0);
-
+    //glLineWidth(2.0f);
     glBegin(GL_LINES);
 
     //если наведен провод выделен то будет отображен синим цветом
@@ -71,8 +74,41 @@ void Wire::paintComponent()
          glVertex3f(path->at(i)->x(),path->at(i)->y(),0.0f);
          start = path->at(i);
     }
+    //glLineWidth(1.0f);
     glEnd();
     }
+}
+
+void Wire::visualisation(int *color, QPainter* painter)
+{
+    painter->setPen(QPen(QColor(color[0],color[1],color[2]),2));
+    QPoint *start = this->path->at(0);
+    for(int i=1;i<path->size();i++) {
+        painter->drawLine(*start,*path->at(i));
+        start = path->at(i);
+    }
+
+    QList<Particle*>::iterator j;
+    for(j=particleList->begin();j!=particleList->end();j++) {
+        (*j)->visualisation(painter);
+    }
+
+//    if(this->path->size()>1) {
+//    QPoint *start = this->path->at(0);
+
+//    glLineWidth(2.0f);
+
+//    glColor3f(color[0],color[1],color[2]);
+//    glBegin(GL_LINES);
+
+//    for(int i = 1;i<this->path->size();i++)
+//    {
+//         glVertex3f(start->x(),start->y(),0.0f);
+//         glVertex3f(path->at(i)->x(),path->at(i)->y(),0.0f);
+//         start = path->at(i);
+//    }
+//    glEnd();
+//    }
 }
 
 void Wire::startConnection(Connector *c)
@@ -85,6 +121,8 @@ void Wire::startConnection(Connector *c)
 void Wire::endConnection(Connector *c)
 {
     QObject::connect(c,SIGNAL(changePosition(int,int,int,int)),this,SLOT(changePosition(int,int,int,int)));
+    this->path->last()->setX(c->getX());
+    this->path->last()->setY(c->getY());
     this->connected2=c;
 }
 
@@ -297,6 +335,7 @@ void Wire::connectWire(Wire *w, int wirePart)
     for(int i=wirePart;i<this->path->size();i++) {
         path->removeLast();
     }
+    emit addWire(secondWire);
 }
 
 
@@ -385,4 +424,142 @@ bool Wire::isGround()
         }
     }
     return false;
+}
+
+void Wire::setPotential(double potential)
+{
+    this->potential = potential;
+}
+
+double Wire::getPotential()
+{
+    return this->potential;
+}
+
+void Wire::initParticles()
+{
+    if(this->connected1!=NULL && this->connected1->getParentElement()->getName()=="Ground") {
+        return;
+    }
+    //вот это надор убрать по-хорошему
+    QList<Particle*>::iterator t;
+    for(t=particleList->begin();t!=particleList->end();t++) {
+        delete (*t);
+    }
+    particleList->clear();
+
+
+    int dist = 6;
+    QPoint* start = path->at(0);
+    QPoint* next = path->at(1);
+    int currentX;
+    int currentY;
+
+    int xDir=next->x()-start->x();
+    if(xDir!=0)
+    xDir/=abs(xDir);
+    int yDir=next->y()-start->y();
+    if(yDir!=0)
+    yDir/=abs(yDir);
+    if(speed>0) {
+        lastStep%=dist;
+        currentX = start->x()+lastStep*xDir;
+        currentY = start->y()+lastStep*yDir;
+    } else {
+        if(lastStep<0)
+            lastStep+=dist;
+
+        currentX = start->x()+lastStep*xDir;
+        currentY = start->y()+lastStep*yDir;
+
+    }
+    int newX;
+    int newY;
+
+    int i=2;
+    while(true) {
+        Particle* tmp = new Particle();
+        particleList->append(tmp);
+        tmp->setPosition(currentX,currentY);
+        xDir=next->x()-start->x();
+        if(xDir!=0)
+        xDir/=abs(xDir);
+        yDir=next->y()-start->y();
+        if(yDir!=0)
+        yDir/=abs(yDir);
+        newX = currentX+dist*xDir;
+        newY = currentY+dist*yDir;
+        if(((next->x()-currentX)*(next->x()-newX)<0)||((next->y()-currentY)*(next->y()-newY)<0)||(next->x()==currentX&&next->y()==currentY)) {
+            if(path->last()==next) {
+                break;
+            }
+            int dx = abs(next->x()-newX);
+            int dy = abs(next->y()-newY);
+            start = next;
+            next = path->at(i);
+            i++;
+            xDir=next->x()-start->x();
+            if(xDir!=0)
+            xDir/=abs(xDir);
+            yDir=next->y()-start->y();
+            if(yDir!=0)
+            yDir/=abs(yDir);
+            currentX=start->x()+dy*xDir;
+            currentY=start->y()+dx*yDir;
+        } else {
+          currentX = newX;
+          currentY = newY;
+        }
+    }
+    lastStep+=speed;
+    //qDebug()<<lastStep%dist;
+}
+
+void Wire::initSpeed()
+{
+    if(this->connected1!=NULL) {
+        if(connected1->getParentElement()->getName()=="Res") {
+            Resistor* resTemp = (Resistor*)connected1->getParentElement();
+            double tmpPotential = resTemp->getAnotherWire(this)->getPotential();
+            if(tmpPotential>this->potential) {
+                int i = abs(tmpPotential-this->potential)*resTemp->getValue();
+                i%=10;
+                this->setSpeed(i);
+            } else {
+                int i = abs(tmpPotential-this->potential)*resTemp->getValue();
+                i%=10;
+                this->setSpeed(-i);
+            }
+            return;
+        } else if (connected1->getParentElement()->getName()=="Emf") {
+            EMF* emfTemp = (EMF*)connected1->getParentElement();
+            double tmpPotential = emfTemp->getAnotherWire(this)->getPotential();
+
+        }
+    }
+    if(this->connected2!=NULL) {
+        if(connected1->getParentElement()->getName()=="Res") {
+            Resistor* resTemp = (Resistor*)connected1->getParentElement();
+            double tmpPotential = resTemp->getAnotherWire(this)->getPotential();
+            if(tmpPotential>this->potential) {
+                int i = abs(tmpPotential-this->potential)*resTemp->getValue();
+                i%=10;
+                this->setSpeed(-i);
+            } else {
+                int i = abs(tmpPotential-this->potential)*resTemp->getValue();
+                i%=10;
+                this->setSpeed(i);
+            }
+            return;
+        } else if (connected1->getParentElement()->getName()=="Emf") {
+            EMF* emfTemp = (EMF*)connected1->getParentElement();
+            double tmpPotential = emfTemp->getAnotherWire(this)->getPotential();
+
+        }
+    }
+}
+
+void Wire::setSpeed(int speed)
+{
+    this->speed = speed;
 }

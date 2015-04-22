@@ -7,6 +7,7 @@
 #include <QObject>
 #include <QComboBox>
 #include <QPushButton>
+#include <src/c++/Elements/wire.h>
 
 /**
  * @brief The OGLRender class
@@ -30,6 +31,8 @@ public:
 
     void initializeGL();
 
+    Wire* w;
+
     ~OGLRender();
 private:
     /**
@@ -41,11 +44,12 @@ private:
      * @brief startVisualisation кнопка, которая запускает визуализацию схемы
      */
     QPushButton *startButton;
-protected:
+
     /**
-     * @brief paintGL отрисовка фигур на экране
+     * @brief enableVisualisation флаг, отвечающий за режим работы
      */
-    void paintGL();
+    bool enableVisualisation;
+protected:
 
     /**
      * @brief resizeGL обновление всего виджета (в том числе включает paintGL)
@@ -57,9 +61,12 @@ protected:
     void mouseMoveEvent(QMouseEvent* event);
     void mouseReleaseEvent(QMouseEvent* event);
     void mouseDoubleClickEvent(QMouseEvent *event);
+    void paintEvent(QPaintEvent *event);
+    void wheelEvent(QWheelEvent *event);
+
 public slots:
     void startButtonPressed();
-    void update();
+    void enableVisualisationSlot();
 signals:
     /**
      * @brief paintComponents
@@ -94,6 +101,12 @@ signals:
      * @brief startVisualisation
      */
     void startVisualisation();
+
+    /**
+     * @brief updateVisualisation обновление состояния визуализации
+     * @param painter
+     */
+    void updateVisualisation(QPainter *painter);
 };
 
 #endif // OGLRENDER_H

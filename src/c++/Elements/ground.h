@@ -33,6 +33,7 @@ public:
     virtual bool getType();
     virtual QString getName();
     virtual ~Ground();
+    void visualisation(QPainter* painter);
 private:
     /**
      * @brief x координата элемента по оси абсцисс

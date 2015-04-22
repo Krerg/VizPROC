@@ -33,6 +33,33 @@ public:
     virtual int getY();
 
     /**
+     * @brief visualisation
+     * @param container1
+     * @param container2
+     * @param painter
+     */
+    void visualisation(int* container1, int* container2, QPainter* painter, int radius);
+
+    /**
+     * @brief getConnectedWire1
+     * @return
+     */
+    Wire* getConnectedWire1();
+
+    /**
+     * @brief getConnectedWire2
+     * @return
+     */
+    Wire* getConnectedWire2();
+
+    /**
+     * @brief getAnotherWire
+     * @param w
+     * @return
+     */
+    Wire* getAnotherWire(Wire* w);
+
+    /**
      * @brief getAnotherWire
      * @param number
      * @return

@@ -7,6 +7,8 @@ class Connector;
 #include <QPoint>
 #include <QList>
 #include "src/c++/Elements/element.h"
+#include <QPainter>
+#include "src/c++/View/particle.h"
 
 /**
  * @brief The Wire class провод соединяющий два элемента
@@ -57,6 +59,12 @@ public:
      * @brief paintComponent отрисовка провода на экране
      */
     void paintComponent();
+
+    /**
+     * @brief visualisation
+     * @param color
+     */
+    void visualisation(int* color, QPainter* painter);
 
     /**
      * @brief startConnection начало соединения проводом элементов
@@ -134,6 +142,34 @@ public:
      * @return
      */
     bool isGround();
+
+    /**
+     * @brief setPotential
+     * @param potential
+     */
+    void setPotential(double potential);
+
+    /**
+     * @brief getPotential
+     * @return
+     */
+    double getPotential();
+
+    /**
+     * @brief initParticles
+     */
+    void initParticles();
+
+    /**
+     * @brief initSpeed
+     */
+    void initSpeed();
+
+    /**
+     * @brief setSpeed ручная установка скорости движения частиц
+     * @param speed
+     */
+    void setSpeed(int speed);
 private:
     /**
      * @brief path путь, по которому будет рисоваться провод
@@ -174,8 +210,28 @@ private:
      * @brief connectedPointNumber номер точки, которая присоединена к другому проводу
      */
     int connectedPointNumber;
-signals:
 
+    /**
+     * @brief particleList
+     */
+    QList<Particle*>* particleList;
+
+    /**
+     * @brief speed
+     */
+    int speed;
+
+    /**
+     * @brief lastStep
+     */
+    int lastStep;
+
+    /**
+     * @brief potential
+     */
+    double potential;
+signals:
+    void addWire(Wire* w);
 public slots:
     /**
      * @brief changePosition

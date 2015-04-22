@@ -33,7 +33,9 @@ SOURCES += main.cpp\
     src/c++/Model/graph.cpp \
     src/c++/Model/lumatrix.cpp \
     src/c++/Elements/diode.cpp \
-    src/c++/Elements/wireconnector.cpp
+    src/c++/Elements/wireconnector.cpp \
+    src/c++/View/visualisationmanager.cpp \
+    src/c++/View/particle.cpp
 
 HEADERS  += src/c++/View/startscreen.h \
     windowmanager.h \
@@ -55,6 +57,8 @@ HEADERS  += src/c++/View/startscreen.h \
     src/c++/Model/graph.h \
     src/c++/Model/lumatrix.h \
     src/c++/Elements/diode.h \
-    src/c++/Elements/wireconnector.h
+    src/c++/Elements/wireconnector.h \
+    src/c++/View/visualisationmanager.h \
+    src/c++/View/particle.h
 
 FORMS    +=

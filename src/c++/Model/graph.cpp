@@ -9,12 +9,13 @@ Graph::Graph(QObject *parent) :
 {
     this->lastFreeNumber = 0;
     this->graph = new QMap<Wire*,int*>();
+    this->matrixResolver = new LUMatrix(this);
 }
 
 void Graph::addVertex(Wire *w)
 {
     int *i = new int[3]; //первый бит номер ветки, второй бит диодная ветка или нет и третий нужно ли при рпсчетах прибавлять
-    i[0]=0;
+    i[0]=-1;
     i[1]=0;
     this->graph->insert(w,i);
 
@@ -38,6 +39,7 @@ int Graph::getNewNumber()
 
 void Graph::start()
 {
+    //processGraph(graph->firstKey(),getNewNumber());
     //если мы имемм 2 потенциала и больше
     if(this->graph->size()>1)
     {
@@ -57,11 +59,11 @@ void Graph::start()
             i.key()->setNumber(numb++,true);
         }
         //выделяем память по массив
-        this->array = new float*[numb];
+        this->array = new double*[numb];
 
         for(int count=0;count<numb;count++)
         {
-            array[count] = new float[numb+1];
+            array[count] = new double[numb+1];
         }
         //заполняем массив нулями
         for(int i=0;i<numb;i++)
@@ -115,7 +117,16 @@ void Graph::start()
                 }
             }
         }
+
         this->showMatrix(numb);
+        matrixResolver->setA(*(&array));
+        double *x = matrixResolver->compute(numb);
+        emit startVisualisation(graph,x,numb);
+
+        for(int i=0;i<numb;i++) {
+            qDebug()<<x[i];
+        }
+
     }
 }
 
@@ -146,10 +157,10 @@ void Graph::processGraph(Wire* first,int number)
            //требует реализации
         } else if((*i)->getName()=="Emf") {
             EMF* emfTemp = (EMF*)(*i);
-            //требует реализации
+            processGraph(emfTemp->getAnotherWire(first),number);
         } else if((*i)->getName()=="Res") {
             Resistor* resTemp = (Resistor*)(*i);
-            //требует реализации
+            processGraph(resTemp->getAnotherWire(first),number);
         }
 
     }

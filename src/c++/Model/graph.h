@@ -42,7 +42,7 @@ private:
     /**
      * @brief array массив, который представляет собой решение схемы
      */
-    float **array;
+    double **array;
 
     /**
      * @brief leftpart
@@ -73,7 +73,7 @@ private:
      */
     LUMatrix* matrixResolver;
 signals:
-
+    void startVisualisation(QMap<Wire*,int*> *graph, double* x, int numb);
 public slots:
     /**
      * @brief addVertex добавление вершины(потенциала в граф)

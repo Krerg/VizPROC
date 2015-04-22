@@ -2,7 +2,7 @@
 #include <QVBoxLayout>
 #include <QMovie>
 #include <QLabel>
-
+#include <QPainter>
 
 WorkBench::WorkBench::WorkBench(QWidget *parent) :
     QWidget(parent)
@@ -21,16 +21,27 @@ WorkBench::WorkBench::WorkBench(QWidget *parent) :
 
    this->g = new Graph(this);
 
+   //инициализация обработчика визуализации
+   this->visualisationManager = new VisualisationManager(this);
+   this->visualisationManager->setWires(componentManager->getWires());
+   this->visualisationManager->setElements(componentManager->getElements());
+
+
    //соединяем сигналы и слоты
    this->connectComponents();
 
    //добавляем OpenGL виджет и инициализируем его
    v1->addWidget(canvas);
-   canvas->initializeGL();
+   //canvas->initializeGL();
+
+
 
    //запуск потоков
    refresher->start();
    mouseTrackerThread->start();
+
+//   QPainter *painter = new QPainter(canvas);
+//   componentManager->setPainter(painter);
 }
 void WorkBench::connectComponents()
 {
@@ -52,4 +63,13 @@ void WorkBench::connectComponents()
     QObject::connect(refresher,SIGNAL(update()),canvas,SLOT(update()));
     QObject::connect(componentManager,SIGNAL(wireAdded(Wire*)),g,SLOT(addVertex(Wire*)));
     QObject::connect(canvas,SIGNAL(startVisualisation()),g,SLOT(start()));
+
+    //подготовка обработчика визуализации
+    QObject::connect(g,SIGNAL(startVisualisation(QMap<Wire*,int*>*,double*,int)),visualisationManager,SLOT(startVisualisation(QMap<Wire*,int*>*,double*,int)));
+
+    //установка флага визуализации
+    QObject::connect(visualisationManager,SIGNAL(enableVisualisation()),canvas,SLOT(enableVisualisationSlot()));
+
+    //обновление визуализации
+    QObject::connect(canvas,SIGNAL(updateVisualisation(QPainter*)),visualisationManager,SLOT(updateVusualisation(QPainter*)));
 }
