@@ -53,6 +53,10 @@ public:
     ~OGLRender();
 private:
 
+    bool resistorPanelVisible=false;
+
+    bool emfPanelVisible=false;
+
 
     /**
       * @brief voltagePanel

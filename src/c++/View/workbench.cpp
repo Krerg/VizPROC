@@ -53,13 +53,6 @@ WorkBench::WorkBench::WorkBench(QWidget *parent) :
    refresher->start();
    mouseTrackerThread->start();
 
-   panel = new QWidget(this);
-   panel->setGeometry(200,0,50,50);
-   lbl = new QLabel("fgfg");
-   QVBoxLayout* gh = new QVBoxLayout(panel);
-   gh->addWidget(lbl);
-   panel->show();
-
 }
 void WorkBench::connectComponents()
 {
@@ -102,14 +95,9 @@ void WorkBench::connectComponents()
 void WorkBench::onElementClick(Element *elem)
 {
     if(elem->getName()=="Res") {
-        //canvas->openResistorPanel((Resistor*)elem);
-        panel->hide();
+        canvas->openResistorPanel((Resistor*)elem);
     } else if(elem->getName()=="Emf") {
-        //canvas->openEmfPanel((EMF*)elem);
-
-        lbl->setText("asdfsdf");
-        panel->show();
-        panel->repaint();
+        canvas->openEmfPanel((EMF*)elem);
     }
     qDebug()<<"On elemt click";
 }

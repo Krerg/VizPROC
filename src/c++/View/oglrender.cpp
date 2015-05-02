@@ -97,28 +97,23 @@ void OGLRender::initializeGL()
 
 void OGLRender::openResistorPanel(Resistor *res)
 {
-//    voltageLabel->setVisible(false);
-//    voltageSpinBox->setVisible(false);
+    resistorPanelVisible = true;
+    emfPanelVisible = false;
 
-//    resistanceLabel->setVisible(true);
-//    resistanceSpinBox->setVisible(true);
-
-//    powerLabel->setVisible(true);
-//    power->setVisible(true);
-
-    voltageLabel->hide();
     voltageSpinBox->hide();
 
-    resistanceLabel->show();
+    //resistanceLabel->show();
     resistanceSpinBox->show();
 
-    powerLabel->show();
+    //powerLabel->show();
     power->show();
 
 }
 
 void OGLRender::openEmfPanel(EMF *emf)
 {
+    resistorPanelVisible=false;
+    emfPanelVisible=true;
 
     resistanceLabel->hide();
     resistanceSpinBox->hide();
@@ -126,20 +121,10 @@ void OGLRender::openEmfPanel(EMF *emf)
     powerLabel->hide();
     power->hide();
 
-    voltageLabel->show();
+//    voltageLabel->show();
     voltageSpinBox->show();
 
 
-
-    QApplication::processEvents();
-
-
-//    QHBoxLayout* voltagePanel = new QHBoxLayout();
-//    voltageLabel = new QLabel("Напряжение");
-//    voltageSpinBox = new QDoubleSpinBox();
-//    voltagePanel->addWidget(voltageLabel);
-//    voltagePanel->addWidget(voltageSpinBox);
-//    elemPanel->addLayout(voltagePanel);
 
 
 }
@@ -239,8 +224,12 @@ void OGLRender::paintEvent(QPaintEvent *event)
 //    painter.drawEllipse(60,60,100,100);
 //    painter.setPen(QColor(0,0,0));
 
-
-
+    if(resistorPanelVisible) {
+        painter.drawText(resistanceSpinBox->x()-84,resistanceSpinBox->y()+14,"Сопротивление");
+        painter.drawText(power->x()-57,power->y()+14,"Мощность");
+    } else if (emfPanelVisible) {
+        painter.drawText(voltageSpinBox->x()-65,voltageSpinBox->y()+14,"Напряжение");
+    }
     if(!enableVisualisation) {
     painter.beginNativePainting();
     emit paintComponents();
