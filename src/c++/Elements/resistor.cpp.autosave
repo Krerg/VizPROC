@@ -1,6 +1,7 @@
 #include "resistor.h"
 #include <QtOpenGL/QGLWidget>
 #include "src/c++/Elements/element.h"
+#include <QLinearGradient>
 
 Resistor::Resistor(QObject *parent) :
     QObject(parent)
@@ -78,6 +79,7 @@ Connector* Resistor::connectorPointCheck(int x, int y)
 
 void Resistor::paintComponent()
 {
+
     glBegin(GL_LINES);
         if(!selected) {
         glColor3f(0,0,0);
@@ -137,7 +139,6 @@ void Resistor::paintComponent()
         glVertex3f(x+height/2,y+2*pinLength+width,0.0f);
 
         }
-
      glEnd();
         if(this->pointed)
         {
@@ -233,6 +234,84 @@ bool Resistor::getType()
 QString Resistor::getName()
 {
     return this->name;
+}
+
+void Resistor::visualisation(int *container1, int *container2, QPainter *painter, int radius)
+{
+    if(this->orientation==this->HORIZONTAL_ORIENTATION)
+    {
+        //glow effect
+        QRadialGradient gradient;
+        gradient.setCoordinateMode(QGradient::ObjectBoundingMode);
+        gradient.setCenter(0.5, 0.5);
+        gradient.setFocalPoint(0.5, 0.5);
+        gradient.setColorAt(0.0, QColor(255, 255, 0));
+        gradient.setColorAt(0.5, QColor(255, 255, 255));
+        painter->setPen(Qt::NoPen);
+        painter->setBrush(gradient);
+        painter->drawEllipse(x+pinLength+width/2-radius/2,y+height/2-radius/2,radius,radius);
+
+        //gradient
+        QLinearGradient lg = QLinearGradient(QPointF(x+pinLength,y),QPointF(x+pinLength+width,y));
+        lg.setCoordinateMode(QGradient::ObjectBoundingMode );
+        lg.setSpread(QGradient::PadSpread);
+        lg.setColorAt(0.0,QColor(container1[0],container1[1],container1[2]));
+        lg.setColorAt(1.0,QColor(container2[0],container2[1],container2[2]));
+        QBrush brush = QBrush(lg);
+        painter->setBrush(brush);
+        QPen p;
+        p.setBrush(brush);
+        p.setWidth(2);
+        painter->setPen(p);
+        painter->drawLine(QPointF(x,y+height/2),QPointF(x+pinLength,y+height/2)); // @1
+        painter->drawLine(QPointF(x+pinLength,y),QPointF(x+pinLength,y+height));
+        painter->drawLine(QPointF(x+pinLength,y),QPointF(x+pinLength+width,y)); // @1
+        painter->drawLine(QPointF(x+pinLength,y+height),QPointF(x+pinLength+width,y+height));
+        painter->drawLine(QPointF(x+pinLength+width,y),QPointF(x+pinLength+width,y+height));
+        painter->drawLine(QPointF(x+pinLength+width,y+height/2),QPointF(x+2*pinLength+width,y+height/2));
+
+
+
+    } else {
+        QLinearGradient lg = QLinearGradient(QPointF(x,y+pinLength),QPointF(x,y+pinLength+width));
+        lg.setCoordinateMode(QGradient::ObjectBoundingMode );
+        lg.setSpread(QGradient::PadSpread);
+        lg.setColorAt(0.0,QColor(container1[0],container1[1],container1[2]));
+        lg.setColorAt(1.0,QColor(container2[0],container2[1],container2[2]));
+        QBrush brush = QBrush(lg);
+        painter->setBrush(brush);
+        QPen p;
+        p.setBrush(brush);
+        p.setWidth(2);
+        painter->setPen(p);
+        painter->drawLine(QPointF(x+height/2,y),QPointF(x+height/2,y+pinLength)); // @1
+        painter->drawLine(QPointF(x,y+pinLength),QPointF(x+height,y+pinLength));
+        painter->drawLine(QPointF(x,y+pinLength),QPointF(x,y+pinLength+width)); // @1
+        painter->drawLine(QPointF(x+height,y+pinLength),QPointF(x+height,y+pinLength+width));
+        painter->drawLine(QPointF(x,y+width+pinLength),QPointF(x+height,y+width+pinLength));
+        painter->drawLine(QPointF(x+height/2,y+width+pinLength),QPointF(x+height/2,y+width+2*pinLength));
+    }
+}
+
+Wire *Resistor::getConnectedWire1()
+{
+    return this->c1->getConnectedWire();
+}
+
+Wire *Resistor::getConnectedWire2()
+{
+    return this->c2->getConnectedWire();
+}
+
+Wire *Resistor::getAnotherWire(Wire *w)
+{
+    if(this->c1->getConnectedWire()==w) {
+        return c2->getConnectedWire();
+    } else if(this->c2->getConnectedWire()==w) {
+        return c1->getConnectedWire();
+    } else {
+        return NULL;
+    }
 }
 
 int Resistor::getValue()

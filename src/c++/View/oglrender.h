@@ -45,6 +45,7 @@ private:
      */
     QPushButton *startButton;
 
+
     /**
      * @brief enableVisualisation флаг, отвечающий за режим работы
      */

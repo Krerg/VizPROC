@@ -10,51 +10,44 @@ Diode::Diode(QObject *parent) : QObject(parent)
     this->c2 = new Connector(this);
     this->c1->setParentElement(this);
     this->c2->setParentElement(this);
-    this->width = 18;
+    this->width = 13;
     this->height = 14;
     this->pinLength = 5;
-    this->render - new QPainter();
+    this->orientation = this->HORIZONTAL_ORIENTATION;
+    //this->render - new QPainter();
 }
 
 void Diode::paintComponent()
 {
-//    glBegin(GL_LINES);
-//        if(!selected) {
-//        glColor3f(0,0,0);
-//        } else {
-//            glColor3f(0,0,8.0f);
-//        }
-        if(this->orientation==this->HORIZONTAL_ORIENTATION) {
-//            glVertex3f(x,y+height/2,0.0f);
-//            glVertex3f(x+pinLength,y+height/2,0.0f);
-
-//            glVertex3f(x+pinLength,y+height/2,0.0f);
-//            glVertex3f(x+pinLength,y+height,0.0f);
-
-//            glVertex3f(x+pinLength,y+height,0.0f);
-//            glVertex3f(x+pinLength+width,y+height/2,0.0f);
-
-//            glVertex3f(x+pinLength,y+height/2,0.0f);
-//            glVertex3f(x+pinLength,y,0.0f);
-
-//            glVertex3f(x+pinLength,y,0.0f);
-//            glVertex3f(x+pinLength+width,y+height/2,0.0f);
-
-//            glVertex3f(x+pinLength+width,y+height/2,0.0f);
-//            glVertex3f(x+2*pinLength+width,y+height/2,0.0f);
-
-//            glVertex3f(x+pinLength,y+height/2,0.0f);
-//            glVertex3f(x+pinLength+width,y+height/2,0.0f);
+    glBegin(GL_LINES);
+        if(!selected) {
+        glColor3f(0,0,0);
         } else {
-            //glBegin(GL_LINES);
-            painter->setPen(QPen(Qt::black));
-            painter->drawLine(0, 0, 100, 10);
-            painter->drawLine(10, 10, 30, 10+5);
-           // painter->drawEllipse(50,50,50,50);
-            painter->setPen(QPen(Qt::red));
-            painter->drawLine(30, 10+5, 50, 10);
-            glEndList();
-           // glEnd();
+            glColor3f(0,0,8.0f);
+        }
+        if(this->orientation==this->HORIZONTAL_ORIENTATION) {
+            glVertex3f(x,y+height/2,0.0f);
+            glVertex3f(x+pinLength,y+height/2,0.0f);
+
+            glVertex3f(x+pinLength,y,0.0f);
+            glVertex3f(x+pinLength,y+height,0.0f);
+
+            glVertex3f(x+pinLength,y+height,0.0f);
+            glVertex3f(x+pinLength+width,y+height/2,0.0f);
+
+            glVertex3f(x+pinLength,y,0.0f);
+            glVertex3f(x+pinLength+width,y+height/2,0.0f);
+
+            glVertex3f(x+pinLength+width,y+height/2,0.0f);
+            glVertex3f(x+2*pinLength+width,y+height/2,0.0f);
+
+            glVertex3f(x+pinLength,y+height/2,0.0f);
+            glVertex3f(x+pinLength+width,y+height/2,0.0f);
+
+            glVertex3f(x+pinLength+width,y,0.0f);
+            glVertex3f(x+pinLength+width,y+height,0.0f);
+
+        } else {
 //            glVertex3f(x+height/2,y,0.0f);
 //            glVertex3f(x+height/2,y+pinLength,0.0f);
 
@@ -73,7 +66,7 @@ void Diode::paintComponent()
 //            glVertex3f(x+height/2,y+pinLength,0.0f);
 //            glVertex3f(x+height/2,y+pinLength+width,0.0f);
         }
-//    glEnd();
+    glEnd();
 
     if(this->pointed)
     {

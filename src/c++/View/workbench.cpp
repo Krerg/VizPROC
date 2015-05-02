@@ -34,8 +34,6 @@ WorkBench::WorkBench::WorkBench(QWidget *parent) :
    v1->addWidget(canvas);
    //canvas->initializeGL();
 
-
-
    //запуск потоков
    refresher->start();
    mouseTrackerThread->start();

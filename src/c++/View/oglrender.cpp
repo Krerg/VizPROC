@@ -159,11 +159,14 @@ void OGLRender::paintEvent(QPaintEvent *event)
     //qDebug()<<"Paiint";
     //swapBuffers();
     delete color;
+
+    //qDebug()<<"Paiint";
+    //swapBuffers();
 }
 
 void OGLRender::wheelEvent(QWheelEvent *event)
 {
-    //qDebug()<<"Wheel";
+
 }
 
 QComboBox* OGLRender::getComboBox()

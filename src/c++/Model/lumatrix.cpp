@@ -59,7 +59,6 @@ double* LUMatrix::compute(int n)
         for(j=0;j<i;j++) {
             sum+=L[i][j]*y[j];
         }
-        //y[i]=(b[i]-sum)/L[i][i];
         y[i]=(a[i][n]-sum)/L[i][i];
     }
 
