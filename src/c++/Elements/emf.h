@@ -93,6 +93,13 @@ public:
     int getEmfDirection(int wireNumber);
 
     /**
+     * @brief getEmfDirection возвращает направление ЭДС по отношению к потенциалу
+     * @param w wireNumber номер потенциала
+     * @return 1 если входит в провод и -1 если наоборот
+     */
+    int getEmfDirection(Wire* w);
+
+    /**
      * @brief getVoltage
      * @return напряжение на ЭДС
      */

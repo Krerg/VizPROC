@@ -3,12 +3,27 @@
 #include <QMovie>
 #include <QLabel>
 #include <QPainter>
+#include <QDebug>
+#include <QApplication>
 
 WorkBench::WorkBench::WorkBench(QWidget *parent) :
     QWidget(parent)
 {
-   this->v1 = new QVBoxLayout(this);
-   this->setLayout(v1);
+   this->leftPanelLayout = new QVBoxLayout();
+   this->rightPanelLayout = new QVBoxLayout();
+   this->hLayout = new QHBoxLayout(this);
+   this->v1 = new QVBoxLayout();
+   hLayout->addLayout(leftPanelLayout);
+   hLayout->addLayout(v1);
+   hLayout->addLayout(rightPanelLayout);
+
+   //leftPanelLayout->addWidget(new QLabel("Левая панель"));
+
+   //rightPanelLayout->addWidget(new QLabel("Правая панель"));
+
+
+
+   //this->setLayout(v1);
    this->setFixedWidth(400);
    this->setFixedHeight(400);
    this->show();
@@ -38,8 +53,13 @@ WorkBench::WorkBench::WorkBench(QWidget *parent) :
    refresher->start();
    mouseTrackerThread->start();
 
-//   QPainter *painter = new QPainter(canvas);
-//   componentManager->setPainter(painter);
+   panel = new QWidget(this);
+   panel->setGeometry(200,0,50,50);
+   lbl = new QLabel("fgfg");
+   QVBoxLayout* gh = new QVBoxLayout(panel);
+   gh->addWidget(lbl);
+   panel->show();
+
 }
 void WorkBench::connectComponents()
 {
@@ -70,4 +90,31 @@ void WorkBench::connectComponents()
 
     //обновление визуализации
     QObject::connect(canvas,SIGNAL(updateVisualisation(QPainter*)),visualisationManager,SLOT(updateVusualisation(QPainter*)));
+
+    //открытие окошка для настройки параметров элементов
+    QObject::connect(componentManager,SIGNAL(onElementClick(Element*)),this,SLOT(onElementClick(Element*)));
+
+    //для провода
+    QObject::connect(componentManager,SIGNAL(onWireClick(Wire*)),this,SLOT(onWireClick(Wire*)));
+
+}
+
+void WorkBench::onElementClick(Element *elem)
+{
+    if(elem->getName()=="Res") {
+        //canvas->openResistorPanel((Resistor*)elem);
+        panel->hide();
+    } else if(elem->getName()=="Emf") {
+        //canvas->openEmfPanel((EMF*)elem);
+
+        lbl->setText("asdfsdf");
+        panel->show();
+        panel->repaint();
+    }
+    qDebug()<<"On elemt click";
+}
+
+void WorkBench::onWireClick(Wire *w)
+{
+    qDebug()<<"On wire click";
 }

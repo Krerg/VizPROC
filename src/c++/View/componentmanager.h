@@ -167,6 +167,18 @@ signals:
      * @param w добавляемый провод
      */
     void wireAdded(Wire* w);
+
+    /**
+     * @brief onElementClick
+     * @param elem
+     */
+    void onElementClick(Element* elem);
+
+    /**
+     * @brief onWireClick
+     * @param w
+     */
+    void onWireClick(Wire* w);
 public slots:
     void leftClickReleased();
 

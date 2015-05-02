@@ -24,6 +24,7 @@ Wire::Wire(QObject *parent) :
     this->pointed = false;
     this->connectedPointNumber = 0;
     this->lastStep = 0;
+    this->speed = 0;
 }
 
 void Wire::addPoint(QPoint *point)
@@ -515,46 +516,79 @@ void Wire::initParticles()
     //qDebug()<<lastStep%dist;
 }
 
-void Wire::initSpeed()
+int Wire::initSpeed()
 {
+    if(this->speed!=0) {
+        return this->speed;
+    }
+
+    if(this->connected1!=NULL && this->connected1->getParentElement()->getName()=="Ground") {
+        setSpeed(0);
+        return 0;
+    }
+
     if(this->connected1!=NULL) {
         if(connected1->getParentElement()->getName()=="Res") {
             Resistor* resTemp = (Resistor*)connected1->getParentElement();
             double tmpPotential = resTemp->getAnotherWire(this)->getPotential();
             if(tmpPotential>this->potential) {
-                int i = abs(tmpPotential-this->potential)*resTemp->getValue();
-                i%=10;
-                this->setSpeed(i);
+                double i = abs(tmpPotential-this->potential)*resTemp->getValue();
+                //i%=10;
+                this->setSpeed((int)i);
+                return i;
             } else {
-                int i = abs(tmpPotential-this->potential)*resTemp->getValue();
-                i%=10;
-                this->setSpeed(-i);
+                double i = abs(tmpPotential-this->potential)*resTemp->getValue();
+                //i%=10;
+                this->setSpeed((int)-i);
+                return i;
             }
-            return;
         } else if (connected1->getParentElement()->getName()=="Emf") {
-            EMF* emfTemp = (EMF*)connected1->getParentElement();
-            double tmpPotential = emfTemp->getAnotherWire(this)->getPotential();
-
-        }
+            if(this->connected2==NULL) {
+                EMF* emfTemp = (EMF*)connected1->getParentElement();
+                int direction = emfTemp->getEmfDirection(this);
+                QList<Wire*>::Iterator i;
+                for(i=this->wires->begin();i!=wires->end();i++) {
+                    if((*i)==this) {
+                        continue;
+                    }
+                    this->speed+=(*i)->initSpeed();
+                }
+                this->speed*direction;
+                return speed;
+            }
     }
-    if(this->connected2!=NULL) {
-        if(connected1->getParentElement()->getName()=="Res") {
-            Resistor* resTemp = (Resistor*)connected1->getParentElement();
-            double tmpPotential = resTemp->getAnotherWire(this)->getPotential();
-            if(tmpPotential>this->potential) {
-                int i = abs(tmpPotential-this->potential)*resTemp->getValue();
-                i%=10;
-                this->setSpeed(-i);
-            } else {
-                int i = abs(tmpPotential-this->potential)*resTemp->getValue();
-                i%=10;
-                this->setSpeed(i);
-            }
-            return;
-        } else if (connected1->getParentElement()->getName()=="Emf") {
-            EMF* emfTemp = (EMF*)connected1->getParentElement();
-            double tmpPotential = emfTemp->getAnotherWire(this)->getPotential();
+    }
+        if(this->connected2!=NULL) {
+            if(connected2->getParentElement()->getName()=="Res") {
+                Resistor* resTemp = (Resistor*)connected2->getParentElement();
+                double tmpPotential = resTemp->getAnotherWire(this)->getPotential();
+                if(tmpPotential>this->potential) {
+                    double i = abs(tmpPotential-this->potential)*resTemp->getValue();
+                    //i%=10;
+                    this->setSpeed((int)-i);
+                    return i;
+                } else {
+                    double i = abs(tmpPotential-this->potential)*resTemp->getValue();
+                    //i%=10;
+                    this->setSpeed((int)i);
+                    return i;
+                }
 
+           } else if (connected2->getParentElement()->getName()=="Emf") {
+                if(this->connected1==NULL) {
+                    EMF* emfTemp = (EMF*)connected2->getParentElement();
+                    int direction = emfTemp->getEmfDirection(this);
+                    QList<Wire*>::Iterator i;
+                    for(i=this->wires->begin();i!=wires->end();i++) {
+                        if((*i)==this) {
+                            continue;
+                        }
+                        this->speed+=(*i)->initSpeed();
+                    }
+                    this->speed*direction;
+
+                    return speed;
+                }
         }
     }
 }
@@ -562,4 +596,14 @@ void Wire::initSpeed()
 void Wire::setSpeed(int speed)
 {
     this->speed = speed;
+}
+
+Connector *Wire::getConneted1()
+{
+    return this->connected1;
+}
+
+Connector *Wire::getConneted2()
+{
+    return this->connected2;
 }

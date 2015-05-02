@@ -6,10 +6,6 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    int m = 5;
-    int b = *(&m);
-    m = 8;
-    qDebug()<< b;
 //    LUMatrix* luTest = new LUMatrix();
 //    double **aMatrix = new double*[3];
 //    double *bMatrix = new double[3];

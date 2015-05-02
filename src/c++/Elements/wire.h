@@ -161,15 +161,29 @@ public:
     void initParticles();
 
     /**
-     * @brief initSpeed
+     * @brief initSpeed вычисляет скорость движения частиц
+     * @return сила тока
      */
-    void initSpeed();
+    int initSpeed();
 
     /**
      * @brief setSpeed ручная установка скорости движения частиц
      * @param speed
      */
     void setSpeed(int speed);
+
+    /**
+     * @brief getConneted1
+     * @return
+     */
+    Connector* getConneted1();
+
+    /**
+     * @brief getConneted2
+     * @return
+     */
+    Connector* getConneted2();
+
 private:
     /**
      * @brief path путь, по которому будет рисоваться провод

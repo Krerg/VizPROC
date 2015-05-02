@@ -5,6 +5,8 @@
 #include <QPainter>
 #include <QLabel>
 #include <QGraphicsDropShadowEffect>
+#include <QApplication>
+
 
 OGLRender::OGLRender() :
     QGLWidget()
@@ -19,18 +21,60 @@ OGLRender::OGLRender() :
     elementList->addItem("Провод");
     elementList->addItem("Заземление");
     QVBoxLayout *g = new QVBoxLayout(this);
-    g->setAlignment(Qt::AlignBottom);
+
+    elemPanel = new QVBoxLayout();
+    elemPanel->setAlignment(Qt::AlignRight|Qt::AlignTop);
+    QHBoxLayout *resistancePanel = new QHBoxLayout();
+    QHBoxLayout *powerPanel = new QHBoxLayout();
+    resistanceLabel = new QLabel("Сопротивление");
+    resistanceSpinBox = new QDoubleSpinBox();
+
+    powerLabel = new QLabel("Мощность");
+    power = new QComboBox();
+    power->addItem("0,125Вт");
+    power->addItem("0,25Вт");
+
+    voltagePanel = new QHBoxLayout();
+    voltageLabel = new QLabel("Напряжение");
+    voltageSpinBox = new QDoubleSpinBox();
+    voltagePanel->addWidget(voltageLabel);
+    voltagePanel->addWidget(voltageSpinBox);
+    elemPanel->addLayout(voltagePanel);
+
+
+
+    resistancePanel->addWidget(resistanceLabel);
+    resistancePanel->addWidget(resistanceSpinBox);
+
+    powerPanel->addWidget(powerLabel);
+    powerPanel->addWidget(power);
+
+    //power->setVisible(false);
+    //powerLabel->setVisible(false);
+
+    elemPanel->addLayout(resistancePanel);
+    elemPanel->addLayout(powerPanel);
+
+    g->addLayout(elemPanel);
+    //g->addWidget(resistanceLabel);
+    //g->setAlignment(resistanceLabel,Qt::AlignRight|Qt::AlignTop);
+    //g->addSpacing(this->height()-30);
+
+
     g->addWidget(elementList);
     g->addWidget(startButton);
+    g->setAlignment(elementList,Qt::AlignBottom);
+    //g->setAlignment(startButton,Qt::AlignBottom);
 
-    //test
-    w = new Wire();
-    w->addPoint(10,10);
-    w->addPoint(10,40);
-    w->addPoint(80,40);
-    w->addPoint(80,90);
-    w->setSpeed(-2);
 
+    voltageLabel->setVisible(false);
+    voltageSpinBox->setVisible(false);
+
+    resistanceLabel->setVisible(false);
+    resistanceSpinBox->setVisible(false);
+
+    powerLabel->setVisible(false);
+    power->setVisible(false);
 
 
     enableVisualisation = false;
@@ -49,6 +93,55 @@ void OGLRender::initializeGL()
     qglClearColor(Qt::white);
     //Установка размера виджета
     this->resizeGL(400,400);
+}
+
+void OGLRender::openResistorPanel(Resistor *res)
+{
+//    voltageLabel->setVisible(false);
+//    voltageSpinBox->setVisible(false);
+
+//    resistanceLabel->setVisible(true);
+//    resistanceSpinBox->setVisible(true);
+
+//    powerLabel->setVisible(true);
+//    power->setVisible(true);
+
+    voltageLabel->hide();
+    voltageSpinBox->hide();
+
+    resistanceLabel->show();
+    resistanceSpinBox->show();
+
+    powerLabel->show();
+    power->show();
+
+}
+
+void OGLRender::openEmfPanel(EMF *emf)
+{
+
+    resistanceLabel->hide();
+    resistanceSpinBox->hide();
+
+    powerLabel->hide();
+    power->hide();
+
+    voltageLabel->show();
+    voltageSpinBox->show();
+
+
+
+    QApplication::processEvents();
+
+
+//    QHBoxLayout* voltagePanel = new QHBoxLayout();
+//    voltageLabel = new QLabel("Напряжение");
+//    voltageSpinBox = new QDoubleSpinBox();
+//    voltagePanel->addWidget(voltageLabel);
+//    voltagePanel->addWidget(voltageSpinBox);
+//    elemPanel->addLayout(voltagePanel);
+
+
 }
 
 void OGLRender::resizeGL(int width, int height)

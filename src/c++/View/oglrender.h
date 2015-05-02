@@ -8,6 +8,11 @@
 #include <QComboBox>
 #include <QPushButton>
 #include <src/c++/Elements/wire.h>
+#include "src/c++/Elements/resistor.h"
+#include "src/c++/Elements/emf.h"
+#include <QLabel>
+#include <QDoubleSpinBox>
+#include <QVBoxLayout>
 
 /**
  * @brief The OGLRender class
@@ -33,8 +38,62 @@ public:
 
     Wire* w;
 
+    /**
+     * @brief openResistorPanel
+     * @param res
+     */
+    void openResistorPanel(Resistor* res);
+
+    /**
+     * @brief openEmfPanel
+     * @param emf
+     */
+    void openEmfPanel(EMF* emf);
+
     ~OGLRender();
 private:
+
+
+    /**
+      * @brief voltagePanel
+      */
+     QHBoxLayout* voltagePanel;
+
+    /**
+     * @brief voltageLabel
+     */
+    QLabel* voltageLabel;
+
+    /**
+     * @brief voltageSpinBox
+     */
+    QDoubleSpinBox* voltageSpinBox;
+
+    /**
+     * @brief resPanel панель для парметров резистора
+     */
+    QVBoxLayout *elemPanel;
+
+    /**
+     * @brief resistanceLabel
+     */
+    QLabel* resistanceLabel;
+
+    /**
+     * @brief powerLabel
+     */
+    QLabel* powerLabel;
+
+    /**
+     * @brief power
+     */
+    QComboBox* power;
+
+    /**
+     * @brief resistanceSpinBox
+     */
+    QDoubleSpinBox* resistanceSpinBox;
+
     /**
      * @brief elementList список элементов для работы
      */

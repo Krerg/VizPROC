@@ -104,9 +104,12 @@ void ComponentManager::mouseClick(int x, int y)
         dy = y-pointed->getY();
         pointed->enableSelection();
         this->selected=pointed;
+        //говорим о том, что надо бы открыть окошко для параметров :)
+        emit onElementClick(selected);
     } else if(pointedWire!=NULL) {
         pointedWire->enableSelection();
         this->selectedWire = pointedWire;
+        emit onWireClick(selectedWire);
    }
 }
 
@@ -204,6 +207,8 @@ void ComponentManager::mouseMoved(int x, int y)
            temp2->enablePointing();
            this->pointedConnector=temp2;
        }
+
+
     } else  {
          //проверяем провода
          QList<Wire*>::iterator j;

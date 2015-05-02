@@ -36,6 +36,21 @@ private:
     QVBoxLayout *v1;
 
     /**
+     * @brief hLayout
+     */
+    QHBoxLayout *hLayout;
+
+    /**
+     * @brief leftPanelLayout лэйаут для левой панели(панель инструментов)
+     */
+    QVBoxLayout* leftPanelLayout;
+
+    /**
+     * @brief rightPanelLayout
+     */
+    QVBoxLayout* rightPanelLayout;
+
+    /**
      * @brief canvas поле где рисуетс весь интерфейс
      */
     OGLRender *canvas;
@@ -69,10 +84,26 @@ private:
      * @brief visualisationManager обработчик визуализации
      */
     VisualisationManager* visualisationManager;
+
+
+    QWidget *panel;
+
+    QLabel* lbl;
+
 signals:
 
 public slots:
+    /**
+     * @brief onElementClick
+     * @param elem
+     */
+    void onElementClick(Element* elem);
 
+    /**
+     * @brief onWireClick
+     * @param w
+     */
+    void onWireClick(Wire* w);
 };
 
 #endif // WORKBENCH_H

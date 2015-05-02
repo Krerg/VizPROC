@@ -3,6 +3,7 @@
 #include "src/c++/Elements/resistor.h"
 #include "src/c++/Elements/ground.h"
 #include <math.h>
+#include <QDebug>
 
 VisualisationManager::VisualisationManager(QObject *parent) : QObject(parent)
 {
@@ -161,7 +162,7 @@ void VisualisationManager::startVisualisation(QMap<Wire *, int *> *graph, double
     }
 
     for(i=wires->begin();i!=wires->end();i++) {
-        //(*i)->initSpeed();
+        qDebug()<<(*i)->initSpeed();
     }
 
     emit enableVisualisation();

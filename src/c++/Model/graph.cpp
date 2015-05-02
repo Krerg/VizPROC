@@ -121,11 +121,14 @@ void Graph::start()
         this->showMatrix(numb);
         matrixResolver->setA(*(&array));
         double *x = matrixResolver->compute(numb);
-        emit startVisualisation(graph,x,numb);
 
         for(int i=0;i<numb;i++) {
             qDebug()<<x[i];
         }
+
+        emit startVisualisation(graph,x,numb);
+
+
 
     }
 }

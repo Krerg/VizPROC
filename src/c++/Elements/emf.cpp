@@ -355,3 +355,12 @@ int EMF::getEmfDirection(int wireNumber)
     }
 }
 
+int EMF::getEmfDirection(Wire *w)
+{
+    if(this->c1->getConnectedWire()==w) {
+        return 1;
+    } else {
+        return -1;
+    }
+}
+
