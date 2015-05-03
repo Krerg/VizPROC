@@ -103,13 +103,7 @@ public:
      * @brief getVoltage
      * @return напряжение на ЭДС
      */
-    int getVoltage();
-
-    /**
-     * @brief setVoltage устанавливает напряжение на ЭДС
-     * @param voltage значение напряжения не ЭДС
-     */
-    void setVoltage(int voltage);
+    double getVoltage();
 
     virtual QString getName();
     virtual bool getType();
@@ -119,7 +113,7 @@ private:
     /**
      * @brief voltage напряжение на ЭДС
      */
-    int voltage;
+    double voltage;
 
     /**
      * @brief conductivity проводимость ЭДС
@@ -183,7 +177,11 @@ signals:
 
 
 public slots:
-
+    /**
+     * @brief setVoltage устанавливает напряжение на ЭДС
+     * @param voltage значение напряжения не ЭДС
+     */
+    void setVoltage(double voltage);
 };
 
 #endif // EMF_H

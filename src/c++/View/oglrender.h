@@ -113,6 +113,17 @@ private:
      * @brief enableVisualisation флаг, отвечающий за режим работы
      */
     bool enableVisualisation;
+
+    /**
+     * @brief selectedRes
+     */
+    Resistor* selectedRes;
+
+    /**
+     * @brief selectedEmf
+     */
+    EMF* selectedEmf;
+
 protected:
 
     /**

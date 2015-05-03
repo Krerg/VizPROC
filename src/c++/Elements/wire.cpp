@@ -182,7 +182,7 @@ void Wire::changePosition(int oldX, int oldY, int newX, int newY)
             {
                 if(abs(second->y()-newY)<3)
                 {
-                    qDebug()<<"A1";
+
                     //двигаем 3 точку если оно нужно
                     QPoint* third = this->path->at(2);
                     if(path->size()==3) {
@@ -196,13 +196,13 @@ void Wire::changePosition(int oldX, int oldY, int newX, int newY)
                     third->setY(newY+diff*5);
                     second->setY(newY+diff*5);
                 }
-                qDebug()<<"A2";
+
                 second->setX(newX);
 
                 temp->setX(newX);
                 temp->setY(newY);
             } else {
-                if(abs(second->x()-newX)<3)
+                if(abs(second->x()-newX)<3 && wires->size()==1)
                 {
                     //двигаем 3 точку если вторая точка достигла её
                     QPoint* third = this->path->at(2);
@@ -218,7 +218,7 @@ void Wire::changePosition(int oldX, int oldY, int newX, int newY)
                     second->setX(newX+diff*5);
                 }
                 second->setY(newY);
-
+                qDebug()<<"sf";
                 temp->setX(newX);
                 temp->setY(newY);
             }
@@ -229,7 +229,7 @@ void Wire::changePosition(int oldX, int oldY, int newX, int newY)
             QPoint* second = this->path->at(path->size()-2);
             if(second->x()==temp->x())
             {
-                if(abs(second->y()-newY)<3)
+                if(abs(second->y()-newY)<3 && wires->size()==1)
                 {
                     //двигаем 3 точку если оно нужно
                     QPoint* third = this->path->at(path->size()-3);
@@ -249,7 +249,7 @@ void Wire::changePosition(int oldX, int oldY, int newX, int newY)
                 temp->setX(newX);
                 temp->setY(newY);
             } else {
-                if(abs(second->x()-newX)<3)
+                if(abs(second->x()-newX)<3 && wires->size()==1)
                 {
                     //двигаем 3 точку если оно нужно
                     QPoint* third = this->path->at(path->size()-3);
@@ -455,7 +455,7 @@ void Wire::initParticles()
     QPoint* next = path->at(1);
     int currentX;
     int currentY;
-
+    int d;
     int xDir=next->x()-start->x();
     if(xDir!=0)
     xDir/=abs(xDir);
@@ -494,19 +494,26 @@ void Wire::initParticles()
             if(path->last()==next) {
                 break;
             }
+
             int dx = abs(next->x()-newX);
             int dy = abs(next->y()-newY);
             start = next;
             next = path->at(i);
             i++;
+            if(next->x()==start->x()&&next->y()==start->y()) {
+                next = path->at(i);
+                i++;
+            }
+
             xDir=next->x()-start->x();
             if(xDir!=0)
             xDir/=abs(xDir);
             yDir=next->y()-start->y();
             if(yDir!=0)
             yDir/=abs(yDir);
-            currentX=start->x()+dy*xDir;
-            currentY=start->y()+dx*yDir;
+            d = dx+dy;
+            currentX=start->x()+d*xDir;
+            currentY=start->y()+d*yDir;
         } else {
           currentX = newX;
           currentY = newY;

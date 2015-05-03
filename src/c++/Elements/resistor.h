@@ -77,7 +77,13 @@ public:
      * @brief getValue метод получения проводимости резистора
      * @return проводимость элемента
      */
-    int getValue();
+    double getValue();
+
+    /**
+     * @brief getResistance
+     * @return
+     */
+    double getResistance();
 
     /**
      * @brief getType текущая ориентация на экране
@@ -104,6 +110,11 @@ public:
     int getSpeed();
 
 private:
+
+    /**
+     * @brief resistance сопротивление резистора
+     */
+    double resistance;
 
     /**
      * @brief name
@@ -167,7 +178,11 @@ private:
 signals:
 
 public slots:
-
+    /**
+     * @brief setResistance
+     * @param resistance
+     */
+    void setResistance(double resistance);
 };
 
 #endif // RESISTOR_H

@@ -336,12 +336,12 @@ void EMF::setConductivity(int conductivity)
     this->conductivity = conductivity;
 }
 
-int EMF::getVoltage()
+double EMF::getVoltage()
 {
     return this->voltage;
 }
 
-void EMF::setVoltage(int voltage)
+void EMF::setVoltage(double voltage)
 {
     this->voltage = voltage;
 }

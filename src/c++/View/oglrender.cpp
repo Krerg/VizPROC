@@ -41,7 +41,8 @@ OGLRender::OGLRender() :
     voltagePanel->addWidget(voltageSpinBox);
     elemPanel->addLayout(voltagePanel);
 
-
+    this->selectedEmf = NULL;
+    this->selectedRes = NULL;
 
     resistancePanel->addWidget(resistanceLabel);
     resistancePanel->addWidget(resistanceSpinBox);
@@ -97,6 +98,13 @@ void OGLRender::initializeGL()
 
 void OGLRender::openResistorPanel(Resistor *res)
 {
+    if(selectedEmf!=NULL) {
+        QObject::disconnect(voltageSpinBox,SIGNAL(valueChanged(double)),selectedEmf,SLOT(setVoltage(double)));
+    }
+
+    this->selectedEmf = NULL;
+    this->selectedRes = res;
+
     resistorPanelVisible = true;
     emfPanelVisible = false;
 
@@ -108,10 +116,18 @@ void OGLRender::openResistorPanel(Resistor *res)
     //powerLabel->show();
     power->show();
 
+    resistanceSpinBox->setValue(res->getResistance());
+    QObject::connect(resistanceSpinBox,SIGNAL(valueChanged(double)),res,SLOT(setResistance(double)));
+
 }
 
 void OGLRender::openEmfPanel(EMF *emf)
 {
+
+    if(selectedRes!=NULL) {
+        QObject::disconnect(resistanceSpinBox,SIGNAL(valueChanged(double)),selectedRes,SLOT(setResistance(double)));
+    }
+
     resistorPanelVisible=false;
     emfPanelVisible=true;
 
@@ -124,8 +140,9 @@ void OGLRender::openEmfPanel(EMF *emf)
 //    voltageLabel->show();
     voltageSpinBox->show();
 
+    voltageSpinBox->setValue(emf->getVoltage());
 
-
+    QObject::connect(voltageSpinBox,SIGNAL(valueChanged(double)),emf,SLOT(setVoltage(double)));
 
 }
 

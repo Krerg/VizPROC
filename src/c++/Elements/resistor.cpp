@@ -20,6 +20,7 @@ Resistor::Resistor(QObject *parent) :
     this->c2->setParentElement(this);
     this->c1->setPosition(x,y+height/2);
     this->c2->setPosition(x+width,y+height/2);
+    this->resistance = 1;
 }
 
 Element::~Element()
@@ -218,7 +219,12 @@ void Resistor::setConnectorPosition()
     } else {
         this->c1->setPosition(x+height/2,y);
         this->c2->setPosition(x+height/2,y+2*pinLength+width);
-      }
+    }
+}
+
+void Resistor::setResistance(double resistance)
+{
+    this->resistance = resistance;
 }
 
 bool Resistor::getType()
@@ -314,9 +320,14 @@ Wire *Resistor::getAnotherWire(Wire *w)
     }
 }
 
-int Resistor::getValue()
+double Resistor::getValue()
 {
-    return 1;
+    return (double)1/resistance;
+}
+
+double Resistor::getResistance()
+{
+    return resistance;
 }
 
 Connector* Resistor::getAnotherConnector(Connector *c)
