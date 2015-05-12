@@ -189,6 +189,16 @@ void Diode::setPainter(QPainter *painter)
     this->painter = painter;
 }
 
+Connector *Diode::getConnector1()
+{
+    return c1;
+}
+
+Connector *Diode::getConnector2()
+{
+    return c2;
+}
+
 Diode::~Diode()
 {
 
@@ -196,6 +206,13 @@ Diode::~Diode()
 
 void Diode::setConnectorPosition()
 {
-
+    if(this->orientation==this->HORIZONTAL_ORIENTATION)
+    {
+        this->c1->setPosition(x,y+height/2);
+        this->c2->setPosition(x+width+2*pinLength,y+height/2);
+    } else {
+        this->c1->setPosition(x+height/2,y);
+        this->c2->setPosition(x+height/2,y+2*pinLength+width);
+    }
 }
 

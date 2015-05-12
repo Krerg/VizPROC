@@ -3,7 +3,6 @@
 #include "src/c++/Elements/emf.h"
 #include "src/c++/Elements/wire.h"
 #include "src/c++/Elements/ground.h"
-#include "src/c++/Elements/diode.h"
 
 ComponentManager::ComponentManager(QObject *parent) :
     QObject(parent)
@@ -68,6 +67,7 @@ void ComponentManager::addDiode(int x, int y)
     temp->setPosition(x-temp->getWidth()/2,y-temp->getHeight()/2);
     temp->setPainter(painter);
     elements->append((Element*)temp);
+    emit addDiode(temp);
 }
 
 void ComponentManager::addGround(int x, int y)

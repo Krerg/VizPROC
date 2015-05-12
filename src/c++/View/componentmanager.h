@@ -7,6 +7,7 @@
 #include "src/c++/Elements/element.h"
 #include "src/c++/Elements/wire.h"
 #include "src/c++/Elements/ground.h"
+#include "src/c++/Elements/diode.h"
 #include <QPainter>
 
 /**
@@ -179,6 +180,12 @@ signals:
      * @param w
      */
     void onWireClick(Wire* w);
+
+    /**
+     * @brief addDiode
+     * @param d
+     */
+    void addDiode(Diode* d);
 public slots:
     void leftClickReleased();
 

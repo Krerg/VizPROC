@@ -8,6 +8,7 @@
 #include "src/c++/Elements/wire.h"
 #include "src/c++/Elements/element.h"
 #include "src/c++/Model/lumatrix.h"
+#include "src/c++/Elements/diode.h"
 
 /**
  * @brief The Graph class класс, который представляет схему в виде графа
@@ -72,6 +73,16 @@ private:
      * @brief matrixResolver
      */
     LUMatrix* matrixResolver;
+
+    /**
+     * @brief numberOfIterations кол-во итерация равное кол-ву диодов в схеме
+     */
+    int numberOfIterations;
+
+    /**
+     * @brief diodes список диодов в схеме
+     */
+    QList<Diode*>* diodes;
 signals:
     void startVisualisation(QMap<Wire*,int*> *graph, double* x, int numb);
 public slots:
@@ -85,6 +96,12 @@ public slots:
      * @brief start сигнал запускающий расчет схемы
      */
     void start();
+
+    /**
+     * @brief addDiode добавление диода в структуру
+     * @param d сам диод
+     */
+    void addDiode(Diode* d);
 };
 
 #endif // GRAPH_H

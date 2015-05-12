@@ -72,7 +72,10 @@ void WorkBench::connectComponents()
     QObject::connect(eventHandler,SIGNAL(moveElement(int,int)),componentManager,SLOT(moveElement(int,int)));
     QObject::connect(canvas,SIGNAL(paintComponents()),componentManager,SLOT(paintComponents()));
     QObject::connect(refresher,SIGNAL(update()),canvas,SLOT(update()));
+
     QObject::connect(componentManager,SIGNAL(wireAdded(Wire*)),g,SLOT(addVertex(Wire*)));
+    QObject::connect(componentManager,SIGNAL(addDiode(Diode*)),g,SLOT(addDiode(Diode*)));
+
     QObject::connect(canvas,SIGNAL(startVisualisation()),g,SLOT(start()));
 
     //подготовка обработчика визуализации

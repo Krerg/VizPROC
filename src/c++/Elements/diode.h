@@ -34,6 +34,19 @@ public:
     int getOpeningThreshold();
     void setOpeningThreshold();
     void setPainter(QPainter* painter);
+
+    /**
+     * @brief getConnector1
+     * @return
+     */
+    Connector* getConnector1();
+
+    /**
+     * @brief getConnector2
+     * @return
+     */
+    Connector* getConnector2();
+
     ~Diode();
 private:
 

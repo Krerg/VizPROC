@@ -10,11 +10,13 @@ Graph::Graph(QObject *parent) :
     this->lastFreeNumber = 0;
     this->graph = new QMap<Wire*,int*>();
     this->matrixResolver = new LUMatrix(this);
+    this->numberOfIterations = 0;
 }
 
 void Graph::addVertex(Wire *w)
 {
-    int *i = new int[3]; //первый бит номер ветки, второй бит диодная ветка или нет и третий нужно ли при рпсчетах прибавлять
+    //первый бит номер ветки, второй бит диодная ветка или нет (0 - не диодная, 1,2,3 - диодная) и третий нужно ли при расчетах прибавлять
+    int *i = new int[3];
     i[0]=-1;
     i[1]=0;
     this->graph->insert(w,i);
@@ -39,12 +41,17 @@ int Graph::getNewNumber()
 
 void Graph::start()
 {
-    //processGraph(graph->firstKey(),getNewNumber());
-    //если мы имемм 2 потенциала и больше
+    if(diodes->size()>0) {
+        //если в схеме есть диод(ы), то выделяем ветки
+        //processGraph(graph->firstKey(),getNewNumber());
+    }
+    double *x;
+    int numb;
+    do{
     if(this->graph->size()>1)
     {
         QMap<Wire*,int*>::iterator i;
-        int numb=0;
+        numb=0;
         //пронумеровываем все потенциалы
         int tmp;
         for(i=graph->begin();i!=graph->end();i++)
@@ -120,17 +127,19 @@ void Graph::start()
 
         this->showMatrix(numb);
         matrixResolver->setA(*(&array));
-        double *x = matrixResolver->compute(numb);
+        x = matrixResolver->compute(numb);
 
         for(int i=0;i<numb;i++) {
             qDebug()<<x[i];
         }
-
-        emit startVisualisation(graph,x,numb);
-
-
-
     }
+    } while (diodes->size()!=0);
+        emit startVisualisation(graph,x,numb);
+    }
+
+void Graph::addDiode(Diode *d)
+{
+    this->diodes->append(d);
 }
 
 void Graph::showMatrix(int n)
@@ -147,30 +156,42 @@ void Graph::showMatrix(int n)
 
 void Graph::processGraph(Wire* first,int number)
 {
-    if(this->graph->value(first)[0]>=0) {
-        return;
-    }
-    this->graph->value(first)[0]=number;
-    QList<Element*>* connectedElems = first->getConnectedElements();
-    QList<Element*>::iterator i;
-    for(i=connectedElems->begin();i!=connectedElems->end();i++) {
-        if((*i)->getName()=="Diode") {
-            qDebug()<<"diode";
-           Diode* y = (Diode*)(*i);
-           //требует реализации
-        } else if((*i)->getName()=="Emf") {
-            EMF* emfTemp = (EMF*)(*i);
-            processGraph(emfTemp->getAnotherWire(first),number);
-        } else if((*i)->getName()=="Res") {
-            Resistor* resTemp = (Resistor*)(*i);
-            processGraph(resTemp->getAnotherWire(first),number);
-        }
-
-    }
-    if(first->getConnectedWires()->size()>=2) {
-        QList<Wire*>::iterator i;
-        for(i=first->getConnectedWires()->begin();i!=first->getConnectedWires()->end();i++) {
-            processGraph((*i),this->getNewNumber());
+    foreach (Diode* d, *diodes) {
+        /**
+         * Для каждого диода берем коннектор и провод, и утснавливам флаги на
+         * проводах, что это диодная ветка
+         */
+        Connector* tmpConnector = d->getConnector1();
+        Wire* tmpWire = tmpConnector->getConnectedWire();
+        Element* tmpElem = (Element*)d;
+        int i=1;
+        while(true) {
+            graph->value(tmpWire)[1]=i++;
+            if(tmpWire->getConnectedWires()->size()>1) {
+                break;
+            } else {
+                QList<Element*>* tmpList = tmpWire->getConnectedElements();
+                //смотрим в какую сторону надо идти
+                if(tmpList->at(0)==tmpElem) {
+                    Element* tmpElem2 = tmpList->at(1);
+                    if(tmpElem2->getName() == "Res") {
+                        tmpWire = ((Resistor*)tmpElem2)->getAnotherWire(tmpWire);
+                        tmpElem = tmpElem2;
+                    } else if(tmpElem2->getName() == "Emf") {
+                        tmpWire = ((EMF*)tmpElem2)->getAnotherWire(tmpWire);
+                        tmpElem = tmpElem2;
+                    }
+                } else {
+                    Element* tmpElem2 = tmpList->at(0);
+                    if(tmpElem2->getName() == "Res") {
+                        tmpWire = ((Resistor*)tmpElem2)->getAnotherWire(tmpWire);
+                        tmpElem = tmpElem2;
+                    } else if(tmpElem2->getName() == "Emf") {
+                        tmpWire = ((EMF*)tmpElem2)->getAnotherWire(tmpWire);
+                        tmpElem = tmpElem2;
+                    }
+                }
+            }
         }
     }
 }
