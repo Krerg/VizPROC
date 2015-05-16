@@ -11,6 +11,7 @@ Graph::Graph(QObject *parent) :
     this->graph = new QMap<Wire*,int*>();
     this->matrixResolver = new LUMatrix(this);
     this->numberOfIterations = 0;
+    this->diodesBranches = new QList<DiodeBranch*>();
 }
 
 void Graph::addVertex(Wire *w)
@@ -156,6 +157,7 @@ void Graph::showMatrix(int n)
 
 void Graph::processGraph(Wire* first,int number)
 {
+    int i=0;
     foreach (Diode* d, *diodes) {
         /**
          * Для каждого диода берем коннектор и провод, и утснавливам флаги на
@@ -164,16 +166,22 @@ void Graph::processGraph(Wire* first,int number)
         Connector* tmpConnector = d->getConnector1();
         Wire* tmpWire = tmpConnector->getConnectedWire();
         Element* tmpElem = (Element*)d;
-        int i=1;
+        Element* tmpElem2;
+        QList<Element*>* tmpList;
+        DiodeBranch* currentBranch = new DiodeBranch(this);
+        currentBranch->addDiode(d);
+        diodesBranches->append(currentBranch);
+        i++;
         while(true) {
-            graph->value(tmpWire)[1]=i++;
+            currentBranch->addWire(tmpWire);
+            graph->value(tmpWire)[1]=i;
             if(tmpWire->getConnectedWires()->size()>1) {
                 break;
             } else {
-                QList<Element*>* tmpList = tmpWire->getConnectedElements();
+                tmpList = tmpWire->getConnectedElements();
                 //смотрим в какую сторону надо идти
                 if(tmpList->at(0)==tmpElem) {
-                    Element* tmpElem2 = tmpList->at(1);
+                    tmpElem2 = tmpList->at(1);
                     if(tmpElem2->getName() == "Res") {
                         tmpWire = ((Resistor*)tmpElem2)->getAnotherWire(tmpWire);
                         tmpElem = tmpElem2;
@@ -182,7 +190,7 @@ void Graph::processGraph(Wire* first,int number)
                         tmpElem = tmpElem2;
                     }
                 } else {
-                    Element* tmpElem2 = tmpList->at(0);
+                    tmpElem2 = tmpList->at(0);
                     if(tmpElem2->getName() == "Res") {
                         tmpWire = ((Resistor*)tmpElem2)->getAnotherWire(tmpWire);
                         tmpElem = tmpElem2;
@@ -193,5 +201,40 @@ void Graph::processGraph(Wire* first,int number)
                 }
             }
         }
+
+        //идем в другую сторону
+        tmpConnector = d->getConnector2();
+        tmpWire = tmpConnector->getConnectedWire();
+        tmpElem = (Element*)d;
+        while(true) {
+            currentBranch->addWire(tmpWire);
+            graph->value(tmpWire)[1]=i;
+            if(tmpWire->getConnectedWires()->size()>1) {
+                break;
+            } else {
+                tmpList = tmpWire->getConnectedElements();
+                //смотрим в какую сторону надо идти
+                if(tmpList->at(0)==tmpElem) {
+                    tmpElem2 = tmpList->at(1);
+                    if(tmpElem2->getName() == "Res") {
+                        tmpWire = ((Resistor*)tmpElem2)->getAnotherWire(tmpWire);
+                        tmpElem = tmpElem2;
+                    } else if(tmpElem2->getName() == "Emf") {
+                        tmpWire = ((EMF*)tmpElem2)->getAnotherWire(tmpWire);
+                        tmpElem = tmpElem2;
+                    }
+                } else {
+                    tmpElem2 = tmpList->at(0);
+                    if(tmpElem2->getName() == "Res") {
+                        tmpWire = ((Resistor*)tmpElem2)->getAnotherWire(tmpWire);
+                        tmpElem = tmpElem2;
+                    } else if(tmpElem2->getName() == "Emf") {
+                        tmpWire = ((EMF*)tmpElem2)->getAnotherWire(tmpWire);
+                        tmpElem = tmpElem2;
+                    }
+                }
+            }
+        }
+
     }
 }

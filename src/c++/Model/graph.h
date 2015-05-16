@@ -9,6 +9,7 @@
 #include "src/c++/Elements/element.h"
 #include "src/c++/Model/lumatrix.h"
 #include "src/c++/Elements/diode.h"
+#include "src/c++/Model/diodebranch.h"
 
 /**
  * @brief The Graph class класс, который представляет схему в виде графа
@@ -83,6 +84,11 @@ private:
      * @brief diodes список диодов в схеме
      */
     QList<Diode*>* diodes;
+
+    /**
+     * @brief diodesBranches список диодных ветвей
+     */
+    QList<DiodeBranch*>* diodesBranches;
 signals:
     void startVisualisation(QMap<Wire*,int*> *graph, double* x, int numb);
 public slots:
