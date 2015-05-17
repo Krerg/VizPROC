@@ -13,6 +13,7 @@ Graph::Graph(QObject *parent) :
     this->numberOfIterations = 0;
     this->diodesBranches = new QList<DiodeBranch*>();
     this->diodes = new QList<Diode*>();
+    //f
 }
 
 void Graph::addVertex(Wire *w)
