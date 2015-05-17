@@ -2,13 +2,13 @@
 
 DiodeBranch::DiodeBranch(QObject *parent) : QObject(parent)
 {
-
+    this->diodes = new QList<Diode*>();
+    this->wires = new QList<Wire*>();
 }
 
 DiodeBranch::~DiodeBranch()
 {
-    this->diodes = new QList<Diode*>();
-    this->wires = new QList<Wire*>();
+
 }
 
 void DiodeBranch::open()

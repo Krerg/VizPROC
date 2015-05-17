@@ -141,7 +141,7 @@ void ComponentManager::leftClickReleased()
 void ComponentManager::addWire(Wire *w)
 {
     this->wires->append(w);
-    QObject::connect(w,SIGNAL(addWire(Wire*)),this,SLOT(addWire(Wire*)));
+    //QObject::connect(w,SIGNAL(addWire(Wire*)),this,SLOT(addWire(Wire*)));
     emit wireAdded(drawWire);
 }
 
@@ -271,7 +271,6 @@ void ComponentManager::connect(int x, int y)
             this->drawingWire = false;
             this->wireEnd1 = NULL;
             this->wireEnd2 = NULL;
-            this->drawWire==NULL;
             emit wireAdded(drawWire);
             this->drawWire=NULL;
         } else if(pointedWire!=NULL) {
@@ -279,6 +278,7 @@ void ComponentManager::connect(int x, int y)
             this->drawingWire = false;
             this->wireEnd1 = NULL;
             this->wireEnd2 = NULL;
+            emit wireAdded(drawWire);
             this->drawWire = NULL;
         } else {
             //в другом случае мы продолжаем его рисовать

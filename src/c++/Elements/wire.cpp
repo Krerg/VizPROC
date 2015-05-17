@@ -283,6 +283,20 @@ void Wire::connectWire(Wire *w, int wirePart)
     QPoint* last = w->getPath()->last();
     QPoint* beforeLast = w->getPath()->at(w->getPath()->size()-2);
 
+    if(wirePart==0 || wirePart==path->size()-1) {
+        if(last->x()==beforeLast->x()) {
+            last->setX(this->path->at(wirePart)->x());
+            last->setY(this->path->at(wirePart)->y());
+            beforeLast->setX(this->path->at(wirePart)->x());
+        } else {
+            last->setX(this->path->at(wirePart)->x());
+            last->setY(this->path->at(wirePart)->y());
+            beforeLast->setY((this->path->at(wirePart)->y()));
+        }
+
+        return;
+    }
+
     //присоединяем в ближайшей точке
     QPoint *tmp1 = this->path->at(--wirePart);
     QPoint *tmp2 = this->path->at(++wirePart);
@@ -307,30 +321,24 @@ void Wire::connectWire(Wire *w, int wirePart)
             beforeLast->setY(tmp2->y());
         }
     }
-//    if(tmp1->x() == tmp2->x())
-//    {
-//        w->getPath()->last()->setX(tmp1->x());
-//    }
-//    else
-//    {
-//        w->getPath()->last()->setY(tmp1->y());
-//    }
 
     //делим провод на 2
     Wire* secondWire = new Wire();
 
     //надо добавить в список отрисовываемых объектов
     WireConnector* wireConnector = new WireConnector(last->x(),last->y());
-    --wirePart;
+    //--wirePart;
 
     for(int i=wirePart;i<this->path->size();i++) {
         QPoint* temp = path->at(i);
         secondWire->addPoint(new QPoint(temp->x(),temp->y()));
     }
-    secondWire->endConnection(this->connected2);
-    //вот это поворот
-    QObject::disconnect(connected2,SIGNAL(changePosition(int,int,int,int)),this,SLOT(changePosition(int,int,int,int)));
-    this->connected2=NULL;
+    if(connected2!=NULL) {
+        secondWire->endConnection(this->connected2);
+        //вот это поворот
+        QObject::disconnect(connected2,SIGNAL(changePosition(int,int,int,int)),this,SLOT(changePosition(int,int,int,int)));
+        this->connected2=NULL;
+    }
     this->wires->append(secondWire);
     secondWire->setWireList(wires);
     for(int i=wirePart;i<this->path->size();i++) {

@@ -12,6 +12,7 @@ Graph::Graph(QObject *parent) :
     this->matrixResolver = new LUMatrix(this);
     this->numberOfIterations = 0;
     this->diodesBranches = new QList<DiodeBranch*>();
+    this->diodes = new QList<Diode*>();
 }
 
 void Graph::addVertex(Wire *w)
@@ -43,14 +44,16 @@ int Graph::getNewNumber()
 void Graph::start()
 {
     if(diodes->size()>0) {
-        //если в схеме есть диод(ы), то выделяем ветки
-        //processGraph(graph->firstKey(),getNewNumber());
+        processGraph(graph->firstKey(),getNewNumber());
     }
     double *x;
     int numb;
+    QList<DiodeBranch*>::Iterator diodeBranchIterator;
+    diodeBranchIterator = this->diodesBranches->begin();
     do{
     if(this->graph->size()>1)
     {
+
         QMap<Wire*,int*>::iterator i;
         numb=0;
         //пронумеровываем все потенциалы
@@ -134,7 +137,10 @@ void Graph::start()
             qDebug()<<x[i];
         }
     }
-    } while (diodes->size()!=0);
+        if(diodesBranches->size()!=0) {
+            diodeBranchIterator++;
+        }
+    } while (diodeBranchIterator!=diodesBranches->end());
         emit startVisualisation(graph,x,numb);
     }
 
@@ -176,6 +182,7 @@ void Graph::processGraph(Wire* first,int number)
             currentBranch->addWire(tmpWire);
             graph->value(tmpWire)[1]=i;
             if(tmpWire->getConnectedWires()->size()>1) {
+                currentBranch->setUpWire(tmpWire);
                 break;
             } else {
                 tmpList = tmpWire->getConnectedElements();
@@ -210,6 +217,7 @@ void Graph::processGraph(Wire* first,int number)
             currentBranch->addWire(tmpWire);
             graph->value(tmpWire)[1]=i;
             if(tmpWire->getConnectedWires()->size()>1) {
+                currentBranch->setDownWire(tmpWire);
                 break;
             } else {
                 tmpList = tmpWire->getConnectedElements();
