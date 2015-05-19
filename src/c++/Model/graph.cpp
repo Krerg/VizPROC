@@ -138,8 +138,13 @@ void Graph::start()
         }
     }
         if(diodesBranches->size()!=0) {
+            //вот и весь алгоритм
+            if((*diodeBranchIterator)->checkBranch()) {
+                (*diodeBranchIterator)->open();
+            }
             diodeBranchIterator++;
         }
+
     } while (diodeBranchIterator!=diodesBranches->end());
         emit startVisualisation(graph,x,numb);
     }

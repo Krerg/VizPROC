@@ -249,23 +249,6 @@ void OGLRender::paintEvent(QPaintEvent *event)
     }
     if(!enableVisualisation) {
     painter.beginNativePainting();
-
-    glColor3d(50.0f,50.0f,0.0f);
-
-        int i;
-        int triangleAmount = 20;
-
-        GLfloat twicePi = 2.0f * 3.1415;
-
-    glBegin(GL_TRIANGLE_FAN);
-        glVertex2f(40,40);
-        for(i=0;i <= triangleAmount; i++) {
-            glVertex2f(40+(3*cos(i*twicePi/triangleAmount)),40+(3*sin(i*twicePi/triangleAmount)));
-        }
-
-    glEnd();
-
-
     emit paintComponents();
     } else {
       emit updateVisualisation(&painter);
