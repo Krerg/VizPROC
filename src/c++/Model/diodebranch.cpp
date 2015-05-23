@@ -38,9 +38,22 @@ void DiodeBranch::setGraph(QMap<Wire *, int *> *graph)
     this->graph = graph;
 }
 
-bool DiodeBranch::checkBranch()
+bool DiodeBranch::checkBranch(double* array)
 {
-    if((upWire->getPotential()-downWire->getPotential())>0.6)
+    double upPotential;
+    double downPotential;
+    if(upWire->isGround()) {
+        upPotential = 0;
+    } else {
+        upPotential = array[upWire->getNumber()];
+    }
+
+    if(downWire->isGround()) {
+        downPotential = 0;
+    } else {
+        downPotential = array[downWire->getNumber()];
+    }
+    if((upPotential-downPotential)>0.6)
     {
         return true;
     } else {

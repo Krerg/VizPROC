@@ -40,7 +40,7 @@ public:
      * @brief checkBranch
      * @return
      */
-    bool checkBranch();
+    bool checkBranch(double* array);
 
     /**
      * @brief setUpWire

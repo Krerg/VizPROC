@@ -283,25 +283,8 @@ void Diode::visualisation(int *container1, int *container2, QPainter *painter, i
         painter->drawLine(QPointF(x+pinLength+width,y+height/2),QPointF(x+2*pinLength+width,y+height/2));
 
 
-
     } else {
-        QLinearGradient lg = QLinearGradient(QPointF(x,y+pinLength),QPointF(x,y+pinLength+width));
-        lg.setCoordinateMode(QGradient::ObjectBoundingMode );
-        lg.setSpread(QGradient::PadSpread);
-        lg.setColorAt(0.0,QColor(container1[0],container1[1],container1[2]));
-        lg.setColorAt(1.0,QColor(container2[0],container2[1],container2[2]));
-        QBrush brush = QBrush(lg);
-        painter->setBrush(brush);
-        QPen p;
-        p.setBrush(brush);
-        p.setWidth(2);
-        painter->setPen(p);
-        painter->drawLine(QPointF(x+height/2,y),QPointF(x+height/2,y+pinLength)); // @1
-        painter->drawLine(QPointF(x,y+pinLength),QPointF(x+height,y+pinLength));
-        painter->drawLine(QPointF(x,y+pinLength),QPointF(x,y+pinLength+width)); // @1
-        painter->drawLine(QPointF(x+height,y+pinLength),QPointF(x+height,y+pinLength+width));
-        painter->drawLine(QPointF(x,y+width+pinLength),QPointF(x+height,y+width+pinLength));
-        painter->drawLine(QPointF(x+height/2,y+width+pinLength),QPointF(x+height/2,y+width+2*pinLength));
+
     }
 }
 

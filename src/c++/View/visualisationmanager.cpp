@@ -165,9 +165,9 @@ void VisualisationManager::startVisualisation(QMap<Wire *, int *> *graph, double
         (*i)->setPotential(potentials[(*i)->getNumber()]);
     }
 
-    for(i=wires->begin();i!=wires->end();i++) {
-        qDebug()<<(*i)->initSpeed();
-    }
+//    for(i=wires->begin();i!=wires->end();i++) {
+//        qDebug()<<(*i)->initSpeed();
+//    }
 
     emit enableVisualisation();
 }

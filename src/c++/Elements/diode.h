@@ -87,7 +87,7 @@ public:
      * @brief visualisation
      * @param painter
      */
-    void visualisation(QPainter* painter);
+    void visualisation(int *container1, int *container2, QPainter *painter, int radius);
 
     ~Diode();
 private:
