@@ -87,6 +87,9 @@ void WorkBench::connectComponents()
     //обновление визуализации
     QObject::connect(canvas,SIGNAL(updateVisualisation(QPainter*)),visualisationManager,SLOT(updateVusualisation(QPainter*)));
 
+    //обновление визуализации
+    QObject::connect(canvas,SIGNAL(paintMeters(QPainter*)),componentManager,SLOT(paintMeters(QPainter*)));
+
     //открытие окошка для настройки параметров элементов
     QObject::connect(componentManager,SIGNAL(onElementClick(Element*)),this,SLOT(onElementClick(Element*)));
 

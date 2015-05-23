@@ -59,6 +59,13 @@ private:
     void addGround(int x, int y);
 
     /**
+     * @brief addAmperemeter добавление амперметра
+     * @param x координата курсора по оси абсцисс
+     * @param y координата курсора по оси ординат
+     */
+    void addAmperemeter(int x, int y);
+
+    /**
      * @brief dx разница координат мыши и элемента по оси абсцисс
      */
     int dx;
@@ -82,6 +89,11 @@ private:
      * @brief elements стуктура, которая хранит все элементы
      */
     QList<Element*> *elements;
+
+    /**
+     * @brief meters список измерительных приборов
+     */
+    QList<Element*> *meters;
 
     /**
      * @brief ground заземление (пока что одно)
@@ -199,6 +211,12 @@ public slots:
      * @brief paintComponents отрисовка всех элементов на экране
      */
     void paintComponents();
+
+    /**
+     * @brief paintMeters отрисовка измерительных приборов
+     * @param painter
+     */
+    void paintMeters(QPainter *painter);
 
     /**
      * @brief moveElement перемещениие элемента

@@ -14,6 +14,7 @@ Diode::Diode(QObject *parent) : QObject(parent)
     this->height = 14;
     this->pinLength = 5;
     this->orientation = this->HORIZONTAL_ORIENTATION;
+    this->opened = false;
     //this->render - new QPainter();
 }
 
@@ -189,6 +190,16 @@ void Diode::setPainter(QPainter *painter)
     this->painter = painter;
 }
 
+void Diode::open()
+{
+    this->opened = true;
+}
+
+void Diode::close()
+{
+    this->opened = false;
+}
+
 Connector *Diode::getConnector1()
 {
     return c1;
@@ -197,6 +208,49 @@ Connector *Diode::getConnector1()
 Connector *Diode::getConnector2()
 {
     return c2;
+}
+
+Wire *Diode::getAnotherWire(int number)
+{
+    if(number == this->c1->getConnectedWire()->getNumber())
+    {
+        return c2->getConnectedWire();
+    }
+    else if(number == this->c2->getConnectedWire()->getNumber())
+    {
+        return c1->getConnectedWire();
+    } else {
+        return NULL;
+    }
+}
+
+int Diode::getEmfDirection(int wireNumber)
+{
+    if(this->c1->getConnectedWire()->getNumber()==wireNumber) {
+        return 1;
+    } else if(this->c2->getConnectedWire()->getNumber()==wireNumber) {
+        return -1;
+    }
+}
+
+int Diode::getConductivity()
+{
+    return 100000;
+}
+
+double Diode::getVoltage()
+{
+    return 0.6;
+}
+
+bool Diode::isOpened()
+{
+    return opened;
+}
+
+void Diode::visualisation(QPainter *painter)
+{
+    //нужна реализация
 }
 
 Diode::~Diode()

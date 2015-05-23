@@ -9,6 +9,7 @@ class Connector;
 #include "src/c++/Elements/element.h"
 #include <QPainter>
 #include "src/c++/View/particle.h"
+#include "src/c++/Elements/wireconnector.h"
 
 /**
  * @brief The Wire class провод соединяющий два элемента
@@ -244,6 +245,11 @@ private:
      * @brief potential
      */
     double potential;
+
+    /**
+     * @brief wireConnector
+     */
+    WireConnector* wireConnector;
 signals:
     void addWire(Wire* w);
 public slots:

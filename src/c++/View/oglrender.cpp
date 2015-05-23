@@ -20,6 +20,9 @@ OGLRender::OGLRender() :
     elementList->addItem("ЭДС");
     elementList->addItem("Провод");
     elementList->addItem("Заземление");
+    elementList->addItem("Амперметр");
+    elementList->addItem("Вольтметр");
+
     QVBoxLayout *g = new QVBoxLayout(this);
 
     elemPanel = new QVBoxLayout();
@@ -247,9 +250,13 @@ void OGLRender::paintEvent(QPaintEvent *event)
     } else if (emfPanelVisible) {
         painter.drawText(voltageSpinBox->x()-65,voltageSpinBox->y()+14,"Напряжение");
     }
+
+
+
     if(!enableVisualisation) {
     painter.beginNativePainting();
     emit paintComponents();
+    emit paintMeters(&painter);
     } else {
       emit updateVisualisation(&painter);
     }

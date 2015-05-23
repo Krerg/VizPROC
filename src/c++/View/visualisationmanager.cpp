@@ -2,6 +2,7 @@
 #include "src/c++/Elements/emf.h"
 #include "src/c++/Elements/resistor.h"
 #include "src/c++/Elements/ground.h"
+#include "src/c++/Elements/diode.h"
 #include <math.h>
 #include <QDebug>
 
@@ -122,6 +123,9 @@ void VisualisationManager::updateVusualisation(QPainter *painter)
         } else if((*j)->getName()=="Ground") {
             Ground* groundTemp = (Ground*)(*j);
             groundTemp->visualisation(painter);
+        } else if((*j)->getName()=="Diode") {
+            Diode* diodeTemp = (Diode*)(*j);
+            diodeTemp->visualisation(painter);
         }
     }
 

@@ -149,6 +149,12 @@ signals:
     void paintComponents();
 
     /**
+     * @brief paintMeters
+     * @param painter
+     */
+    void paintMeters(QPainter *painter);
+
+    /**
      * @brief mouseClicked нажатие мыши
      * @param event
      */

@@ -3,11 +3,13 @@
 #include "src/c++/Elements/emf.h"
 #include "src/c++/Elements/wire.h"
 #include "src/c++/Elements/ground.h"
+#include "src/c++/Elements/amperemeter.h"
 
 ComponentManager::ComponentManager(QObject *parent) :
     QObject(parent)
 {
     this->elements = new QList<Element*>();
+    this->meters = new QList<Element*>();
     this->wires = new QList<Wire*>();
     this->selected = NULL;
     this->pointed = NULL;
@@ -41,6 +43,20 @@ void ComponentManager::paintComponents()
     if(this->ground!=NULL)
     {
         this->ground->paintComponent();
+    }
+}
+
+void ComponentManager::paintMeters(QPainter *painter)
+{
+    QList<Element*>::iterator i;
+    for(i=meters->begin();i!=meters->end();i++)
+    {
+        if((*i)->getName() == "Amper") {
+
+            ((Amperemeter*)(*i))->paintComponent(painter);
+        } else {
+
+        }
     }
 }
 
@@ -78,6 +94,14 @@ void ComponentManager::addGround(int x, int y)
     this->elements->append((Element*)temp);
 }
 
+void ComponentManager::addAmperemeter(int x, int y)
+{
+    this->leftClick = false;
+    Amperemeter* temp = new Amperemeter();
+    temp->setPosition(x,y);
+    this->meters->append((Element*)temp);
+}
+
 void ComponentManager::setPainter(QPainter *painter)
 {
     this->painter = painter;
@@ -100,6 +124,9 @@ void ComponentManager::mouseClick(int x, int y)
 
     if(pointed!=NULL)
     {
+        if(pointed->getName()=="Amper") {
+            ((Amperemeter*)pointed)->setWire(NULL);
+        }
         dx = x-pointed->getX();
         dy = y-pointed->getY();
         pointed->enableSelection();
@@ -119,10 +146,12 @@ void ComponentManager::moveElement(int x, int y)
     {
         selected->setPosition(x-dx,y-dy);
     }
+
 }
 
 Element* ComponentManager::getElementByCoordinates(int x, int y)
 {
+    QList<Element*>::iterator i;
     for(int i=0;i<elements->size();i++)
     {
         if(elements->at(i)->isSelected(x,y))
@@ -130,11 +159,27 @@ Element* ComponentManager::getElementByCoordinates(int x, int y)
             return elements->at(i);
         }
     }
+    for(i=meters->begin();i!=meters->end();i++) {
+        if((*i)->isSelected(x,y)) {
+            return (*i);
+        }
+    }
+
     return NULL;
 }
 
 void ComponentManager::leftClickReleased()
 {
+    if(selected!=NULL && selected->getName()=="Amper") {
+        QList<Wire*>::iterator j;
+        for(j=wires->begin();j!=wires->end();j++)
+        {
+           if((this->wirePart=(*j)->isSelected(selected->getX()+10,selected->getY()+10))>0)
+           {
+              ((Amperemeter*)selected)->setWire((*j));
+           }
+        }
+    }
     this->leftClick=false;
 }
 
@@ -236,6 +281,8 @@ void ComponentManager::addElement(QString elem, int x, int y)
         this->addGround(x,y);
     } else if(elem == "Диод") {
         this->addDiode(x,y);
+    } else if(elem == "Амперметр") {
+        this->addAmperemeter(x,y);
     }
 }
 

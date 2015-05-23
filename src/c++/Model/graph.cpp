@@ -13,7 +13,6 @@ Graph::Graph(QObject *parent) :
     this->numberOfIterations = 0;
     this->diodesBranches = new QList<DiodeBranch*>();
     this->diodes = new QList<Diode*>();
-    //f
 }
 
 void Graph::addVertex(Wire *w)
@@ -126,6 +125,22 @@ void Graph::start()
                     if(tmp>=0) {
                     array[i.key()->getNumber()][tmp] -= emfTemp->getConductivity();
                     }
+                } else if((*j)->getName()=="Diode") {
+                    Diode* diodeTemp = (Diode*)(*j);
+                    if(!diodeTemp->isOpened()) {
+                        break;
+                    }
+                    tmp = diodeTemp->getAnotherWire(i.key()->getNumber())->getNumber();
+
+                    array[i.key()->getNumber()][numb]=diodeTemp->getEmfDirection(i.key()->getNumber())*diodeTemp->getConductivity()*diodeTemp->getVoltage();
+
+                    //прибавляем к диагональному элементу
+                    array[i.key()->getNumber()][i.key()->getNumber()] += diodeTemp->getConductivity();
+
+                    //и соответсвенно к тому элементу через который он присоединен
+                    if(tmp>=0) {
+                    array[i.key()->getNumber()][tmp] -= diodeTemp->getConductivity();
+                    }
                 }
             }
         }
@@ -138,9 +153,17 @@ void Graph::start()
             qDebug()<<x[i];
         }
     }
+    if(diodeBranchIterator==diodesBranches->end())
+        break;
+
         if(diodesBranches->size()!=0) {
+            //вот и весь алгоритм
+            if((*diodeBranchIterator)->checkBranch()) {
+                (*diodeBranchIterator)->open();
+            }
             diodeBranchIterator++;
         }
+
     } while (diodeBranchIterator!=diodesBranches->end());
         emit startVisualisation(graph,x,numb);
     }

@@ -36,7 +36,8 @@ SOURCES += main.cpp\
     src/c++/Elements/wireconnector.cpp \
     src/c++/View/visualisationmanager.cpp \
     src/c++/View/particle.cpp \
-    src/c++/Model/diodebranch.cpp
+    src/c++/Model/diodebranch.cpp \
+    src/c++/Elements/amperemeter.cpp
 
 HEADERS  += src/c++/View/startscreen.h \
     windowmanager.h \
@@ -61,6 +62,6 @@ HEADERS  += src/c++/View/startscreen.h \
     src/c++/Elements/wireconnector.h \
     src/c++/View/visualisationmanager.h \
     src/c++/View/particle.h \
-    src/c++/Model/diodebranch.h
-
+    src/c++/Model/diodebranch.h \
+    src/c++/Elements/amperemeter.h
 FORMS    +=

@@ -25,6 +25,7 @@ Wire::Wire(QObject *parent) :
     this->connectedPointNumber = 0;
     this->lastStep = 0;
     this->speed = 0;
+    this->wireConnector = NULL;
 }
 
 void Wire::addPoint(QPoint *point)
@@ -77,6 +78,11 @@ void Wire::paintComponent()
     }
     //glLineWidth(1.0f);
     glEnd();
+
+    if(this->wireConnector!=NULL) {
+        wireConnector->paintComponent();
+    }
+
     }
 }
 
@@ -92,6 +98,9 @@ void Wire::visualisation(int *color, QPainter* painter)
     QList<Particle*>::iterator j;
     for(j=particleList->begin();j!=particleList->end();j++) {
         (*j)->visualisation(painter);
+    }
+    if(this->wireConnector!=NULL) {
+        wireConnector->paintComponent();
     }
 
 //    if(this->path->size()>1) {
@@ -175,9 +184,25 @@ void Wire::changePosition(int oldX, int oldY, int newX, int newY)
         //смотрим какая точка должна поменять положение (какая-то из боковых поэтому индекс 0 или последний)
         if(this->path->at(0)->x()==oldX && this->path->at(0)->y()==oldY)
         {
+
             temp = this->path->at(0);
             //берем следующую точку
             QPoint* second = this->path->at(1);
+
+            //ситуация когда двигать провод не надо
+            if(second->x()==temp->x() && second->y()==temp->y() && wires->size()>1) {
+                qDebug()<<"lllll";
+                QPoint* third = this->path->at(2);
+                if(third->x()==second->x()) {
+                    second->setY(newY);
+                } else {
+                    second->setX(newX);
+                }
+                temp->setX(newX);
+                temp->setY(newY);
+                return;
+            }
+
             if(second->x()==temp->x())
             {
                 if(abs(second->y()-newY)<3)
@@ -227,6 +252,21 @@ void Wire::changePosition(int oldX, int oldY, int newX, int newY)
             temp = this->path->last();
             //берем предпоследнюю точку
             QPoint* second = this->path->at(path->size()-2);
+
+            //ситуация когда двигать провод не надо
+            if(second->x()==temp->x() && second->y()==temp->y() && wires->size()>1) {
+                qDebug()<<"lllll";
+                QPoint* third = this->path->at(path->size()-3);
+                if(third->x()==second->x()) {
+                    second->setY(newY);
+                } else {
+                    second->setX(newX);
+                }
+                temp->setX(newX);
+                temp->setY(newY);
+                return;
+            }
+
             if(second->x()==temp->x())
             {
                 if(abs(second->y()-newY)<3 && wires->size()==1)
@@ -309,6 +349,7 @@ void Wire::connectWire(Wire *w, int wirePart)
             last->setX(tmp1->x());
             last->setY(tmp1->y());
             beforeLast->setY(tmp1->y());
+            wirePart--;
         }
     } else {
         if(last->x()==beforeLast->x()) {
@@ -319,6 +360,7 @@ void Wire::connectWire(Wire *w, int wirePart)
             last->setX(tmp2->x());
             last->setY(tmp2->y());
             beforeLast->setY(tmp2->y());
+            wirePart--;
         }
     }
 
@@ -326,7 +368,7 @@ void Wire::connectWire(Wire *w, int wirePart)
     Wire* secondWire = new Wire();
 
     //надо добавить в список отрисовываемых объектов
-    WireConnector* wireConnector = new WireConnector(last->x(),last->y());
+    this->wireConnector = new WireConnector(last->x(),last->y());
     //--wirePart;
 
     for(int i=wirePart;i<this->path->size();i++) {

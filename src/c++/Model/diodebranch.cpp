@@ -13,6 +13,10 @@ DiodeBranch::~DiodeBranch()
 
 void DiodeBranch::open()
 {
+    QList<Diode*>::iterator j;
+    for(j=diodes->begin();j!=diodes->end();j++) {
+        (*j)->open();
+    }
     QList<Wire*>::Iterator i;
     for(i=wires->begin();i!=wires->end();i++) {
         this->graph->value((*i))[1]=0;

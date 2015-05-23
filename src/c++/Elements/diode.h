@@ -35,6 +35,10 @@ public:
     void setOpeningThreshold();
     void setPainter(QPainter* painter);
 
+    void open();
+
+    void close();
+
     /**
      * @brief getConnector1
      * @return
@@ -46,6 +50,44 @@ public:
      * @return
      */
     Connector* getConnector2();
+
+    /**
+     * @brief getAnotherWire
+     * @param number
+     * @return
+     */
+    Wire* getAnotherWire(int number);
+
+    /**
+     * @brief getEmfDirection возвращает направление ЭДС по отношению к потенциалу
+     * @param wireNumber номер потенциала
+     * @return 1 если входит в провод и -1 если наоборот
+     */
+    int getEmfDirection(int wireNumber);
+
+    /**
+     * @brief getConductivity
+     * @return возвращает значение проводимсти ЭДС
+     */
+    int getConductivity();
+
+    /**
+     * @brief getVoltage
+     * @return напряжение на ЭДС
+     */
+    double getVoltage();
+
+    /**
+     * @brief isOpened
+     * @return
+     */
+    bool isOpened();
+
+    /**
+     * @brief visualisation
+     * @param painter
+     */
+    void visualisation(QPainter* painter);
 
     ~Diode();
 private:
@@ -77,6 +119,8 @@ private:
     Connector* c1;
     Connector* c2;
     QPainter* painter;
+
+    bool opened;
 
     void setConnectorPosition();
 
