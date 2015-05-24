@@ -333,7 +333,8 @@ void Wire::connectWire(Wire *w, int wirePart)
             last->setY(this->path->at(wirePart)->y());
             beforeLast->setY((this->path->at(wirePart)->y()));
         }
-
+        //надо добавить в список отрисовываемых объектов
+        this->wireConnector = new WireConnector(last->x(),last->y());
         return;
     }
 
@@ -360,7 +361,7 @@ void Wire::connectWire(Wire *w, int wirePart)
             last->setX(tmp2->x());
             last->setY(tmp2->y());
             beforeLast->setY(tmp2->y());
-            wirePart--;
+            wirePart;
         }
     }
 
@@ -369,6 +370,7 @@ void Wire::connectWire(Wire *w, int wirePart)
 
     //надо добавить в список отрисовываемых объектов
     this->wireConnector = new WireConnector(last->x(),last->y());
+
     //--wirePart;
 
     for(int i=wirePart;i<this->path->size();i++) {

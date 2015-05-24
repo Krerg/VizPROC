@@ -36,4 +36,3 @@ int WireConnector::getY()
 {
     return this->y;
 }
-

@@ -250,6 +250,8 @@ private:
      * @brief wireConnector
      */
     WireConnector* wireConnector;
+
+
 signals:
     void addWire(Wire* w);
 public slots:
