@@ -78,6 +78,12 @@ public slots:
      * @param event событие мыши
      */
     void mouseDoubleClicked(QMouseEvent *event);
+
+    /**
+     * @brief keyPresser слот, который вызывает при нажатии на клавишу на клавиатуре
+     * @param event событие нажатия клавиши
+     */
+    void keyPressed(QKeyEvent* event);
 };
 
 #endif // EVENTHANDLER_H

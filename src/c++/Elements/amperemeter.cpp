@@ -20,7 +20,7 @@ void Amperemeter::paintComponent(QPainter *painter)
     painter->setBrush(Qt::white);
     painter->drawEllipse(x,y,20,20);
     painter->drawText(x+7,y+13,"А");
-    if(attachedWire!=NULL && enabled) {
+    if(attachedWire!=NULL) {
         painter->drawText(x+5,y+29,"4А");
     }
 }

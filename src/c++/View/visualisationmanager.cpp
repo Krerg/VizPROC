@@ -125,7 +125,7 @@ void VisualisationManager::updateVusualisation(QPainter *painter)
             groundTemp->visualisation(painter);
         } else if((*j)->getName()=="Diode") {
             Diode* diodeTemp = (Diode*)(*j);
-            diodeTemp->visualisation(painter);
+            diodeTemp->visualisation(colorContainer1,colorContainer2,painter,5);
         }
     }
 

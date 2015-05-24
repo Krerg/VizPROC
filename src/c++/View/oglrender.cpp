@@ -12,7 +12,7 @@ OGLRender::OGLRender() :
     QGLWidget()
 {
     //setFormat(QGLFormat(QGL::SampleBuffers));
-    startButton = new QPushButton("Поехали",this);
+    startButton = new QPushButton("Включить визуализацию",this);
     QObject::connect(startButton,SIGNAL(clicked()),this,SLOT(startButtonPressed()));
     elementList = new QComboBox(this);
     elementList->addItem("Резистор");
@@ -191,26 +191,6 @@ void OGLRender::paintEvent(QPaintEvent *event)
     QPainter painter;
     painter.begin(this);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    int *color = new int[3];
-    color[0]=255;
-    color[1]=20;
-    color[2]=20;
-
-//    w->visualisation(color,&painter);
-//    Resistor* r = new Resistor();
-//    r->setPosition(60,60);
-//    //r->paintComponent();
-//    int* colorContainer1 = new int[3];
-//    int* colorContainer2 = new int[3];
-//    colorContainer1[0]=255;
-//    colorContainer1[1]=0;
-//    colorContainer1[2]=0;
-
-
-//    colorContainer2[0]=0;
-//    colorContainer2[1]=0;
-//    colorContainer2[2]=255;
-
 
 //    r->visualisation(colorContainer1,colorContainer2,&painter,100);
 //gradient
@@ -251,27 +231,8 @@ void OGLRender::paintEvent(QPaintEvent *event)
         painter.drawText(voltageSpinBox->x()-65,voltageSpinBox->y()+14,"Напряжение");
     }
 
-
-
     if(!enableVisualisation) {
     painter.beginNativePainting();
-
-    glColor3d(50.0f,50.0f,0.0f);
-
-        int i;
-        int triangleAmount = 20;
-
-        GLfloat twicePi = 2.0f * 3.1415;
-
-    glBegin(GL_TRIANGLE_FAN);
-        glVertex2f(40,40);
-        for(i=0;i <= triangleAmount; i++) {
-            glVertex2f(40+(3*cos(i*twicePi/triangleAmount)),40+(3*sin(i*twicePi/triangleAmount)));
-        }
-
-    glEnd();
-
-
     emit paintComponents();
     emit paintMeters(&painter);
     } else {
@@ -279,17 +240,16 @@ void OGLRender::paintEvent(QPaintEvent *event)
     }
     painter.endNativePainting();
     painter.end();
-    //qDebug()<<"Paiint";
-    //swapBuffers();
-    delete color;
-
-    //qDebug()<<"Paiint";
-    //swapBuffers();
 }
 
 void OGLRender::wheelEvent(QWheelEvent *event)
 {
 
+}
+
+void OGLRender::keyPressEvent(QKeyEvent *event)
+{
+    emit keyPressed(event);
 }
 
 QComboBox* OGLRender::getComboBox()

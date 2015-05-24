@@ -138,7 +138,7 @@ protected:
     void mouseDoubleClickEvent(QMouseEvent *event);
     void paintEvent(QPaintEvent *event);
     void wheelEvent(QWheelEvent *event);
-
+    void keyPressEvent(QKeyEvent *event);
 public slots:
     void startButtonPressed();
     void enableVisualisationSlot();
@@ -149,7 +149,7 @@ signals:
     void paintComponents();
 
     /**
-     * @brief paintMeters
+     * @brief paintMeters визуализация измерительных приборов
      * @param painter
      */
     void paintMeters(QPainter *painter);
@@ -188,6 +188,12 @@ signals:
      * @param painter
      */
     void updateVisualisation(QPainter *painter);
+
+    /**
+     * @brief keyPressed сигнал нажатия кнопки
+     * @param event
+     */
+    void keyPressed(QKeyEvent* event);
 };
 
 #endif // OGLRENDER_H

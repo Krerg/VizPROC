@@ -38,7 +38,12 @@ void EventHandler::mouseMoved(QMouseEvent *event)
 
 void EventHandler::mouseDoubleClicked(QMouseEvent *event)
 {
-   emit changeOrientation(event->x(),event->y());
+    emit changeOrientation(event->x(),event->y());
+}
+
+void EventHandler::keyPressed(QKeyEvent *event)
+{
+    qDebug()<<"Key pressed";
 }
 
 void EventHandler::setQComboBox(QComboBox *c)
