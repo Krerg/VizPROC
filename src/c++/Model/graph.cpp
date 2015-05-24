@@ -94,6 +94,9 @@ void Graph::start()
             {
                 continue;
             }
+            if(array[i.key()->getNumber()][i.key()->getNumber()]!=0) {
+                continue;
+            }
             //берем все присоединенные элементы и заносим в матрицу
             temp = i.key()->getAllConnectedElements();
             for(j=temp->begin();j!=temp->end();j++)
@@ -128,7 +131,7 @@ void Graph::start()
                 } else if((*j)->getName()=="Diode") {
                     Diode* diodeTemp = (Diode*)(*j);
                     if(!diodeTemp->isOpened()) {
-                        break;
+                        continue;
                     }
                     tmp = diodeTemp->getAnotherWire(i.key()->getNumber())->getNumber();
 
@@ -158,13 +161,13 @@ void Graph::start()
 
         if(diodesBranches->size()!=0) {
             //вот и весь алгоритм
-            if((*diodeBranchIterator)->checkBranch()) {
+            if((*diodeBranchIterator)->checkBranch(x)) {
                 (*diodeBranchIterator)->open();
             }
             diodeBranchIterator++;
         }
 
-    } while (diodeBranchIterator!=diodesBranches->end());
+    } while (true);
         emit startVisualisation(graph,x,numb);
     }
 
@@ -199,6 +202,7 @@ void Graph::processGraph(Wire* first,int number)
         Element* tmpElem2;
         QList<Element*>* tmpList;
         DiodeBranch* currentBranch = new DiodeBranch(this);
+        currentBranch->setGraph(graph);
         currentBranch->addDiode(d);
         diodesBranches->append(currentBranch);
         i++;

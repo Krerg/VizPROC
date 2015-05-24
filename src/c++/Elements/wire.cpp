@@ -361,7 +361,6 @@ void Wire::connectWire(Wire *w, int wirePart)
             last->setX(tmp2->x());
             last->setY(tmp2->y());
             beforeLast->setY(tmp2->y());
-            wirePart;
         }
     }
 
