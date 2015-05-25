@@ -168,6 +168,11 @@ Element* ComponentManager::getElementByCoordinates(int x, int y)
     return NULL;
 }
 
+void ComponentManager::deleteItem()
+{
+    qDebug()<<"Delete item slot";
+}
+
 void ComponentManager::leftClickReleased()
 {
     if(selected!=NULL && selected->getName()=="Amper") {

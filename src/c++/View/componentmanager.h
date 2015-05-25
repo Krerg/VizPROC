@@ -199,6 +199,14 @@ signals:
      */
     void addDiode(Diode* d);
 public slots:
+    /**
+     * @brief deleteItem слот удаления элемента
+     */
+    void deleteItem();
+
+    /**
+     * @brief leftClickReleased
+     */
     void leftClickReleased();
 
     /**

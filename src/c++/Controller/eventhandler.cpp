@@ -43,7 +43,9 @@ void EventHandler::mouseDoubleClicked(QMouseEvent *event)
 
 void EventHandler::keyPressed(QKeyEvent *event)
 {
-    qDebug()<<"Key pressed";
+    if(event->key()==16777223) {
+        emit deleteItem();
+    }
 }
 
 void EventHandler::setQComboBox(QComboBox *c)

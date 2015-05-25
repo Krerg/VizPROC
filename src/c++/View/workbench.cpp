@@ -73,6 +73,7 @@ void WorkBench::connectComponents()
     QObject::connect(eventHandler,SIGNAL(leftClickReleased()),componentManager,SLOT(leftClickReleased()));
     QObject::connect(eventHandler,SIGNAL(changeOrientation(int,int)),componentManager,SLOT(changeOrientation(int,int)));
     QObject::connect(eventHandler,SIGNAL(moveElement(int,int)),componentManager,SLOT(moveElement(int,int)));
+    QObject::connect(eventHandler,SIGNAL(deleteItem()),componentManager,SLOT(deleteItem()));
 
     //отрисовка
     QObject::connect(canvas,SIGNAL(paintComponents()),componentManager,SLOT(paintComponents()));

@@ -54,6 +54,11 @@ signals:
      * @brief changeOrientation изменение ориентациии положения элемента
      */
     void changeOrientation(int,int);
+
+    /**
+     * @brief deleteItem сигнал нажатия кнопки delete
+     */
+    void deleteItem();
 public slots:
     /**
      * @brief mouseClicked слот который вызываетя при нажатии любой кнопки мыши
