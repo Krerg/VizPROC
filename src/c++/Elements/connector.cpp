@@ -1,11 +1,19 @@
 #include "connector.h"
 #include <QtOpenGL/QGLWidget>
+#include <QDebug>
 
 Connector::Connector(QObject *parent) :
     QObject(parent)
 {
     this->width=5;
     this->height=5;
+}
+
+Connector::~Connector() {
+    qDebug()<<"Bye connector";
+    if(connectedWire!=NULL) {
+        //нужна реализация
+    }
 }
 
 void Connector::drawComponent()

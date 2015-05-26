@@ -106,6 +106,11 @@ void WorkBench::connectComponents()
 
 }
 
+void WorkBench::keyPressEvent(QKeyEvent *event)
+{
+    qDebug()<<"Key workbench";
+}
+
 void WorkBench::onElementClick(Element *elem)
 {
     if(elem->getName()=="Res") {
@@ -113,7 +118,6 @@ void WorkBench::onElementClick(Element *elem)
     } else if(elem->getName()=="Emf") {
         canvas->openEmfPanel((EMF*)elem);
     }
-    qDebug()<<"On elemt click";
 }
 
 void WorkBench::onWireClick(Wire *w)

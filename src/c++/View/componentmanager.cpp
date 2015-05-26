@@ -170,7 +170,22 @@ Element* ComponentManager::getElementByCoordinates(int x, int y)
 
 void ComponentManager::deleteItem()
 {
-    qDebug()<<"Delete item slot";
+    if(selected!=NULL) {
+        qDebug()<<"dsd";
+        QList<Element*>::Iterator i;
+        int elemIndex=0;
+        for(i=elements->begin();i!=elements->end();i++) {
+            if((*i)==selected) {
+                elements->removeAt(elemIndex);
+                delete (*i);
+            }
+            elemIndex++;
+        }
+        this->pointed = NULL;
+        this->selected = NULL;
+    } else if(selectedWire!=NULL) {
+        qDebug()<<"Delete wire";
+    }
 }
 
 void ComponentManager::leftClickReleased()
@@ -325,6 +340,10 @@ void ComponentManager::connect(int x, int y)
             this->wireEnd2 = NULL;
             emit wireAdded(drawWire);
             this->drawWire=NULL;
+            this->pointed = NULL;
+            this->pointedConnector = NULL;
+            this->selected = NULL;
+            this->selectedWire = NULL;
         } else if(pointedWire!=NULL) {
             pointedWire->connectWire(drawWire,this->wirePart);
             this->drawingWire = false;

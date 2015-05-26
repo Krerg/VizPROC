@@ -11,6 +11,7 @@
 OGLRender::OGLRender() :
     QGLWidget()
 {
+    setFocusPolicy(Qt::ClickFocus);
     //setFormat(QGLFormat(QGL::SampleBuffers));
     startButton = new QPushButton("Включить визуализацию",this);
     QObject::connect(startButton,SIGNAL(clicked()),this,SLOT(startButtonPressed()));

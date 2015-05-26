@@ -53,6 +53,11 @@ public:
     ~OGLRender();
 private:
 
+    /**
+     * @brief componentIndex номер элемента в списке
+     */
+    int componentIndex;
+
     bool resistorPanelVisible=false;
 
     bool emfPanelVisible=false;

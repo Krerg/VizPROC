@@ -103,6 +103,9 @@ public:
      * @param y координата курсора по оси ординат
      */
     void changePosition(int x, int y);
+
+    ~Connector();
+
 private:    
     /**
      * @brief x координата на экране

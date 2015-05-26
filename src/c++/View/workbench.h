@@ -89,6 +89,13 @@ private:
     QWidget *panel;
 
     QLabel* lbl;
+protected:
+
+    /**
+     * @brief keyPressed сигнал нажатия кнопки
+     * @param event
+     */
+    void keyPressEvent(QKeyEvent *event);
 
 signals:
 

@@ -1,3 +1,4 @@
+#include <QDebug>
 #include "resistor.h"
 #include <QtOpenGL/QGLWidget>
 #include "src/c++/Elements/element.h"
@@ -23,14 +24,9 @@ Resistor::Resistor(QObject *parent) :
     this->resistance = 1;
 }
 
-Element::~Element()
-{
-
-}
-
 Resistor::~Resistor()
 {
-
+    qDebug()<<"Bye resistor";
 }
 
 void Resistor::setPosition(int x, int y)
