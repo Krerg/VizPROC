@@ -174,6 +174,12 @@ public:
     void setSpeed(int speed);
 
     /**
+     * @brief removeConnector удаление коннектора из провода
+     * @param c удаляемый коннектор
+     */
+    void removeConnector(Connector* c);
+
+    /**
      * @brief getConneted1
      * @return
      */

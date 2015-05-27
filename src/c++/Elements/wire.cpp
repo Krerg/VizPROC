@@ -656,6 +656,15 @@ void Wire::setSpeed(int speed)
     this->speed = speed;
 }
 
+void Wire::removeConnector(Connector *c)
+{
+    if(this->connected1 == c) {
+        connected1 = NULL;
+    } else if(this->connected2 == c) {
+        connected2 = NULL;
+    }
+}
+
 Connector *Wire::getConneted1()
 {
     return this->connected1;
