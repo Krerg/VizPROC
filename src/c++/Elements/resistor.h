@@ -30,6 +30,7 @@ public:
     virtual Connector* connectorPointCheck(int x, int y);
     virtual int getX();
     virtual int getY();
+    virtual void disconnectWire(Wire* w);
     virtual QString getName();
 
     /**

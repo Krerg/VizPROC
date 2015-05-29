@@ -114,6 +114,11 @@ int EMF::getY()
     return this->y;
 }
 
+void EMF::disconnectWire(Wire *w)
+{
+
+}
+
 void EMF::visualisation(int *container1, int *container2, QPainter *painter, int radius)
 {
 //    glColor3f(container1[0],container1[1],container1[2]);

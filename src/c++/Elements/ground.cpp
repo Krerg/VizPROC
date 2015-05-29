@@ -26,6 +26,11 @@ void Ground::visualisation(QPainter *painter)
     painter->drawLine(x+width/4,y+height,x+3*width/4,y+height);
 }
 
+void Ground::disconnectWire(Wire *w)
+{
+    //TODO
+}
+
 void Ground::setPosition(int x, int y)
 {
     this->x = x;

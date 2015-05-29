@@ -185,6 +185,11 @@ bool Diode::getType()
     }
 }
 
+void Diode::disconnectWire(Wire *w)
+{
+    //TODO
+}
+
 void Diode::setPainter(QPainter *painter)
 {
     this->painter = painter;

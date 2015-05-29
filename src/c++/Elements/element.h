@@ -98,6 +98,12 @@ public:
     virtual QString getName()=0;
 
     /**
+     * @brief disconnectWire
+     * @param w
+     */
+    virtual void disconnectWire(Wire *w)=0;
+
+    /**
      * @brief ~Element деструктор
      */
     virtual ~Element()=0;

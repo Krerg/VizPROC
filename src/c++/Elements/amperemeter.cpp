@@ -73,6 +73,11 @@ void Amperemeter::changeOrientation()
 
 }
 
+void Amperemeter::disconnectWire(Wire *w)
+{
+   //TODO
+}
+
 void Amperemeter::setEnabled()
 {
     this->enabled = true;

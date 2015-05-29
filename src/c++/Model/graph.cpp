@@ -33,7 +33,8 @@ void Graph::addVertex(Wire *w)
 
 void Graph::deleteVertex(Wire *w)
 {
-
+    delete this->graph->value(w);
+    this->graph->remove(w);
 }
 
 int Graph::getNewNumber()

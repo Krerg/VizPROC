@@ -31,11 +31,15 @@ public:
     int getHeight();
     virtual QString getName();
     virtual bool getType();
+    virtual void disconnectWire(Wire *w);
     int getOpeningThreshold();
     void setOpeningThreshold();
     void setPainter(QPainter* painter);
 
+
     void open();
+
+
 
     void close();
 

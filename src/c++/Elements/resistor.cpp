@@ -164,6 +164,15 @@ int Resistor::getY()
     return this->y;
 }
 
+void Resistor::disconnectWire(Wire *w)
+{
+    if(c1->getConnectedWire()==w) {
+
+    } else if(c2->getConnectedWire()==w) {
+
+    }
+}
+
 void Resistor::disableSelection()
 {
     this->selected=false;

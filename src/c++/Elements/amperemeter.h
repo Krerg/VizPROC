@@ -22,6 +22,7 @@ public:
     virtual void enablePointing();
     virtual void disablePointing();
     virtual void changeOrientation();
+    virtual void disconnectWire(Wire *w);
 
     void setEnabled();
 

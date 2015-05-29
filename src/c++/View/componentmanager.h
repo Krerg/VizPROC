@@ -124,6 +124,11 @@ private:
     Wire* selectedWire;
 
     /**
+     * @brief deleteMutex
+     */
+    bool deleteMutex=false;
+
+    /**
      * @brief pointed элемент, на который наведена мышь
      */
     Element* pointed;

@@ -29,6 +29,9 @@ void ComponentManager::paintComponents()
     QList<Element*>::iterator i;
     for(i=elements->begin();i!=elements->end();i++)
     {
+        if(deleteMutex) {
+            break;
+        }
         (*i)->paintComponent();
     }
 
@@ -152,11 +155,16 @@ void ComponentManager::moveElement(int x, int y)
 Element* ComponentManager::getElementByCoordinates(int x, int y)
 {
     QList<Element*>::iterator i;
-    for(int i=0;i<elements->size();i++)
+    for(i=elements->begin();i!=elements->end();i++)
     {
-        if(elements->at(i)->isSelected(x,y))
-        {
-            return elements->at(i);
+        if(deleteMutex) {
+            break;
+        }
+        try {
+        if((*i)!=NULL && (*i)->isSelected(x,y))
+            return (*i);
+        } catch(...) {
+            continue;
         }
     }
     for(i=meters->begin();i!=meters->end();i++) {
@@ -171,13 +179,15 @@ Element* ComponentManager::getElementByCoordinates(int x, int y)
 void ComponentManager::deleteItem()
 {
     if(selected!=NULL) {
+        deleteMutex = true;
         qDebug()<<"dsd";
         QList<Element*>::Iterator i;
         int elemIndex=0;
         for(i=elements->begin();i!=elements->end();i++) {
             if((*i)==selected) {
-                elements->removeAt(elemIndex);
                 delete (*i);
+                elements->removeAt(elemIndex);
+                break;
             }
             elemIndex++;
         }
@@ -186,6 +196,7 @@ void ComponentManager::deleteItem()
     } else if(selectedWire!=NULL) {
         qDebug()<<"Delete wire";
     }
+    deleteMutex=false;
 }
 
 void ComponentManager::leftClickReleased()

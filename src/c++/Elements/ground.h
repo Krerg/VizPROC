@@ -34,6 +34,7 @@ public:
     virtual QString getName();
     virtual ~Ground();
     void visualisation(QPainter* painter);
+    virtual void disconnectWire(Wire *w);
 private:
     /**
      * @brief x координата элемента по оси абсцисс
