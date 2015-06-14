@@ -13,6 +13,7 @@
 #include <QLabel>
 #include <QDoubleSpinBox>
 #include <QVBoxLayout>
+#include <QMenuBar>
 
 /**
  * @brief The OGLRender class
@@ -51,7 +52,8 @@ public:
     void openEmfPanel(EMF* emf);
 
     ~OGLRender();
-private:
+private:    
+
 
     /**
      * @brief componentIndex номер элемента в списке

@@ -5,6 +5,7 @@
 #include <QPainter>
 #include <QDebug>
 #include <QApplication>
+#include "src/c++/Util/programminformationwindow.h"
 
 WorkBench::WorkBench::WorkBench(QWidget *parent) :
     QWidget(parent)
@@ -16,8 +17,6 @@ WorkBench::WorkBench::WorkBench(QWidget *parent) :
    hLayout->addLayout(leftPanelLayout);
    hLayout->addLayout(v1);
    hLayout->addLayout(rightPanelLayout);
-
-   this->menuBar = new QMenuBar(this);
 
    //leftPanelLayout->addWidget(new QLabel("Левая панель"));
 
@@ -48,12 +47,34 @@ WorkBench::WorkBench::WorkBench(QWidget *parent) :
    this->connectComponents();
 
    //добавляем OpenGL виджет и инициализируем его
+   v1->addSpacing(17);
    v1->addWidget(canvas);
    //canvas->initializeGL();
 
    //запуск потоков
    refresher->start();
    mouseTrackerThread->start();
+
+
+   this->menuBar = new QMenuBar(this);
+   menuBar->show();
+   this->fileMenu = new QMenu("Файл",menuBar);
+   this->aboutMenu = new QMenu("О программе",menuBar);
+   this->saveProject = new QAction("Сохранить проект",fileMenu);
+   this->loadProject = new QAction("Загрузить проект",fileMenu);
+   this->information = new QAction("Информация",fileMenu);
+
+
+   menuBar->addMenu(fileMenu);
+   menuBar->addMenu(aboutMenu);
+   fileMenu->addAction(saveProject);
+   fileMenu->addAction(loadProject);
+   aboutMenu->addAction(information);
+
+   QObject::connect(information,SIGNAL(triggered()),this,SLOT(openInformationWindow()));
+
+   menuBar->setFixedSize(400,21);
+
 
 }
 void WorkBench::connectComponents()
@@ -112,6 +133,12 @@ void WorkBench::connectComponents()
 void WorkBench::keyPressEvent(QKeyEvent *event)
 {
     qDebug()<<"Key workbench";
+}
+
+void WorkBench::openInformationWindow()
+{
+    ProgrammInformationWindow* w = new ProgrammInformationWindow();
+    w->show();
 }
 
 void WorkBench::onElementClick(Element *elem)

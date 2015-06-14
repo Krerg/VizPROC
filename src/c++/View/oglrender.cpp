@@ -86,6 +86,10 @@ OGLRender::OGLRender() :
     this->setLayout(g);
     setMouseTracking(true);
     setAutoFillBackground(false);
+
+
+
+
 }
 OGLRender::~OGLRender()
 {

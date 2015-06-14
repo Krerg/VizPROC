@@ -32,11 +32,35 @@ public:
      */
     void connectComponents();
 private:
-
     /**
      * @brief menuBar
      */
     QMenuBar *menuBar;
+
+    /**
+     * @brief fileMenu
+     */
+    QMenu* fileMenu;
+
+    /**
+     * @brief aboutMenu
+     */
+    QMenu* aboutMenu;
+
+    /**
+     * @brief saveProject
+     */
+    QAction* saveProject;
+
+    /**
+     * @brief loadProject
+     */
+    QAction* loadProject;
+
+    /**
+     * @brief information
+     */
+    QAction* information;
 
     /**
      * @brief v1 вертикальный лэйоут размещения
@@ -108,6 +132,12 @@ protected:
 signals:
 
 public slots:
+
+    /**
+     * @brief openInformationWindow
+     */
+    void openInformationWindow();
+
     /**
      * @brief onElementClick
      * @param elem
