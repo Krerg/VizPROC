@@ -24,11 +24,6 @@ public:
      */
     explicit Graph(QObject *parent = 0);
 
-    /**
-     * @brief deleteVertex удаление вершины из графа
-     * @param w провод, чей потенциал мы хотим удалить
-     */
-    void deleteVertex(Wire* w);
 private:
     /**
      * @brief getNewNumber
@@ -97,6 +92,12 @@ public slots:
      * @param w провод, потенциал которого хотим добавить
      */
     void addVertex(Wire* w);
+
+    /**
+     * @brief deleteVertex удаление вершины из графа
+     * @param w провод, чей потенциал мы хотим удалить
+     */
+    void deleteVertex(Wire* w);
 
     /**
      * @brief start сигнал запускающий расчет схемы

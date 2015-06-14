@@ -55,7 +55,6 @@ void ComponentManager::paintMeters(QPainter *painter)
     for(i=meters->begin();i!=meters->end();i++)
     {
         if((*i)->getName() == "Amper") {
-
             ((Amperemeter*)(*i))->paintComponent(painter);
         } else {
 
@@ -180,7 +179,6 @@ void ComponentManager::deleteItem()
 {
     if(selected!=NULL) {
         deleteMutex = true;
-        qDebug()<<"dsd";
         QList<Element*>::Iterator i;
         int elemIndex=0;
         for(i=elements->begin();i!=elements->end();i++) {
@@ -194,7 +192,15 @@ void ComponentManager::deleteItem()
         this->pointed = NULL;
         this->selected = NULL;
     } else if(selectedWire!=NULL) {
-        qDebug()<<"Delete wire";
+        QList<Wire*>* deleteWires = selectedWire->getConnectedWires();
+        QList<Wire*>::Iterator i;
+        for(i=deleteWires->begin();i!=deleteWires->end();i++) {
+            wires->removeAll((*i));
+            emit deleteWire((*i));
+            (*i)->clear();
+            delete (*i);
+        }
+        delete deleteWires;
     }
     deleteMutex=false;
 }

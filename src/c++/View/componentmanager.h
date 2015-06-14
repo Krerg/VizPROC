@@ -187,6 +187,12 @@ signals:
     void wireAdded(Wire* w);
 
     /**
+     * @brief deleteWire сигнял, который вызывается при удалении провода.
+     * @param w удаляемый провод.
+     */
+    void deleteWire(Wire* w);
+
+    /**
      * @brief onElementClick
      * @param elem
      */

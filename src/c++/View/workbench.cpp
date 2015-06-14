@@ -17,6 +17,8 @@ WorkBench::WorkBench::WorkBench(QWidget *parent) :
    hLayout->addLayout(v1);
    hLayout->addLayout(rightPanelLayout);
 
+   this->menuBar = new QMenuBar(this);
+
    //leftPanelLayout->addWidget(new QLabel("Левая панель"));
 
    //rightPanelLayout->addWidget(new QLabel("Правая панель"));
@@ -82,6 +84,7 @@ void WorkBench::connectComponents()
     //соединения с логиков
     QObject::connect(componentManager,SIGNAL(wireAdded(Wire*)),g,SLOT(addVertex(Wire*)));
     QObject::connect(componentManager,SIGNAL(addDiode(Diode*)),g,SLOT(addDiode(Diode*)));
+    QObject::connect(componentManager,SIGNAL(deleteWire(Wire*)),g,SLOT(deleteVertex(Wire*)));
 
     //начало визуализации
     QObject::connect(canvas,SIGNAL(startVisualisation()),g,SLOT(start()));

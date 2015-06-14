@@ -11,6 +11,8 @@
 #include "src/c++/View/mousetrackerthread.h"
 #include "src/c++/Model/graph.h"
 #include "src/c++/View/visualisationmanager.h"
+#include <QMenuBar>
+#include <QAction>
 
 /**
  * @brief The WorkBench class окно где происходит вся ралота с программой
@@ -30,6 +32,12 @@ public:
      */
     void connectComponents();
 private:
+
+    /**
+     * @brief menuBar
+     */
+    QMenuBar *menuBar;
+
     /**
      * @brief v1 вертикальный лэйоут размещения
      */

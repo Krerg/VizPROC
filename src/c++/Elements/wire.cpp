@@ -57,6 +57,9 @@ void Wire::setNumber(int number, bool root)
 
 void Wire::paintComponent()
 {
+    if(this->path==NULL) {
+        return;
+    }
     //рисуем если длина провода хотя бы больше 1
     if(this->path->size()>1) {
     QPoint *start = this->path->at(0);
@@ -88,6 +91,9 @@ void Wire::paintComponent()
 
 void Wire::visualisation(int *color, QPainter* painter)
 {
+    if(this->path==NULL) {
+        return;
+    }
     painter->setPen(QPen(QColor(color[0],color[1],color[2]),2));
     QPoint *start = this->path->at(0);
     for(int i=1;i<path->size();i++) {
@@ -319,6 +325,7 @@ void Wire::connectWire(Wire *w, int wirePart)
     //добавляем провод в список проводов
     this->wires->append(w);
     //устанавливаем такой же список и на присоединяемый провод
+    delete w->getConnectedWires();
     w->setWireList(wires);
     QPoint* last = w->getPath()->last();
     QPoint* beforeLast = w->getPath()->at(w->getPath()->size()-2);
@@ -673,4 +680,20 @@ Connector *Wire::getConneted1()
 Connector *Wire::getConneted2()
 {
     return this->connected2;
+}
+
+void Wire::clear()
+{
+    if(this->connected1!=NULL)
+        this->connected1=NULL;
+    if(this->connected2!=NULL)
+        this->connected2=NULL;
+    delete this->path;
+    this->path=NULL;
+    if(this->wireConnector!=NULL) {
+        delete wireConnector;
+    }
+    if(this->particleList!=NULL) {
+        delete particleList;
+    }
 }
