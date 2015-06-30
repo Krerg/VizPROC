@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QList>
 #include "src/c++/Elements/resistor.h"
+#include "src/c++/Elements/emf.h"
 #include "src/c++/Elements/element.h"
 #include "src/c++/Elements/wire.h"
 #include "src/c++/Elements/ground.h"
@@ -28,6 +29,25 @@ public:
      * @param painter
      */
     void setPainter(QPainter *painter);
+
+    /**
+     * @brief addResistor
+     * @param res
+     */
+    void addResistor(Resistor* res);
+
+    /**
+     * @brief addEMF
+     * @param emf
+     */
+    void addEMF(EMF* emf);
+
+    /**
+     * @brief addGrounf
+     * @param ground
+     */
+    void addGround(Ground* ground);
+
 private:
 
     /**
@@ -71,7 +91,7 @@ private:
     int dx;
 
     /**
-     * @brief dy
+     * @brief dy разница координат мыши и элемента по оси ординат
      */
     int dy;
 

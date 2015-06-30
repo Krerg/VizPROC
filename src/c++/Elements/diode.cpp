@@ -160,6 +160,14 @@ int Diode::getY()
     return this->y;
 }
 
+QList<Connector *> *Diode::getConnectors()
+{
+    QList<Connector*>* connectors = new QList<Connector*>();
+    connectors->append(c1);
+    connectors->append(c2);
+    return connectors;
+}
+
 int Diode::getWidth()
 {
     return this->width;

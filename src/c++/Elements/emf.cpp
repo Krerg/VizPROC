@@ -238,6 +238,14 @@ void EMF::changeOrientation()
     this->setConnectorPosition();
 }
 
+QList<Connector *> *EMF::getConnectors()
+{
+    QList<Connector*>* connectors = new QList<Connector*>();
+    connectors->append(c1);
+    connectors->append(c2);
+    return connectors;
+}
+
 void EMF::enablePointing()
 {
     this->pointed=true;

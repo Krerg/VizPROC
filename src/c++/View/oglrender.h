@@ -13,6 +13,7 @@
 #include <QLabel>
 #include <QDoubleSpinBox>
 #include <QVBoxLayout>
+#include <QMenuBar>
 
 /**
  * @brief The OGLRender class
@@ -51,15 +52,22 @@ public:
     void openEmfPanel(EMF* emf);
 
     ~OGLRender();
-private:
+private:    
+
 
     /**
      * @brief componentIndex номер элемента в списке
      */
     int componentIndex;
 
+    /**
+     * @brief resistorPanelVisible
+     */
     bool resistorPanelVisible=false;
 
+    /**
+     * @brief emfPanelVisible
+     */
     bool emfPanelVisible=false;
 
 
@@ -113,6 +121,11 @@ private:
      */
     QPushButton *startButton;
 
+    /**
+     * @brief stopButton кнопка, которая останавливает визуализацию
+     */
+    QPushButton* stopButton;
+
 
     /**
      * @brief enableVisualisation флаг, отвечающий за режим работы
@@ -147,6 +160,12 @@ protected:
 public slots:
     void startButtonPressed();
     void enableVisualisationSlot();
+
+    /**
+     * @brief stopVisualisation остановка визуализации
+     */
+    void stopVisualisationSlot();
+
 signals:
     /**
      * @brief paintComponents
@@ -199,6 +218,8 @@ signals:
      * @param event
      */
     void keyPressed(QKeyEvent* event);
+
+
 };
 
 #endif // OGLRENDER_H

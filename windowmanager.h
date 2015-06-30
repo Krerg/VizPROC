@@ -7,11 +7,18 @@
 #include "src/c++/View/workbench.h"
 #include <QObject>
 
+/**
+ * @brief The WindowManager class
+ */
 class WindowManager : public QObject
 {
     Q_OBJECT
 public:
     explicit WindowManager(QObject *parent = 0);
+
+    /**
+     * @brief start запускает менеджер окон
+     */
     void start();
 private:
     /**
@@ -26,7 +33,15 @@ private:
 signals:
 
 public slots:
+    /**
+     * @brief openWorkBench
+     */
     void openWorkBench();
+
+    /**
+     * @brief openProject
+     */
+    void openProject();
 };
 
 #endif // WINDOWMANAGER_H

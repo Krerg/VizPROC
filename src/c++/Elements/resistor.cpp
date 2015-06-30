@@ -215,6 +215,14 @@ void Resistor::changeOrientation()
     this->setConnectorPosition();
 }
 
+QList<Connector *> *Resistor::getConnectors()
+{
+    QList<Connector*>* connectors = new QList<Connector*>();
+    connectors->append(c1);
+    connectors->append(c2);
+    return connectors;
+}
+
 void Resistor::setConnectorPosition()
 {
     if(this->orientation==this->HORIZONTAL_ORIENTATION)

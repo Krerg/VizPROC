@@ -24,6 +24,7 @@ void StartScreen::setSignals(QObject *l)
     WindowManager *m = qobject_cast<WindowManager*>(l);
     QObject::connect(this->Exit,SIGNAL(clicked()),this,SLOT(close()));
     QObject::connect(this->newProject,SIGNAL(clicked()),m,SLOT(openWorkBench()));
+    QObject::connect(this->loadProject,SIGNAL(clicked()),m,SLOT(openProject()));
     
 }
 

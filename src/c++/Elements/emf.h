@@ -28,6 +28,7 @@ public:
     virtual void disableSelection();
     virtual void enableSelection();
     virtual void changeOrientation();
+    virtual QList<Connector *> *getConnectors();
     virtual Connector* connectorPointCheck(int x, int y);
     virtual int getX();
     virtual int getY();
@@ -163,11 +164,6 @@ private:
      * @brief pinLength длина выводов ЭДС
      */
     int pinLength;
-
-    /**
-     * @brief orientation ориентация положения
-     */
-    QString orientation;
 
     /**
      * @brief setConnectorPosition устанавливает позицию коннекторов

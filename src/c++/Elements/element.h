@@ -5,13 +5,14 @@ class Connector;
 
 #include <QObject>
 #include "src/c++/Elements/connector.h"
+#include <QList>
 
 /**
  * @brief The Element class абстрактный класс элемента схемы
  */
 class Element
 {
-//Pure virtual
+
 public:
     /**
      * @brief setPosition утсановка позиции на экране
@@ -104,9 +105,53 @@ public:
     virtual void disconnectWire(Wire *w)=0;
 
     /**
+     * @brief getConnectors
+     * @return
+     */
+    virtual QList<Connector*>* getConnectors()=0;
+
+    /**
      * @brief ~Element деструктор
      */
     virtual ~Element()=0;
+
+    /**
+     * @brief getSavingNumber
+     * @return порядковый номер для сохранения
+     */
+    int getSavingNumber();
+
+    /**
+     * @brief setSavingNumber устанавливает порядковый номер для сохранения
+     * @param number
+     */
+    void setSavingNumber(int number);
+
+    /**
+     * @brief getPosition
+     * @return
+     */
+    QString getPosition();
+
+    /**
+     * @brief setPOsition
+     * @param position
+     */
+    void setPosition(QString position);
+private:
+
+
+    /**
+     * @brief savingNumber порядковый номер для сохранения
+     */
+    int savingNumber;
+protected:
+
+    /**
+     * @brief orientation ориентация резистора на экране
+     */
+    QString orientation;
+
 signals:
 
 public slots:

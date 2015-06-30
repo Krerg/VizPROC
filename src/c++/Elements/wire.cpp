@@ -26,6 +26,7 @@ Wire::Wire(QObject *parent) :
     this->lastStep = 0;
     this->speed = 0;
     this->wireConnector = NULL;
+    this->savedFlag = false;
 }
 
 void Wire::addPoint(QPoint *point)
@@ -62,30 +63,29 @@ void Wire::paintComponent()
     }
     //рисуем если длина провода хотя бы больше 1
     if(this->path->size()>1) {
-    QPoint *start = this->path->at(0);
-    //glLineWidth(2.0f);
-    glBegin(GL_LINES);
+        QPoint *start = this->path->at(0);
+        //glLineWidth(2.0f);
+        glBegin(GL_LINES);
 
-    //если наведен провод выделен то будет отображен синим цветом
-    if(!pointed && !selected) {
-    glColor3f(0,0,0);
-    } else {
-        glColor3f(0,0,8.0f);
-    }
+        //если наведен провод выделен то будет отображен синим цветом
+        if(!pointed && !selected) {
+        glColor3f(0,0,0);
+        } else {
+            glColor3f(0,0,8.0f);
+        }
 
-    for(int i = 1;i<this->path->size();i++)
-    {
-         glVertex3f(start->x(),start->y(),0.0f);
-         glVertex3f(path->at(i)->x(),path->at(i)->y(),0.0f);
-         start = path->at(i);
-    }
-    //glLineWidth(1.0f);
-    glEnd();
+        for(int i = 1;i<this->path->size();i++)
+        {
+             glVertex3f(start->x(),start->y(),0.0f);
+             glVertex3f(path->at(i)->x(),path->at(i)->y(),0.0f);
+             start = path->at(i);
+        }
+        //glLineWidth(1.0f);
+        glEnd();
 
-    if(this->wireConnector!=NULL) {
-        wireConnector->paintComponent();
-    }
-
+        if(this->wireConnector!=NULL) {
+            wireConnector->paintComponent();
+        }
     }
 }
 
@@ -108,30 +108,13 @@ void Wire::visualisation(int *color, QPainter* painter)
     if(this->wireConnector!=NULL) {
         wireConnector->paintComponent();
     }
-
-//    if(this->path->size()>1) {
-//    QPoint *start = this->path->at(0);
-
-//    glLineWidth(2.0f);
-
-//    glColor3f(color[0],color[1],color[2]);
-//    glBegin(GL_LINES);
-
-//    for(int i = 1;i<this->path->size();i++)
-//    {
-//         glVertex3f(start->x(),start->y(),0.0f);
-//         glVertex3f(path->at(i)->x(),path->at(i)->y(),0.0f);
-//         start = path->at(i);
-//    }
-//    glEnd();
-//    }
 }
 
 void Wire::startConnection(Connector *c)
 {
     this->connected1=c;
+    c->setConnection(this);
     QObject::connect(c,SIGNAL(changePosition(int,int,int,int)),this,SLOT(changePosition(int,int,int,int)));
-    this->path->insert(path->end(),new QPoint(c->getX(),c->getY()));
 }
 
 void Wire::endConnection(Connector *c)
@@ -140,6 +123,7 @@ void Wire::endConnection(Connector *c)
     this->path->last()->setX(c->getX());
     this->path->last()->setY(c->getY());
     this->connected2=c;
+    c->setConnection(this);
 }
 
 int Wire::isSelected(int x, int y)
@@ -197,7 +181,6 @@ void Wire::changePosition(int oldX, int oldY, int newX, int newY)
 
             //ситуация когда двигать провод не надо
             if(second->x()==temp->x() && second->y()==temp->y() && wires->size()>1) {
-                qDebug()<<"lllll";
                 QPoint* third = this->path->at(2);
                 if(third->x()==second->x()) {
                     second->setY(newY);
@@ -680,6 +663,21 @@ Connector *Wire::getConneted1()
 Connector *Wire::getConneted2()
 {
     return this->connected2;
+}
+
+bool Wire::isSaved()
+{
+    return savedFlag;
+}
+
+void Wire::setSavedFlag()
+{
+    savedFlag = true;
+}
+
+void Wire::resetSavingFlag()
+{
+    this->savedFlag = false;
 }
 
 void Wire::clear()

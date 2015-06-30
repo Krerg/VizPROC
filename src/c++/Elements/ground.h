@@ -25,6 +25,7 @@ public:
     virtual void disablePointing();
     virtual void enableSelection();
     virtual void disableSelection();
+    virtual QList<Connector *> *getConnectors();
     virtual void connect(int x, int y);
     virtual void changeOrientation();
     virtual Connector* connectorPointCheck(int x, int y);

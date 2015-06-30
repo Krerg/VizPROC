@@ -58,6 +58,11 @@ void Amperemeter::disableSelection()
     this->selected = false;
 }
 
+QList<Connector *> *Amperemeter::getConnectors()
+{
+    return NULL;
+}
+
 void Amperemeter::enablePointing()
 {
     this->pointed = true;

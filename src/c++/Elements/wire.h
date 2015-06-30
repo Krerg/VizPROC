@@ -192,10 +192,32 @@ public:
     Connector* getConneted2();
 
     /**
+     * @brief isSaved
+     * @return true если провод сохранен в файл
+     */
+    bool isSaved();
+
+    /**
+     * @brief setSavedFlag
+     */\
+    void setSavedFlag();
+
+    /**
+     * @brief resetSavingFlag
+     */
+    void resetSavingFlag();
+
+    /**
      * @brief clear
      */
     void clear();
 private:
+
+    /**
+     * @brief savedFlag флаг, для сохранения в файл
+     */
+    bool savedFlag;
+
     /**
      * @brief path путь, по которому будет рисоваться провод
      */

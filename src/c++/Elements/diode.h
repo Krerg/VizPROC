@@ -27,6 +27,7 @@ public:
     virtual Connector* connectorPointCheck(int x, int y);
     virtual int getX();
     virtual int getY();
+    virtual QList<Connector *> *getConnectors();
     int getWidth();
     int getHeight();
     virtual QString getName();
@@ -119,7 +120,6 @@ private:
     QPainter* render;
     int width;
     int pinLength;
-    QString orientation;
     Connector* c1;
     Connector* c2;
     QPainter* painter;

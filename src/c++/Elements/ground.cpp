@@ -121,6 +121,13 @@ void Ground::disableSelection()
     this->selected = false;
 }
 
+QList<Connector *> *Ground::getConnectors()
+{
+    QList<Connector*>* connectors = new QList<Connector*>();
+    connectors->append(c1);
+    return connectors;
+}
+
 Connector* Ground::connectorPointCheck(int x, int y)
 {
     if(this->c1->checkPointing(x,y)) {

@@ -14,6 +14,7 @@ OGLRender::OGLRender() :
     setFocusPolicy(Qt::ClickFocus);
     //setFormat(QGLFormat(QGL::SampleBuffers));
     startButton = new QPushButton("Включить визуализацию",this);
+    stopButton = new QPushButton("Остановить визуализацию",this);
     QObject::connect(startButton,SIGNAL(clicked()),this,SLOT(startButtonPressed()));
     elementList = new QComboBox(this);
     elementList->addItem("Резистор");
@@ -68,7 +69,10 @@ OGLRender::OGLRender() :
 
     g->addWidget(elementList);
     g->addWidget(startButton);
+    g->addWidget(stopButton);
+    QObject::connect(stopButton,SIGNAL(clicked()),this,SLOT(stopVisualisationSlot()));
     g->setAlignment(elementList,Qt::AlignBottom);
+    stopButton->setVisible(false);
     //g->setAlignment(startButton,Qt::AlignBottom);
 
 
@@ -86,6 +90,10 @@ OGLRender::OGLRender() :
     this->setLayout(g);
     setMouseTracking(true);
     setAutoFillBackground(false);
+
+
+
+
 }
 OGLRender::~OGLRender()
 {
@@ -105,6 +113,9 @@ void OGLRender::openResistorPanel(Resistor *res)
     if(selectedEmf!=NULL) {
         QObject::disconnect(voltageSpinBox,SIGNAL(valueChanged(double)),selectedEmf,SLOT(setVoltage(double)));
     }
+    if(selectedRes!=NULL) {
+        QObject::disconnect(resistanceSpinBox,SIGNAL(valueChanged(double)),selectedRes,SLOT(setResistance(double)));
+    }
 
     this->selectedEmf = NULL;
     this->selectedRes = res;
@@ -119,15 +130,19 @@ void OGLRender::openResistorPanel(Resistor *res)
 
     //powerLabel->show();
     power->show();
-
-    resistanceSpinBox->setValue(res->getResistance());
+    qDebug()<<res->getResistance();
     QObject::connect(resistanceSpinBox,SIGNAL(valueChanged(double)),res,SLOT(setResistance(double)));
+    resistanceSpinBox->setValue(res->getResistance());
+
 
 }
 
 void OGLRender::openEmfPanel(EMF *emf)
 {
 
+    if(selectedEmf!=NULL) {
+        QObject::disconnect(voltageSpinBox,SIGNAL(valueChanged(double)),selectedEmf,SLOT(setVoltage(double)));
+    }
     if(selectedRes!=NULL) {
         QObject::disconnect(resistanceSpinBox,SIGNAL(valueChanged(double)),selectedRes,SLOT(setResistance(double)));
     }
@@ -144,9 +159,10 @@ void OGLRender::openEmfPanel(EMF *emf)
 //    voltageLabel->show();
     voltageSpinBox->show();
 
-    voltageSpinBox->setValue(emf->getVoltage());
 
     QObject::connect(voltageSpinBox,SIGNAL(valueChanged(double)),emf,SLOT(setVoltage(double)));
+    voltageSpinBox->setValue(emf->getVoltage());
+
 
 }
 
@@ -245,7 +261,7 @@ void OGLRender::paintEvent(QPaintEvent *event)
 
 void OGLRender::wheelEvent(QWheelEvent *event)
 {
-
+    qDebug()<<"Хуил ивент";
 }
 
 void OGLRender::keyPressEvent(QKeyEvent *event)
@@ -265,5 +281,14 @@ void OGLRender::startButtonPressed()
 
 void OGLRender::enableVisualisationSlot()
 {
+    this->startButton->setVisible(false);
+    this->stopButton->setVisible(true);
     this->enableVisualisation = true;
+}
+
+void OGLRender::stopVisualisationSlot()
+{
+    this->enableVisualisation=false;
+    startButton->setVisible(true);
+    stopButton->setVisible(false);
 }

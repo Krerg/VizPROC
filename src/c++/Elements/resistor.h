@@ -27,6 +27,7 @@ public:
     virtual void enablePointing();
     virtual void disablePointing();
     virtual void changeOrientation();
+    virtual QList<Connector *> *getConnectors();
     virtual Connector* connectorPointCheck(int x, int y);
     virtual int getX();
     virtual int getY();
@@ -156,11 +157,6 @@ private:
      * @brief pinLength длина выводов резистора
      */
     int pinLength;
-
-    /**
-     * @brief orientation ориентация резистора на экране
-     */
-    QString orientation;
 
     /**
      * @brief c1 коннектор для присоединения проводов

@@ -19,6 +19,7 @@ public:
     virtual bool isSelected(int x, int y);
     virtual void enableSelection();
     virtual void disableSelection();
+    virtual QList<Connector *> *getConnectors();
     virtual void enablePointing();
     virtual void disablePointing();
     virtual void changeOrientation();

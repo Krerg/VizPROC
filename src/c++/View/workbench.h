@@ -31,12 +31,43 @@ public:
      * @brief connectComponents метод для соединения сигнало и слотов компонент программы
      */
     void connectComponents();
-private:
 
+    /**
+     * @brief getComponentManager
+     * @return
+     */
+    ComponentManager* getComponentManager();
+
+private:
     /**
      * @brief menuBar
      */
     QMenuBar *menuBar;
+
+    /**
+     * @brief fileMenu
+     */
+    QMenu* fileMenu;
+
+    /**
+     * @brief aboutMenu
+     */
+    QMenu* aboutMenu;
+
+    /**
+     * @brief saveProject
+     */
+    QAction* saveProject;
+
+    /**
+     * @brief loadProject
+     */
+    QAction* loadProject;
+
+    /**
+     * @brief information
+     */
+    QAction* information;
 
     /**
      * @brief v1 вертикальный лэйоут размещения
@@ -94,6 +125,7 @@ private:
     VisualisationManager* visualisationManager;
 
 
+
     QWidget *panel;
 
     QLabel* lbl;
@@ -108,6 +140,12 @@ protected:
 signals:
 
 public slots:
+
+    /**
+     * @brief openInformationWindow
+     */
+    void openInformationWindow();
+
     /**
      * @brief onElementClick
      * @param elem
@@ -119,6 +157,16 @@ public slots:
      * @param w
      */
     void onWireClick(Wire* w);
+
+    /**
+     * @brief saveFile слот дл сохранения в файл
+     */
+    void saveFile();
+
+    /**
+     * @brief openFile слот дл открытия файла
+     */
+    void openFile();
 };
 
 #endif // WORKBENCH_H

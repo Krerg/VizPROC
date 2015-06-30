@@ -109,6 +109,21 @@ void ComponentManager::setPainter(QPainter *painter)
     this->painter = painter;
 }
 
+void ComponentManager::addResistor(Resistor *res)
+{
+    elements->insert(elements->end(),(Element*)res);
+}
+
+void ComponentManager::addEMF(EMF *emf)
+{
+    elements->insert(elements->end(),(Element*)emf);
+}
+
+void ComponentManager::addGround(Ground *ground)
+{
+    elements->insert(elements->end(),(Element*)ground);
+}
+
 void ComponentManager::mouseClick(int x, int y)
 {
     this->leftClick=true;
@@ -223,8 +238,7 @@ void ComponentManager::leftClickReleased()
 void ComponentManager::addWire(Wire *w)
 {
     this->wires->append(w);
-    //QObject::connect(w,SIGNAL(addWire(Wire*)),this,SLOT(addWire(Wire*)));
-    emit wireAdded(drawWire);
+    emit wireAdded(w);
 }
 
 void ComponentManager::changeOrientation(int x, int y)
@@ -333,6 +347,7 @@ void ComponentManager::connect(int x, int y)
         {
             drawWire = new Wire(this);
             drawWire->startConnection(pointedConnector);
+            drawWire->getPath()->insert(drawWire->getPath()->end(),new QPoint(pointedConnector->getX(),pointedConnector->getY()));
             pointedConnector->setConnection(drawWire);
             drawingWire=true;
             //делаем 2 точки для построения провода
