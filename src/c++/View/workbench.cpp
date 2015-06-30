@@ -75,6 +75,7 @@ WorkBench::WorkBench::WorkBench(QWidget *parent) :
    //соединяем сигналы и слоты
    this->connectComponents();
 
+
 }
 void WorkBench::connectComponents()
 {
