@@ -40,6 +40,7 @@ SOURCES += main.cpp\
     src/c++/Elements/amperemeter.cpp \
     src/c++/Util/programminformationwindow.cpp \
     src/c++/Util/filehandler.cpp
+
 HEADERS  += src/c++/View/startscreen.h \
     windowmanager.h \
     src/c++/View/workbench.h \
@@ -67,5 +68,4 @@ HEADERS  += src/c++/View/startscreen.h \
     src/c++/Elements/amperemeter.h \
     src/c++/Util/programminformationwindow.h \
     src/c++/Util/filehandler.h
-
 FORMS    +=

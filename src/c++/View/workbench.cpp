@@ -8,9 +8,10 @@
 #include "src/c++/Util/programminformationwindow.h"
 #include "src/c++/Util/filehandler.h"
 
-WorkBench::WorkBench::WorkBench(QWidget *parent) :
+WorkBench::WorkBench::WorkBench(WindowManager* wm,QWidget *parent) :
     QWidget(parent)
 {
+   this->wm = wm;
    this->leftPanelLayout = new QVBoxLayout();
    this->rightPanelLayout = new QVBoxLayout();
    this->hLayout = new QHBoxLayout(this);
@@ -75,7 +76,6 @@ WorkBench::WorkBench::WorkBench(QWidget *parent) :
    //соединяем сигналы и слоты
    this->connectComponents();
 
-
 }
 void WorkBench::connectComponents()
 {
@@ -130,12 +130,18 @@ void WorkBench::connectComponents()
 
     //обработка файлов
     QObject::connect(saveProject,SIGNAL(triggered()),this,SLOT(saveFile()));
+    QObject::connect(loadProject,SIGNAL(triggered()),wm,SLOT(openProject()));
 
 }
 
 ComponentManager *WorkBench::getComponentManager()
 {
     return componentManager;
+}
+
+void WorkBench::setWindowManger(WindowManager *wm)
+{
+    this->wm = wm;
 }
 
 void WorkBench::keyPressEvent(QKeyEvent *event)

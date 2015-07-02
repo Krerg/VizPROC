@@ -30,44 +30,44 @@ public:
 private:
 
     /**
-     * @brief readConnections
-     * @param cm
+     * @brief readConnections чтение соединений между элементами
+     * @param cm менеджер компонент для загрузки
      */
     static void readConnections(ComponentManager* cm, QXmlStreamReader* reader);
 
     /**
-     * @brief readPotential
-     * @param cm
-     * @param reader
+     * @brief readPotential чтение потенциала с проводами
+     * @param cm менеджер комопнент для загрузки
+     * @param reader xmlReader
      */
     static void readPotential(ComponentManager* cm, QXmlStreamReader* reader);
 
     /**
-     * @brief readWire
-     * @param cm
-     * @param reader
-     * @return
+     * @brief readWire чтение и сохранение провода в менеджер компонент
+     * @param cm менеджер компонент
+     * @param reader xmlReader
+     * @return провод
      */
     static Wire* readWire(ComponentManager* cm, QXmlStreamReader* reader);
 
     /**
-     * @brief readPath
-     * @param reader
-     * @param w
+     * @brief readPath чтение точек отрисовки для провода
+     * @param reader xmlReader
+     * @param w провод для которого происходит чтение
      */
     static void readPath(QXmlStreamReader* reader, Wire* w);
 
     /**
-     * @brief connectWireFirstPointToElement
-     * @param w
-     * @param elem
+     * @brief connectWireFirstPointToElement соединение начальной точки провода с элементом
+     * @param w Соединяемый провод
+     * @param elem Соединяемый элемент
      */
     static void connectWireFirstPointToElement(Wire* w, Element* elem);
 
     /**
-     * @brief connectWireFirstPointToElement
-     * @param w
-     * @param elem
+     * @brief connectWireFirstPointToElement соединение конечной точки провода с элементом
+     * @param w соединяемый провод
+     * @param elem соединяемый элемент
      */
     static void connectWireLastPointToElement(Wire* w, Element* elem);
 signals:

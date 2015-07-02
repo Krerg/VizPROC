@@ -2,6 +2,8 @@
 #ifndef WORKBENCH_H
 #define WORKBENCH_H
 
+class WindowManager;
+
 #include <QWidget>
 #include <QVBoxLayout>
 #include "oglrender.h"
@@ -13,6 +15,7 @@
 #include "src/c++/View/visualisationmanager.h"
 #include <QMenuBar>
 #include <QAction>
+#include "windowmanager.h"
 
 /**
  * @brief The WorkBench class окно где происходит вся ралота с программой
@@ -25,7 +28,7 @@ public:
      * @brief WorkBench конструктор класса
      * @param parent указатель на родительский элемент
      */
-    explicit WorkBench(QWidget *parent = 0);
+    explicit WorkBench(WindowManager* wm, QWidget *parent = 0);
 
     /**
      * @brief connectComponents метод для соединения сигнало и слотов компонент программы
@@ -37,6 +40,12 @@ public:
      * @return
      */
     ComponentManager* getComponentManager();
+
+    /**
+     * @brief setWindowManger установка менеджера окон
+     * @param wm
+     */
+    void setWindowManger(WindowManager* wm);
 
 private:
     /**
@@ -124,8 +133,14 @@ private:
      */
     VisualisationManager* visualisationManager;
 
+    /**
+     * @brief wm
+     */
+    WindowManager* wm;
 
-
+    /**
+     * @brief panel
+     */
     QWidget *panel;
 
     QLabel* lbl;

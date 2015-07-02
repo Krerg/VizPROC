@@ -16,12 +16,12 @@ public:
     ~ProgrammInformationWindow();
 private:
     /**
-     * @brief information
+     * @brief information Лейбл с информацией о программе
      */
     QLabel* information;
 
     /**
-     * @brief okButton
+     * @brief okButton кнопка закрытия окна
      */
     QPushButton* okButton;
 signals:

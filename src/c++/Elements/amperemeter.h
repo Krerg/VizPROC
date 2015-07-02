@@ -28,8 +28,9 @@ public:
     void setEnabled();
 
     /**
-     * @brief setWire
-     * @param w
+     * @brief setWire установка провода, на котором будет измерятся
+     * сила тока.
+     * @param w провод для измерения
      */
     void setWire(Wire* w);
 
@@ -45,7 +46,7 @@ public:
     virtual QString getName();
 
     /**
-     * @brief getType н используется
+     * @brief getType не используется
      * @return
      */
     virtual bool getType();

@@ -3,6 +3,8 @@
 #ifndef WINDOWMANAGER_H
 #define WINDOWMANAGER_H
 
+class WorkBench;
+
 #include "src/c++/View/startscreen.h"
 #include "src/c++/View/workbench.h"
 #include <QObject>
@@ -36,7 +38,7 @@ public slots:
     /**
      * @brief openWorkBench
      */
-    void openWorkBench();
+    WorkBench* openWorkBench();
 
     /**
      * @brief openProject

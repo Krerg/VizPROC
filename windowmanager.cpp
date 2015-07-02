@@ -16,18 +16,20 @@ void WindowManager::start()
     sc->show();
 }
 
-void WindowManager::openWorkBench()
+WorkBench* WindowManager::openWorkBench()
 {
     if(sc!=NULL)
         delete sc;
     sc = NULL;
-    wb = new WorkBench();
+    WorkBench* workBench = new WorkBench(this);
+    return workBench;
+    //wb = new WorkBench(this);
 }
 
 void WindowManager::openProject()
 {
-    openWorkBench();
+    WorkBench* wb = openWorkBench();
     wb->hide();
     FileHandler::openFile(wb->getComponentManager());
-    wb->show();\
+    wb->show();
 }
