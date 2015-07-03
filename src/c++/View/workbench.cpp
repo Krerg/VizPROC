@@ -37,6 +37,8 @@ WorkBench::WorkBench::WorkBench(WindowManager* wm,QWidget *parent) :
    this->refresher = new UpdateThread(this);
    this->mouseTrackerThread = new MouseTrackerThread(canvas,this);
 
+   this->graphHandler = new GraphHandler(this);
+   graphHandler->setElements(componentManager->getElements());
    this->g = new Graph(this);
 
    //инициализация обработчика визуализации
@@ -107,8 +109,16 @@ void WorkBench::connectComponents()
     QObject::connect(componentManager,SIGNAL(addDiode(Diode*)),g,SLOT(addDiode(Diode*)));
     QObject::connect(componentManager,SIGNAL(deleteWire(Wire*)),g,SLOT(deleteVertex(Wire*)));
 
-    //начало визуализации
-    QObject::connect(canvas,SIGNAL(startVisualisation()),g,SLOT(start()));
+    //визуализация
+    //QObject::connect(canvas,SIGNAL(startVisualisation()),g,SLOT(start()));
+    QObject::connect(canvas,SIGNAL(startVisualisation()),graphHandler,SLOT(handle()));
+    QObject::connect(graphHandler,SIGNAL(cohesionError()),canvas,SLOT(setCohesionError()));
+    QObject::connect(graphHandler,SIGNAL(start()),g,SLOT(start()));
+    QObject::connect(g,SIGNAL(setLock()),eventHandler,SLOT(setLock()));
+    QObject::connect(canvas,SIGNAL(releaseLock()),eventHandler,SLOT(releaseLock()));
+
+    //пересчет схемы
+    QObject::connect(canvas,SIGNAL(recalculate()),g,SLOT(start()));
 
     //подготовка обработчика визуализации
     QObject::connect(g,SIGNAL(startVisualisation(QMap<Wire*,int*>*,double*,int)),visualisationManager,SLOT(startVisualisation(QMap<Wire*,int*>*,double*,int)));

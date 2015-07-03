@@ -21,7 +21,15 @@ public:
      */
     void setQComboBox(QComboBox *c);
 private:
+    /**
+     * @brief selectedElem
+     */
     QComboBox *selectedElem;
+
+    /**
+     * @brief locked
+     */
+    bool locked;
 signals:
     /**
      * @brief addElement добавление элемента
@@ -60,6 +68,18 @@ signals:
      */
     void deleteItem();
 public slots:
+
+    /**
+     * @brief setLock
+     */
+    void setLock();
+
+    /**
+     * @brief lock
+     * @return
+     */
+    void releaseLock();
+
     /**
      * @brief mouseClicked слот который вызываетя при нажатии любой кнопки мыши
      * @param event событие нажатия кнопки

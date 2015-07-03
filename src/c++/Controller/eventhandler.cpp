@@ -5,6 +5,7 @@ EventHandler::EventHandler(QObject *parent) :
     QObject(parent)
 {
     this->selectedElem = NULL;
+    this->locked = false;
 }
 
 void EventHandler::mouseClicked(QMouseEvent *event)
@@ -32,18 +33,20 @@ void EventHandler::mouseReleased(QMouseEvent *event)
 
 void EventHandler::mouseMoved(QMouseEvent *event)
 {
-    emit moveElement(event->x(),event->y());
+    if(!locked)
+        emit moveElement(event->x(),event->y());
 }
 
 
 void EventHandler::mouseDoubleClicked(QMouseEvent *event)
 {
-    emit changeOrientation(event->x(),event->y());
+    if(!locked)
+        emit changeOrientation(event->x(),event->y());
 }
 
 void EventHandler::keyPressed(QKeyEvent *event)
 {
-    if(event->key()==16777223) {
+    if(!locked && event->key()==16777223) {
         emit deleteItem();
     }
 }
@@ -51,4 +54,14 @@ void EventHandler::keyPressed(QKeyEvent *event)
 void EventHandler::setQComboBox(QComboBox *c)
 {
     this->selectedElem = c;
+}
+
+void EventHandler::setLock()
+{
+    this->locked = true;
+}
+
+void EventHandler::releaseLock()
+{
+    this->locked = false;
 }

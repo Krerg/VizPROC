@@ -54,6 +54,10 @@ public:
     ~OGLRender();
 private:    
 
+    /**
+     * @brief cohesionError выводить ли ошибку о связности элементов
+     */
+    bool cohesionError;
 
     /**
      * @brief componentIndex номер элемента в списке
@@ -158,6 +162,9 @@ protected:
     void wheelEvent(QWheelEvent *event);
     void keyPressEvent(QKeyEvent *event);
 public slots:
+
+    void editingElementFinished();
+
     void startButtonPressed();
     void enableVisualisationSlot();
 
@@ -166,7 +173,15 @@ public slots:
      */
     void stopVisualisationSlot();
 
+    void setCohesionError();
+
 signals:
+
+    /**
+     * @brief recalculate
+     */
+    void recalculate();
+
     /**
      * @brief paintComponents
      */
@@ -219,7 +234,10 @@ signals:
      */
     void keyPressed(QKeyEvent* event);
 
-
+    /**
+     * @brief releaseLock
+     */
+    void releaseLock();
 };
 
 #endif // OGLRENDER_H

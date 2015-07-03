@@ -682,10 +682,14 @@ void Wire::resetSavingFlag()
 
 void Wire::clear()
 {
-    if(this->connected1!=NULL)
+    if(this->connected1!=NULL) {
+        connected1->setConnection(NULL);
         this->connected1=NULL;
-    if(this->connected2!=NULL)
+    }
+    if(this->connected2!=NULL) {
+        connected2->setConnection(NULL);
         this->connected2=NULL;
+    }
     delete this->path;
     this->path=NULL;
     if(this->wireConnector!=NULL) {

@@ -169,6 +169,7 @@ void Graph::start()
         }
 
     } while (true);
+        emit setLock();
         emit startVisualisation(graph,x,numb);
     }
 

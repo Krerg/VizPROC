@@ -39,7 +39,8 @@ SOURCES += main.cpp\
     src/c++/Model/diodebranch.cpp \
     src/c++/Elements/amperemeter.cpp \
     src/c++/Util/programminformationwindow.cpp \
-    src/c++/Util/filehandler.cpp
+    src/c++/Util/filehandler.cpp \
+    src/c++/Controller/graphhandler.cpp
 
 HEADERS  += src/c++/View/startscreen.h \
     windowmanager.h \
@@ -67,5 +68,6 @@ HEADERS  += src/c++/View/startscreen.h \
     src/c++/Model/diodebranch.h \
     src/c++/Elements/amperemeter.h \
     src/c++/Util/programminformationwindow.h \
-    src/c++/Util/filehandler.h
+    src/c++/Util/filehandler.h \
+    src/c++/Controller/graphhandler.h
 FORMS    +=

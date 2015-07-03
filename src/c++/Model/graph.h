@@ -84,8 +84,20 @@ private:
      * @brief diodesBranches список диодных ветвей
      */
     QList<DiodeBranch*>* diodesBranches;
+
+    /**
+     * @brief checkCohesion
+     * @return
+     */
+    bool checkCohesion();
+
 signals:
     void startVisualisation(QMap<Wire*,int*> *graph, double* x, int numb);
+
+    /**
+     * @brief setLock
+     */
+    void setLock();
 public slots:
     /**
      * @brief addVertex добавление вершины(потенциала в граф)

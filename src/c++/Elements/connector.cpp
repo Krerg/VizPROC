@@ -7,6 +7,7 @@ Connector::Connector(QObject *parent) :
 {
     this->width=5;
     this->height=5;
+    this->connectedWire = NULL;
 }
 
 Connector::~Connector() {

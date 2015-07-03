@@ -55,6 +55,9 @@ OGLRender::OGLRender() :
     powerPanel->addWidget(powerLabel);
     powerPanel->addWidget(power);
 
+    QObject::connect(resistanceSpinBox,SIGNAL(editingFinished()),this,SLOT(editingElementFinished()));
+    QObject::connect(voltageSpinBox,SIGNAL(editingFinished()),this,SLOT(editingElementFinished()));
+
     //power->setVisible(false);
     //powerLabel->setVisible(false);
 
@@ -91,7 +94,7 @@ OGLRender::OGLRender() :
     setMouseTracking(true);
     setAutoFillBackground(false);
 
-
+    this->cohesionError = false;
 
 
 }
@@ -133,8 +136,6 @@ void OGLRender::openResistorPanel(Resistor *res)
     qDebug()<<res->getResistance();
     QObject::connect(resistanceSpinBox,SIGNAL(valueChanged(double)),res,SLOT(setResistance(double)));
     resistanceSpinBox->setValue(res->getResistance());
-
-
 }
 
 void OGLRender::openEmfPanel(EMF *emf)
@@ -183,6 +184,7 @@ void OGLRender::resizeGL(int width, int height)
 //Ивент который вызывается при нажатии на кнопку мыши
 void OGLRender::mousePressEvent(QMouseEvent *event)
 {
+    this->cohesionError = false;
     emit mouseClicked(event);
 }
 //Ивент который вызывается при передвижении мыши и нажатии кнопки, удобно кстати оч
@@ -193,11 +195,13 @@ void OGLRender::mouseMoveEvent(QMouseEvent *event)
 //Ивент который вызывается при отпускании клавиши мыши
 void OGLRender::mouseReleaseEvent(QMouseEvent *event)
 {
+    this->cohesionError = false;
     emit mouseReleased(event);
 }
 //Ивент который вызывается при двойном клике мышью
 void OGLRender::mouseDoubleClickEvent(QMouseEvent *event)
 {
+    this->cohesionError = false;
     emit mouseDoubleClicked(event);
 }
 
@@ -241,6 +245,10 @@ void OGLRender::paintEvent(QPaintEvent *event)
 //    painter.drawEllipse(60,60,100,100);
 //    painter.setPen(QColor(0,0,0));
 
+    if(cohesionError) {
+        painter.drawText(5,13,"Не все элементы соединены");
+    }
+
     if(resistorPanelVisible) {
         painter.drawText(resistanceSpinBox->x()-84,resistanceSpinBox->y()+14,"Сопротивление");
         painter.drawText(power->x()-57,power->y()+14,"Мощность");
@@ -253,6 +261,7 @@ void OGLRender::paintEvent(QPaintEvent *event)
     emit paintComponents();
     emit paintMeters(&painter);
     } else {
+      painter.drawText(5,13,"Режим визуализации");
       emit updateVisualisation(&painter);
     }
     painter.endNativePainting();
@@ -267,6 +276,13 @@ void OGLRender::wheelEvent(QWheelEvent *event)
 void OGLRender::keyPressEvent(QKeyEvent *event)
 {
     emit keyPressed(event);
+}
+
+void OGLRender::editingElementFinished()
+{
+    qDebug()<<"editing finished";
+    if(enableVisualisation)
+        emit recalculate();
 }
 
 QComboBox* OGLRender::getComboBox()
@@ -291,4 +307,11 @@ void OGLRender::stopVisualisationSlot()
     this->enableVisualisation=false;
     startButton->setVisible(true);
     stopButton->setVisible(false);
+    emit releaseLock();
+}
+
+void OGLRender::setCohesionError()
+{
+    this->cohesionError = true;
+    qDebug()<<"cohesion error";
 }

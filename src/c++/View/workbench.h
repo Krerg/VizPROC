@@ -13,6 +13,7 @@ class WindowManager;
 #include "src/c++/View/mousetrackerthread.h"
 #include "src/c++/Model/graph.h"
 #include "src/c++/View/visualisationmanager.h"
+#include "src/c++/Controller/graphhandler.h"
 #include <QMenuBar>
 #include <QAction>
 #include "windowmanager.h"
@@ -132,6 +133,11 @@ private:
      * @brief visualisationManager обработчик визуализации
      */
     VisualisationManager* visualisationManager;
+
+    /**
+     * @brief GraphHandler
+     */
+    GraphHandler* graphHandler;
 
     /**
      * @brief wm
