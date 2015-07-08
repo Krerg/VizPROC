@@ -8,6 +8,7 @@
 #include "src/c++/Util/programminformationwindow.h"
 #include "src/c++/Util/filehandler.h"
 
+
 WorkBench::WorkBench::WorkBench(WindowManager* wm,QWidget *parent) :
     QWidget(parent)
 {
@@ -27,7 +28,7 @@ WorkBench::WorkBench::WorkBench(WindowManager* wm,QWidget *parent) :
 
 
    //this->setLayout(v1);
-   this->setFixedWidth(400);
+   this->setFixedWidth(600);
    this->setFixedHeight(400);
    this->show();
    this->componentManager = new ComponentManager(this);
@@ -73,7 +74,7 @@ WorkBench::WorkBench::WorkBench(WindowManager* wm,QWidget *parent) :
 
    QObject::connect(information,SIGNAL(triggered()),this,SLOT(openInformationWindow()));
 
-   menuBar->setFixedSize(400,21);
+   menuBar->setFixedSize(600,21);
 
    //соединяем сигналы и слоты
    this->connectComponents();

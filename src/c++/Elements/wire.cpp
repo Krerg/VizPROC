@@ -194,11 +194,20 @@ void Wire::changePosition(int oldX, int oldY, int newX, int newY)
 
             if(second->x()==temp->x())
             {
+                if(path->size()==2) {
+                    //добавляем еще одну точку если не хватает
+                    QPoint* extendPoint = new QPoint();
+                    extendPoint->setX(second->x());
+                    extendPoint->setY(second->y());
+                    path->append(extendPoint);
+                }
+
                 if(abs(second->y()-newY)<3)
                 {
-
                     //двигаем 3 точку если оно нужно
                     QPoint* third = this->path->at(2);
+
+
                     if(path->size()==3) {
                         //добавляем еще одну точку если не хватает
                         QPoint* extendPoint = new QPoint();
@@ -216,10 +225,19 @@ void Wire::changePosition(int oldX, int oldY, int newX, int newY)
                 temp->setX(newX);
                 temp->setY(newY);
             } else {
+                if(path->size()==2) {
+                    //добавляем еще одну точку если не хватает
+                    QPoint* extendPoint = new QPoint();
+                    extendPoint->setX(second->x());
+                    extendPoint->setY(second->y());
+                    path->append(extendPoint);
+                }
                 if(abs(second->x()-newX)<3 && wires->size()==1)
                 {
                     //двигаем 3 точку если вторая точка достигла её
                     QPoint* third = this->path->at(2);
+
+
                     if(path->size()==3) {
                         //добавляем еще одну точку если не хватает
                         QPoint* extendPoint = new QPoint();
@@ -258,10 +276,18 @@ void Wire::changePosition(int oldX, int oldY, int newX, int newY)
 
             if(second->x()==temp->x())
             {
+                if(path->size()==2) {
+                    //добавляем еще одну точку если не хватает
+                    QPoint* extendPoint = new QPoint();
+                    extendPoint->setX(second->x());
+                    extendPoint->setY(second->y());
+                    path->insert(0,extendPoint);
+                }
                 if(abs(second->y()-newY)<3 && wires->size()==1)
                 {
                     //двигаем 3 точку если оно нужно
                     QPoint* third = this->path->at(path->size()-3);
+
                     if(path->size()==3) {
                         //добавляем еще одну точку если не хватает
                         QPoint* extendPoint = new QPoint();
@@ -278,10 +304,19 @@ void Wire::changePosition(int oldX, int oldY, int newX, int newY)
                 temp->setX(newX);
                 temp->setY(newY);
             } else {
+                if(path->size()==2) {
+                    //добавляем еще одну точку если не хватает
+                    QPoint* extendPoint = new QPoint();
+                    extendPoint->setX(second->x());
+                    extendPoint->setY(second->y());
+                    path->insert(0,extendPoint);
+                }
                 if(abs(second->x()-newX)<3 && wires->size()==1)
                 {
                     //двигаем 3 точку если оно нужно
                     QPoint* third = this->path->at(path->size()-3);
+
+
                     if(path->size()==3) {
                         //добавляем еще одну точку если не хватает
                         QPoint* extendPoint = new QPoint();
@@ -313,47 +348,56 @@ void Wire::connectWire(Wire *w, int wirePart)
     QPoint* last = w->getPath()->last();
     QPoint* beforeLast = w->getPath()->at(w->getPath()->size()-2);
 
-    if(wirePart==0 || wirePart==path->size()-1) {
-        if(last->x()==beforeLast->x()) {
-            last->setX(this->path->at(wirePart)->x());
-            last->setY(this->path->at(wirePart)->y());
-            beforeLast->setX(this->path->at(wirePart)->x());
-        } else {
-            last->setX(this->path->at(wirePart)->x());
-            last->setY(this->path->at(wirePart)->y());
-            beforeLast->setY((this->path->at(wirePart)->y()));
-        }
-        //надо добавить в список отрисовываемых объектов
-        this->wireConnector = new WireConnector(last->x(),last->y());
-        return;
-    }
+//    if(wirePart==1 || wirePart==path->size()-1) {
+//        if(last->x()==beforeLast->x()) {
+//            last->setX(this->path->at(wirePart)->x());
+//            last->setY(this->path->at(wirePart)->y());
+//            beforeLast->setX(this->path->at(wirePart)->x());
+//        } else {
+//            last->setX(this->path->at(wirePart)->x());
+//            last->setY(this->path->at(wirePart)->y());
+//            beforeLast->setY((this->path->at(wirePart)->y()));
+//            wirePart--;
+//        }
+//        //надо добавить в список отрисовываемых объектов
+//        this->wireConnector = new WireConnector(last->x(),last->y());
+//        //return;
+//    } else {
 
-    //присоединяем в ближайшей точке
-    QPoint *tmp1 = this->path->at(--wirePart);
-    QPoint *tmp2 = this->path->at(++wirePart);
-    if(abs(tmp1->x()-last->x())+abs(tmp1->y()-last->y())<abs(tmp2->x()-last->x())+abs(tmp2->y()-last->y())) {
-        if(last->x()==beforeLast->x()) {
-            last->setX(tmp1->x());
-            last->setY(tmp1->y());
-            beforeLast->setX(tmp1->x());
-        } else {
-            last->setX(tmp1->x());
-            last->setY(tmp1->y());
-            beforeLast->setY(tmp1->y());
-            wirePart--;
-        }
-    } else {
-        if(last->x()==beforeLast->x()) {
-            last->setX(tmp2->x());
-            last->setY(tmp2->y());
-            beforeLast->setX(tmp2->x());
-        } else {
-            last->setX(tmp2->x());
-            last->setY(tmp2->y());
-            beforeLast->setY(tmp2->y());
-        }
-    }
+        //присоединяем в ближайшей точке
+        QPoint *tmp1 = this->path->at(--wirePart);
+        QPoint *tmp2 = this->path->at(++wirePart);
 
+        //ближайшая точка
+        QPoint *tmp3;
+        int index=0;
+        if(abs(tmp1->x()-last->x())+abs(tmp1->y()-last->y())<abs(tmp2->x()-last->x())+abs(tmp2->y()-last->y())) {
+            if(last->x()==beforeLast->x()) {
+                last->setX(tmp1->x());
+                last->setY(tmp1->y());
+                beforeLast->setX(tmp1->x());
+                index = wirePart-1;
+            } else {
+                last->setX(tmp1->x());
+                last->setY(tmp1->y());
+                beforeLast->setY(tmp1->y());
+                index = wirePart-1;
+                wirePart--;
+            }
+        } else {
+            index = wirePart;
+            if(last->x()==beforeLast->x()) {
+                last->setX(tmp2->x());
+                last->setY(tmp2->y());
+                beforeLast->setX(tmp2->x());
+            } else {
+                last->setX(tmp2->x());
+                last->setY(tmp2->y());
+                beforeLast->setY(tmp2->y());
+
+            }
+        }
+    //}
     //делим провод на 2
     Wire* secondWire = new Wire();
 
@@ -362,7 +406,7 @@ void Wire::connectWire(Wire *w, int wirePart)
 
     //--wirePart;
 
-    for(int i=wirePart;i<this->path->size();i++) {
+    for(int i=index;i<this->path->size();i++) {
         QPoint* temp = path->at(i);
         secondWire->addPoint(new QPoint(temp->x(),temp->y()));
     }
@@ -374,7 +418,10 @@ void Wire::connectWire(Wire *w, int wirePart)
     }
     this->wires->append(secondWire);
     secondWire->setWireList(wires);
-    for(int i=wirePart;i<this->path->size();i++) {
+    if(index<((double)path->length())/2) {
+        index-=2;
+    }
+    for(int i=index;i<this->path->size();i++) {
         path->removeLast();
     }
     emit addWire(secondWire);

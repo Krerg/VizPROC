@@ -16,6 +16,11 @@ OGLRender::OGLRender() :
     startButton = new QPushButton("Включить визуализацию",this);
     stopButton = new QPushButton("Остановить визуализацию",this);
     QObject::connect(startButton,SIGNAL(clicked()),this,SLOT(startButtonPressed()));
+    //startButton->setStyleSheet("QPushButton {color: #333;border: 2px solid #555;border-radius: 11px;padding: 5px;background: qradialgradient(cx: 0.3, cy: -0.4,fx: 0.3, fy: -0.4,radius: 1.35, stop: 0 #fff, stop: 1 #888);min-width: 80px;}");
+
+    startButton->setStyleSheet("QPushButton {display: inline-block;color: white;font-weight: 700;text-decoration: none;user-select: none;padding: .5em 2em;outline: none;border: 2px solid;border-radius: 1px;-webkit-transition: 0.2s; background: rgb(45,45,45)}  QPushButton:hover {background: rgba(255,255,255,.2);}");
+
+
     elementList = new QComboBox(this);
     elementList->addItem("Резистор");
     elementList->addItem("Диод");
@@ -73,6 +78,8 @@ OGLRender::OGLRender() :
     g->addWidget(elementList);
     g->addWidget(startButton);
     g->addWidget(stopButton);
+    stopButton->setStyleSheet("QPushButton {color: #333;border: 2px solid #555;border-radius: 11px;padding: 5px;background: qradialgradient(cx: 0.3, cy: -0.4,fx: 0.3, fy: -0.4,radius: 1.35, stop: 0 #fff, stop: 1 #888);min-width: 80px;} QPushButton:hover {background: qradialgradient(cx: 0.3, cy: -0.4,fx: 0.3, fy: -0.4,radius: 1.35, stop: 0 #fff, stop: 1 #bbb);}");
+
     QObject::connect(stopButton,SIGNAL(clicked()),this,SLOT(stopVisualisationSlot()));
     g->setAlignment(elementList,Qt::AlignBottom);
     stopButton->setVisible(false);
