@@ -16,12 +16,14 @@ Amperemeter::~Amperemeter()
 }
 
 void Amperemeter::paintComponent(QPainter *painter)
-{
+{    
+    painter->setPen(Qt::black);
     painter->setBrush(Qt::white);
-    painter->drawEllipse(x,y,20,20);
-    painter->drawText(x+7,y+13,"А");
+    painter->drawEllipse(x,y,22,22);
+
+    painter->drawText(x+8,y+14,"А");
     if(attachedWire!=NULL) {
-        painter->drawText(x+5,y+29,"4А");
+        painter->drawText(x+5,y+31,"4А");
     }
 }
 
@@ -43,8 +45,10 @@ void Amperemeter::connect(int x, int y)
 
 bool Amperemeter::isSelected(int x, int y)
 {
-    if((pow((x-this->x),2)+pow((y-this->y),2))<=400) {
+    if((pow((x-this->x),2)+pow((y-this->y),2))<=484) {
         return true;
+    } else {
+        return false;
     }
 }
 
@@ -80,7 +84,12 @@ void Amperemeter::changeOrientation()
 
 void Amperemeter::disconnectWire(Wire *w)
 {
-   //TODO
+    //TODO
+}
+
+void Amperemeter::visualisation(QPainter *painter)
+{
+    this->paintComponent(painter);
 }
 
 void Amperemeter::setEnabled()

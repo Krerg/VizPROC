@@ -30,6 +30,9 @@ private:
      * @brief locked
      */
     bool locked;
+
+    int elementType;
+
 signals:
     /**
      * @brief addElement добавление элемента
@@ -37,7 +40,7 @@ signals:
      * @param x координата курсора по оси абсцисс
      * @param y координата курсора по оси ординат
      */
-    void addElement(QString elem,int x, int y);
+    void addElement(int elementType,int x, int y);
 
     /**
      * @brief click нажатие левой кнопки мыши
@@ -109,6 +112,21 @@ public slots:
      * @param event событие нажатия клавиши
      */
     void keyPressed(QKeyEvent* event);
+
+    void resistorActivate();
+
+    void emfActivate();
+
+    void diodeActivate();
+
+    void groundActivate();
+
+    void wireActivate();
+
+    void amperemeterActivate();
+
+    void voltmeterActivate();
+
 };
 
 #endif // EVENTHANDLER_H

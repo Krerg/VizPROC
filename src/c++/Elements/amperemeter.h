@@ -25,6 +25,8 @@ public:
     virtual void changeOrientation();
     virtual void disconnectWire(Wire *w);
 
+    void visualisation(QPainter* painter);
+
     void setEnabled();
 
     /**

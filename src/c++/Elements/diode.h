@@ -89,6 +89,11 @@ public:
     bool isOpened();
 
     /**
+     * @brief closeDiode
+     */
+    void closeDiode();
+
+    /**
      * @brief visualisation
      * @param painter
      */

@@ -1,4 +1,5 @@
 #include "updatethread.h"
+#include <QDebug>
 
 UpdateThread::UpdateThread(QObject *parent) :
     QThread(parent)

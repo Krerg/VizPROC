@@ -30,7 +30,6 @@ SOURCES += main.cpp\
     src/c++/Elements/wire.cpp \
     src/c++/Elements/ground.cpp \
     src/c++/Util/geometry.cpp \
-    src/c++/Model/graph.cpp \
     src/c++/Model/lumatrix.cpp \
     src/c++/Elements/diode.cpp \
     src/c++/Elements/wireconnector.cpp \
@@ -40,7 +39,15 @@ SOURCES += main.cpp\
     src/c++/Elements/amperemeter.cpp \
     src/c++/Util/programminformationwindow.cpp \
     src/c++/Util/filehandler.cpp \
-    src/c++/Controller/graphhandler.cpp
+    src/c++/Controller/graphhandler.cpp \
+    src/c++/Util/stylesheetvalues.cpp \
+    src/c++/Elements/voltmeter.cpp \
+    src/c++/Elements/terminal.cpp \
+    src/c++/Util/stringvalues.cpp \
+    src/c++/Model/model.cpp \
+    src/c++/Controller/applicationcontext.cpp \
+    src/c++/Model/branch.cpp \
+    src/c++/Model/graph.cpp
 
 HEADERS  += src/c++/View/startscreen.h \
     windowmanager.h \
@@ -59,7 +66,6 @@ HEADERS  += src/c++/View/startscreen.h \
     src/c++/Elements/wire.h \
     src/c++/Elements/ground.h \
     src/c++/Util/geometry.h \
-    src/c++/Model/graph.h \
     src/c++/Model/lumatrix.h \
     src/c++/Elements/diode.h \
     src/c++/Elements/wireconnector.h \
@@ -69,5 +75,13 @@ HEADERS  += src/c++/View/startscreen.h \
     src/c++/Elements/amperemeter.h \
     src/c++/Util/programminformationwindow.h \
     src/c++/Util/filehandler.h \
-    src/c++/Controller/graphhandler.h
+    src/c++/Controller/graphhandler.h \
+    src/c++/Util/stylesheetvalues.h \
+    src/c++/Elements/voltmeter.h \
+    src/c++/Elements/terminal.h \
+    src/c++/Util/stringvalues.h \
+    src/c++/Model/model.h \
+    src/c++/Controller/applicationcontext.h \
+    src/c++/Model/branch.h \
+    src/c++/Model/graph.h
 FORMS    +=

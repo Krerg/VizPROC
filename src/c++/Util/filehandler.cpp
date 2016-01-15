@@ -153,7 +153,11 @@ void FileHandler::saveFile(ComponentManager *cm)
 void FileHandler::openFile(ComponentManager *cm)
 {
     QFileDialog fileDialog;
-    QFile f(fileDialog.getOpenFileName());
+    QString fileName = fileDialog.getOpenFileName();
+    if(fileName=="") {
+        return;
+    }
+    QFile f(fileName);
     f.open(QIODevice::ReadOnly);
     QXmlStreamReader reader(&f);
     int x;
@@ -161,6 +165,7 @@ void FileHandler::openFile(ComponentManager *cm)
     Resistor* tmpRes;
     EMF* tmpEmf;
     Ground* groundTemp;
+    Diode* diodeTemp;
     while(!reader.atEnd() && !reader.hasError()) {
         reader.readNext();
         if (reader.isStartDocument())
@@ -285,6 +290,42 @@ void FileHandler::openFile(ComponentManager *cm)
                         }
                         groundTemp->setPosition(x,y);
                         cm->addGround(groundTemp);
+                    } else if (reader.isStartElement() && reader.name().toString() == "Diode") {
+                        //считывание атрибутов резистора
+                        diodeTemp = new Diode();
+                        while (true) {
+                            //считывание элементов
+                            reader.readNext();
+                            if(reader.name()=="Orientation") {
+                                try {
+                                    if(reader.attributes().size()==0) {
+                                        continue;
+                                    }
+                                    ((Element*)(diodeTemp))->setPosition(reader.attributes().at(0).value().toString());
+                                } catch (...) {
+                                    qDebug()<<"Error while parsing file";
+                                }
+                            }
+
+                            if(reader.name()=="x") {
+                                if(reader.attributes().size()==0) {
+                                    continue;
+                                }
+                                x = reader.attributes().at(0).value().toInt();
+                            }
+
+                            if(reader.name()=="y") {
+                                if(reader.attributes().size()==0) {
+                                    continue;
+                                }
+                               y =  reader.attributes().at(0).value().toInt();
+                            }
+                            if(reader.isEndElement() && reader.name()=="Diode") {
+                                break;
+                            }
+                        }
+                        diodeTemp->setPosition(x,y);
+                        cm->addDiode(diodeTemp);
                     }
 
                     if(reader.isEndElement() && reader.name()=="Circuit") {

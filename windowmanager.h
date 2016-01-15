@@ -41,6 +41,11 @@ public slots:
     WorkBench* openWorkBench();
 
     /**
+     * @brief openWorkBench
+     */
+    WorkBench* openWorkBench(ComponentManager* cm);
+
+    /**
      * @brief openProject
      */
     void openProject();

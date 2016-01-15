@@ -1,6 +1,7 @@
 #include "windowmanager.h"
 #include "src/c++/View/workbench.h"
 #include "src/c++/Util/filehandler.h"
+#include "src/c++/View/componentmanager.h"
 
 WindowManager::WindowManager(QObject *parent) :
     QObject(parent)
@@ -22,14 +23,23 @@ WorkBench* WindowManager::openWorkBench()
         delete sc;
     sc = NULL;
     WorkBench* workBench = new WorkBench(this);
+    workBench->connectComponents();
     return workBench;
-    //wb = new WorkBench(this);
+}
+
+WorkBench *WindowManager::openWorkBench(ComponentManager *cm)
+{
+    if(sc!=NULL)
+        delete sc;
+    sc = NULL;
+    WorkBench* workBench = new WorkBench(this,cm);
+    workBench->connectComponents();
+    return workBench;
 }
 
 void WindowManager::openProject()
 {
-    WorkBench* wb = openWorkBench();
-    wb->hide();
-    FileHandler::openFile(wb->getComponentManager());
-    wb->show();
+    ComponentManager* cm = new ComponentManager();
+    FileHandler::openFile(cm);
+    WorkBench* workBench = openWorkBench(cm);
 }

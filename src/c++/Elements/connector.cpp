@@ -8,6 +8,7 @@ Connector::Connector(QObject *parent) :
     this->width=5;
     this->height=5;
     this->connectedWire = NULL;
+    this->pointed = false;
 }
 
 Connector::~Connector() {
@@ -50,7 +51,8 @@ int Connector::getY()
 
 void Connector::setPosition(int x, int y)
 {
-    emit changePosition(this->x,this->y,x,y);
+    if(connectedWire!=NULL)
+        connectedWire->changePosition(this->x,this->y,x,y);
     this->x=x;
     this->y=y;
 }

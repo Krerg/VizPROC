@@ -48,6 +48,11 @@ public:
      */
     void addGround(Ground* ground);
 
+    /**
+     * @brief addDiode добавление диода
+     */
+    void addDiode(Diode* d);
+
 private:
 
     /**
@@ -84,6 +89,13 @@ private:
      * @param y координата курсора по оси ординат
      */
     void addAmperemeter(int x, int y);
+
+    /**
+     * @brief addVoltmeter
+     * @param x
+     * @param y
+     */
+    void addVoltmeter(int x, int y);
 
     /**
      * @brief dx разница координат мыши и элемента по оси абсцисс
@@ -197,6 +209,12 @@ private:
 protected:
 
 signals:
+
+    /**
+     * @brief elementDeleted
+     */
+    void elementDeleted();
+
     /**
      * @brief WireAdded сигнал, который вызывается когда добавляется
      * новый элемент (сигнал подается на логиику для построения графа
@@ -228,7 +246,7 @@ signals:
      * @brief addDiode
      * @param d
      */
-    void addDiode(Diode* d);
+    void addedDiode(Diode* d);
 public slots:
     /**
      * @brief deleteItem слот удаления элемента
@@ -288,11 +306,11 @@ public slots:
 
     /**
      * @brief addElement слот для добавления элемента по названию
-     * @param elem название элемента
+     * @param elemType название элемента
      * @param x координата курсора по оси абсцисс
      * @param y координата курсора по оси ординат
      */
-    void addElement(QString elem, int x, int y);
+    void addElement(int elemType, int x, int y);
 
     /**
      * @brief connect вызывается при соединении элементов проводом
@@ -306,6 +324,14 @@ public slots:
      * @return
      */
     QList<Element*>* getElements();
+
+    /**
+     * @brief getElements
+     * @return
+     */
+    QList<Element*>* getMeters();
+
+
 
     /**
      * @brief getWires

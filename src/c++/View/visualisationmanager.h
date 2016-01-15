@@ -19,6 +19,7 @@ public:
     void setGraph(QMap<Wire*,int*> *graph);
     void setWires(QList<Wire*>* wires);
     void setElements(QList<Element*>* elements);
+    void setMeters(QList<Element*> *meters);
 private:
     /**
      * @brief potentials потенциалы
@@ -29,6 +30,11 @@ private:
      * @brief elements список элементов для визуализации
      */
     QList<Element*> *elements;
+
+    /**
+     * @brief meters список измеряющих элементов
+     */
+    QList<Element*> *meters;
 
     /**
      * @brief wires срисок проводов для визуализации
@@ -47,11 +53,13 @@ private:
     int numb;
 
     /**
-     * @brief getColor
-     * @param container
-     * @return
+     * @brief getColor методя для получения цвета в зависимости от значения напряжения
+     * @param potential значение напряжение
+     * @param maxPotential мак значение напряжения на схеме
+     * @param container контейнер куда цвет положится
+     * @return входной контейнер
      */
-    int* getColor(int potential,int maxPotential, int* container);
+    int* getColor(double potential,double maxPotential, int* container);
 
     /**
      * @brief getRadius
@@ -59,7 +67,7 @@ private:
      * @param power
      * @return
      */
-    int getRadius(int maxPower, int power);
+    int getRadius(double maxPower, double power);
 signals:
     void enableVisualisation();
 public slots:

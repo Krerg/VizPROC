@@ -11,7 +11,7 @@ class WindowManager;
 #include "src/c++/Controller/eventhandler.h"
 #include "src/c++/View/componentmanager.h"
 #include "src/c++/View/mousetrackerthread.h"
-#include "src/c++/Model/graph.h"
+#include "src/c++/Model/model.h"
 #include "src/c++/View/visualisationmanager.h"
 #include "src/c++/Controller/graphhandler.h"
 #include <QMenuBar>
@@ -29,7 +29,7 @@ public:
      * @brief WorkBench конструктор класса
      * @param parent указатель на родительский элемент
      */
-    explicit WorkBench(WindowManager* wm, QWidget *parent = 0);
+    explicit WorkBench(WindowManager* wm, ComponentManager* cm=NULL, QWidget *parent = 0);
 
     /**
      * @brief connectComponents метод для соединения сигнало и слотов компонент программы
@@ -48,7 +48,34 @@ public:
      */
     void setWindowManger(WindowManager* wm);
 
+    bool eventFilter(QObject *obj, QEvent *event);
+
+    void showWindow();
+
 private:
+
+    QPushButton* voltmeterButton;
+
+    QPushButton* amperemeterButton;
+
+    QPushButton* wireButton;
+
+    QPushButton* resistorButton;
+
+    QPushButton* emfButton;
+
+    QPushButton* diodeButton;
+
+    QPushButton* groundButton;
+
+    QPushButton* stopButton;
+
+    QPushButton* playButton;
+
+    QList<QPushButton*>* guiButtons;
+
+    QPushButton* activatedButton;
+
     /**
      * @brief menuBar
      */
@@ -127,7 +154,7 @@ private:
     /**
      * @brief g граф для расчета значений потенциалов схемы
      */
-    Graph *g;
+    Model *model;
 
     /**
      * @brief visualisationManager обработчик визуализации
@@ -150,6 +177,8 @@ private:
     QWidget *panel;
 
     QLabel* lbl;
+
+    void initApplicationContext();
 protected:
 
     /**
@@ -158,9 +187,17 @@ protected:
      */
     void keyPressEvent(QKeyEvent *event);
 
+
+
 signals:
 
+    void stopVisualisation();
+
+
+
 public slots:
+
+    void buttonPressed();
 
     /**
      * @brief openInformationWindow
@@ -188,6 +225,10 @@ public slots:
      * @brief openFile слот дл открытия файла
      */
     void openFile();
+
+    void playButtonHide();
+
+    void stopButtonHide();
 };
 
 #endif // WORKBENCH_H

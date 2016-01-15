@@ -6,22 +6,14 @@
 #include <QLabel>
 #include <QGraphicsDropShadowEffect>
 #include <QApplication>
+#include <QListView>
 #include <math.h>
 
 OGLRender::OGLRender() :
     QGLWidget()
 {
     setFocusPolicy(Qt::ClickFocus);
-    //setFormat(QGLFormat(QGL::SampleBuffers));
-    startButton = new QPushButton("Включить визуализацию",this);
-    stopButton = new QPushButton("Остановить визуализацию",this);
-    QObject::connect(startButton,SIGNAL(clicked()),this,SLOT(startButtonPressed()));
-    //startButton->setStyleSheet("QPushButton {color: #333;border: 2px solid #555;border-radius: 11px;padding: 5px;background: qradialgradient(cx: 0.3, cy: -0.4,fx: 0.3, fy: -0.4,radius: 1.35, stop: 0 #fff, stop: 1 #888);min-width: 80px;}");
-
-    startButton->setStyleSheet("QPushButton {display: inline-block;color: white;font-weight: 700;text-decoration: none;user-select: none;padding: .5em 2em;outline: none;border: 2px solid;border-radius: 1px;-webkit-transition: 0.2s; background: rgb(45,45,45)}  QPushButton:hover {background: rgba(255,255,255,.2);}");
-
-
-    elementList = new QComboBox(this);
+    elementList = new QComboBox();
     elementList->addItem("Резистор");
     elementList->addItem("Диод");
     elementList->addItem("ЭДС");
@@ -36,20 +28,27 @@ OGLRender::OGLRender() :
     elemPanel->setAlignment(Qt::AlignRight|Qt::AlignTop);
     QHBoxLayout *resistancePanel = new QHBoxLayout();
     QHBoxLayout *powerPanel = new QHBoxLayout();
-    resistanceLabel = new QLabel("Сопротивление");
+    resistanceLabel = new QLabel("Сопротивление(Ом)");
     resistanceSpinBox = new QDoubleSpinBox();
 
-    powerLabel = new QLabel("Мощность");
+    powerLabel = new QLabel("Мощность(Вт)");
     power = new QComboBox();
-    power->addItem("0,125Вт");
-    power->addItem("0,25Вт");
+    power->setView(new QListView());
+    power->setStyleSheet("QComboBox QAbstractItemView::item {width:60px; color: white;font-weight: 700;text-decoration: none;user-select: none;outline: none; background: rgb(45,45,45); QListView::item:selected {coloe:white;background: rgb(85,85,85);}");
+    power->addItem("0.125");
+    power->addItem("0.25");
+    power->addItem("0.5");
+    power->addItem("1.0");
 
     voltagePanel = new QHBoxLayout();
-    voltageLabel = new QLabel("Напряжение");
+    voltageLabel = new QLabel("Напряжение(Вт)");
     voltageSpinBox = new QDoubleSpinBox();
+    voltageSpinBox->setDecimals(4);
     voltagePanel->addWidget(voltageLabel);
     voltagePanel->addWidget(voltageSpinBox);
     elemPanel->addLayout(voltagePanel);
+
+    resistanceSpinBox->setStyleSheet("QSpinBox {width:60px;color: white;font-weight: 700;text-decoration: none;user-select: none;outline: none;border: 2px solid;border-radius: 1px; background: rgb(45,45,45);} QSpinBox::up-arrow {image: url(C:/Users/amylniko/Documents/env/er/VizPROC-master/resource/spinbox_upbutton.png);} QSpinBox::up-button {image: url(C:/Users/amylniko/Documents/env/er/VizPROC-master/resource/spinbox_upbutton.png);}");
 
     this->selectedEmf = NULL;
     this->selectedRes = NULL;
@@ -62,29 +61,15 @@ OGLRender::OGLRender() :
 
     QObject::connect(resistanceSpinBox,SIGNAL(editingFinished()),this,SLOT(editingElementFinished()));
     QObject::connect(voltageSpinBox,SIGNAL(editingFinished()),this,SLOT(editingElementFinished()));
-
-    //power->setVisible(false);
-    //powerLabel->setVisible(false);
+    //QObject::connect(resistanceSpinBox,SIGNAL(valueChanged(double)),this,SLOT(valueChanged(double)));
+    QObject::connect(voltageSpinBox,SIGNAL(editingFinished()),this,SLOT(editingElementFinished()));
 
     elemPanel->addLayout(resistancePanel);
     elemPanel->addLayout(powerPanel);
 
     g->addLayout(elemPanel);
-    //g->addWidget(resistanceLabel);
-    //g->setAlignment(resistanceLabel,Qt::AlignRight|Qt::AlignTop);
-    //g->addSpacing(this->height()-30);
 
-
-    g->addWidget(elementList);
-    g->addWidget(startButton);
-    g->addWidget(stopButton);
-    stopButton->setStyleSheet("QPushButton {color: #333;border: 2px solid #555;border-radius: 11px;padding: 5px;background: qradialgradient(cx: 0.3, cy: -0.4,fx: 0.3, fy: -0.4,radius: 1.35, stop: 0 #fff, stop: 1 #888);min-width: 80px;} QPushButton:hover {background: qradialgradient(cx: 0.3, cy: -0.4,fx: 0.3, fy: -0.4,radius: 1.35, stop: 0 #fff, stop: 1 #bbb);}");
-
-    QObject::connect(stopButton,SIGNAL(clicked()),this,SLOT(stopVisualisationSlot()));
     g->setAlignment(elementList,Qt::AlignBottom);
-    stopButton->setVisible(false);
-    //g->setAlignment(startButton,Qt::AlignBottom);
-
 
     voltageLabel->setVisible(false);
     voltageSpinBox->setVisible(false);
@@ -101,13 +86,43 @@ OGLRender::OGLRender() :
     setMouseTracking(true);
     setAutoFillBackground(false);
 
-    this->cohesionError = false;
+    this->error = false;
+    this->errorText="";
 
 
 }
+
 OGLRender::~OGLRender()
 {
 
+}
+
+void OGLRender::drawGrid()
+{
+    glBegin(GL_LINES);
+        glColor3f(20,20,20);
+        glColor3f(0.9f,0.9f,0.9f);
+
+        for(int i=0;i<this->height();i+=20) {
+            glVertex3f(0,i,0.0f);
+            glVertex3f(this->width(),i,0.0f);
+        }
+
+        for(int i=0;i<this->width();i+=20) {
+            glVertex3f(i,0,0.0f);
+            glVertex3f(i,this->height(),0.0f);
+        }
+
+        glEnd();
+}
+
+void OGLRender::hideAllPanesl()
+{
+    emfPanelVisible=false;
+    resistorPanelVisible=false;
+    voltageSpinBox->hide();
+    resistanceSpinBox->hide();
+    power->hide();
 }
 
 void OGLRender::initializeGL()
@@ -122,9 +137,12 @@ void OGLRender::openResistorPanel(Resistor *res)
 {
     if(selectedEmf!=NULL) {
         QObject::disconnect(voltageSpinBox,SIGNAL(valueChanged(double)),selectedEmf,SLOT(setVoltage(double)));
+        QObject::disconnect(voltageSpinBox,SIGNAL(valueChanged(double)),this,SLOT(valueChanged(double)));
     }
     if(selectedRes!=NULL) {
         QObject::disconnect(resistanceSpinBox,SIGNAL(valueChanged(double)),selectedRes,SLOT(setResistance(double)));
+        QObject::disconnect(power,SIGNAL(currentTextChanged(QString)),selectedRes,SLOT(setMaxPower(QString)));
+        QObject::disconnect(resistanceSpinBox,SIGNAL(valueChanged(double)),this,SLOT(valueChanged(double)));
     }
 
     this->selectedEmf = NULL;
@@ -142,7 +160,10 @@ void OGLRender::openResistorPanel(Resistor *res)
     power->show();
     qDebug()<<res->getResistance();
     QObject::connect(resistanceSpinBox,SIGNAL(valueChanged(double)),res,SLOT(setResistance(double)));
+    QObject::connect(power,SIGNAL(currentTextChanged(QString)),res,SLOT(setMaxPower(QString)));
+    QObject::connect(resistanceSpinBox,SIGNAL(valueChanged(double)),this,SLOT(valueChanged(double)));
     resistanceSpinBox->setValue(res->getResistance());
+    power->setCurrentText(res->getMaxPower());
 }
 
 void OGLRender::openEmfPanel(EMF *emf)
@@ -150,9 +171,12 @@ void OGLRender::openEmfPanel(EMF *emf)
 
     if(selectedEmf!=NULL) {
         QObject::disconnect(voltageSpinBox,SIGNAL(valueChanged(double)),selectedEmf,SLOT(setVoltage(double)));
+        QObject::disconnect(voltageSpinBox,SIGNAL(valueChanged(double)),this,SLOT(valueChanged(double)));
     }
     if(selectedRes!=NULL) {
         QObject::disconnect(resistanceSpinBox,SIGNAL(valueChanged(double)),selectedRes,SLOT(setResistance(double)));
+        QObject::disconnect(power,SIGNAL(currentTextChanged(QString)),selectedRes,SLOT(setMaxPower(QString)));
+        QObject::disconnect(resistanceSpinBox,SIGNAL(valueChanged(double)),this,SLOT(valueChanged(double)));
     }
 
     resistorPanelVisible=false;
@@ -164,13 +188,11 @@ void OGLRender::openEmfPanel(EMF *emf)
     powerLabel->hide();
     power->hide();
 
-//    voltageLabel->show();
     voltageSpinBox->show();
 
-
     QObject::connect(voltageSpinBox,SIGNAL(valueChanged(double)),emf,SLOT(setVoltage(double)));
+    QObject::connect(voltageSpinBox,SIGNAL(valueChanged(double)),this,SLOT(valueChanged(double)));
     voltageSpinBox->setValue(emf->getVoltage());
-
 
 }
 
@@ -182,16 +204,12 @@ void OGLRender::resizeGL(int width, int height)
     glViewport(0,0,width,height); //размер порта на котором будем рисовать вроде
     glOrtho(0,width,height,0,-1,1);
 }
-//paintGL вызывается каждый раз когда требуется перерисовать окно
-//void OGLRender::paintGL()
-//{
-//    //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-//    //emit paintComponents();
-//}
+
 //Ивент который вызывается при нажатии на кнопку мыши
 void OGLRender::mousePressEvent(QMouseEvent *event)
 {
-    this->cohesionError = false;
+    hideAllPanesl();
+    this->error = false;
     emit mouseClicked(event);
 }
 //Ивент который вызывается при передвижении мыши и нажатии кнопки, удобно кстати оч
@@ -202,13 +220,13 @@ void OGLRender::mouseMoveEvent(QMouseEvent *event)
 //Ивент который вызывается при отпускании клавиши мыши
 void OGLRender::mouseReleaseEvent(QMouseEvent *event)
 {
-    this->cohesionError = false;
+    this->error = false;
     emit mouseReleased(event);
 }
 //Ивент который вызывается при двойном клике мышью
 void OGLRender::mouseDoubleClickEvent(QMouseEvent *event)
 {
-    this->cohesionError = false;
+    this->error = false;
     emit mouseDoubleClicked(event);
 }
 
@@ -220,45 +238,17 @@ void OGLRender::paintEvent(QPaintEvent *event)
     painter.begin(this);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-//    r->visualisation(colorContainer1,colorContainer2,&painter,100);
-//gradient
-//    QLinearGradient lg = QLinearGradient(QPointF(0,200),QPointF(200,300));
-//    lg.setCoordinateMode(QGradient::ObjectBoundingMode );
-//    lg.setSpread(QGradient::PadSpread);
-//    lg.setColorAt(0.0,QColor(255,0,0));
-//    lg.setColorAt(1,QColor(0,0,255));
-
-//    QBrush brush = QBrush(lg);
-//    painter.setBrush(brush);
-//    QPen p;
-//    p.setBrush(brush);
-//    p.setWidth(2);
-//    painter.setPen(p);
-//    painter.drawLine(QPointF(0,200),QPointF(200,200)); // @1
-//    painter.drawLine(QPointF(0,300),QPointF(200,300));
-//    painter.drawLine(QPointF(0,200),QPointF(0,300)); // @1
-//    painter.drawLine(QPointF(200,200),QPointF(200,300));
-
-
-    //glow effect
-//    QRadialGradient gradient;
-//    gradient.setCoordinateMode(QGradient::ObjectBoundingMode);
-//    gradient.setCenter(0.5, 0.5);
-//    gradient.setFocalPoint(0.5, 0.5);
-//    gradient.setColorAt(0.0, QColor(255, 255, 0));
-//    gradient.setColorAt(0.5, QColor(255, 255, 255));
-//    painter.setPen(Qt::NoPen);
-//    painter.setBrush(gradient);
-//    painter.drawEllipse(60,60,100,100);
-//    painter.setPen(QColor(0,0,0));
-
-    if(cohesionError) {
-        painter.drawText(5,13,"Не все элементы соединены");
+    //отрисовка сетки
+    drawGrid();
+    painter.setBrush(Qt::black);
+    painter.setPen(Qt::black);
+    if(error) {
+        painter.drawText(5,13,errorText);
     }
 
     if(resistorPanelVisible) {
-        painter.drawText(resistanceSpinBox->x()-84,resistanceSpinBox->y()+14,"Сопротивление");
-        painter.drawText(power->x()-57,power->y()+14,"Мощность");
+        painter.drawText(resistanceSpinBox->x()-103,resistanceSpinBox->y()+14,"Сопротивление(Ом)");
+        painter.drawText(power->x()-74,power->y()+14,"Мощность(Вт)");
     } else if (emfPanelVisible) {
         painter.drawText(voltageSpinBox->x()-65,voltageSpinBox->y()+14,"Напряжение");
     }
@@ -269,6 +259,7 @@ void OGLRender::paintEvent(QPaintEvent *event)
     emit paintMeters(&painter);
     } else {
       painter.drawText(5,13,"Режим визуализации");
+
       emit updateVisualisation(&painter);
     }
     painter.endNativePainting();
@@ -277,7 +268,7 @@ void OGLRender::paintEvent(QPaintEvent *event)
 
 void OGLRender::wheelEvent(QWheelEvent *event)
 {
-    qDebug()<<"Хуил ивент";
+    qDebug()<<"В будущем добавим масштабирование";
 }
 
 void OGLRender::keyPressEvent(QKeyEvent *event)
@@ -287,14 +278,17 @@ void OGLRender::keyPressEvent(QKeyEvent *event)
 
 void OGLRender::editingElementFinished()
 {
-    qDebug()<<"editing finished";
-    if(enableVisualisation)
+    if(enableVisualisation) {
         emit recalculate();
+    }
 }
 
-QComboBox* OGLRender::getComboBox()
+void OGLRender::valueChanged()
 {
-    return elementList;
+    qDebug()<<"recalc";
+    if(enableVisualisation) {
+        emit recalculate();
+    }
 }
 
 void OGLRender::startButtonPressed()
@@ -304,21 +298,30 @@ void OGLRender::startButtonPressed()
 
 void OGLRender::enableVisualisationSlot()
 {
-    this->startButton->setVisible(false);
-    this->stopButton->setVisible(true);
     this->enableVisualisation = true;
 }
 
 void OGLRender::stopVisualisationSlot()
 {
     this->enableVisualisation=false;
-    startButton->setVisible(true);
-    stopButton->setVisible(false);
     emit releaseLock();
 }
 
-void OGLRender::setCohesionError()
+void OGLRender::setError(QString errorText)
 {
-    this->cohesionError = true;
-    qDebug()<<"cohesion error";
+    this->error = true;
+    this->errorText = errorText;
+}
+
+void OGLRender::elementDeleted()
+{
+    this->selectedEmf = NULL;
+    this->selectedRes = NULL;
+    resistanceLabel->hide();
+    resistanceSpinBox->hide();
+    power->hide();
+    voltageLabel->hide();
+    voltageSpinBox->hide();
+    resistorPanelVisible = false;
+    emfPanelVisible = false;
 }

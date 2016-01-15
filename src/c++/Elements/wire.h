@@ -126,6 +126,12 @@ public:
     void setWireList(QList<Wire*>* t);
 
     /**
+     * @brief setWireConnector
+     * @param wireConnector
+     */
+    void setWireConnector(WireConnector* wireConnector);
+
+    /**
      * @brief getConnectedElements
      * @return
      */

@@ -1,5 +1,6 @@
 #include "emf.h"
 #include <QtOpenGL/QGLWidget>
+#include <src/c++/Util/stringvalues.h>
 
 EMF::EMF(QObject *parent) :
     QObject(parent)
@@ -17,8 +18,9 @@ EMF::EMF(QObject *parent) :
     this->c2 = new Connector(this);
     this->c2->setParentElement(this);
     this->setConnectorPosition();
-    this->conductivity = 100000;
-    this->voltage = 10;
+    //this->conductivity = 10000000;
+    this->conductivity = 600;
+    this->voltage = 1;
 }
 
 EMF::~EMF()
@@ -293,7 +295,7 @@ bool EMF::getType()
 
 QString EMF::getName()
 {
-    return "Emf";
+    return StringValues::EMF_NAME;
 }
 
 bool EMF::isGround(Wire* w)

@@ -248,7 +248,7 @@ int Diode::getEmfDirection(int wireNumber)
 
 int Diode::getConductivity()
 {
-    return 100000;
+    return 1000000;
 }
 
 double Diode::getVoltage()
@@ -259,6 +259,11 @@ double Diode::getVoltage()
 bool Diode::isOpened()
 {
     return opened;
+}
+
+void Diode::closeDiode()
+{
+    this->opened = false;
 }
 
 void Diode::visualisation(int *container1, int *container2, QPainter *painter, int radius)

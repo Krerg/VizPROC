@@ -4,6 +4,8 @@
 #include "src/c++/Elements/wire.h"
 #include "src/c++/Elements/ground.h"
 #include "src/c++/Elements/amperemeter.h"
+#include "src/c++/Elements/voltmeter.h"
+#include "src/c++/Elements/terminal.h"
 
 ComponentManager::ComponentManager(QObject *parent) :
     QObject(parent)
@@ -56,8 +58,8 @@ void ComponentManager::paintMeters(QPainter *painter)
     {
         if((*i)->getName() == "Amper") {
             ((Amperemeter*)(*i))->paintComponent(painter);
-        } else {
-
+        } else if((*i)->getName() == "Voltmeter") {
+            ((Voltmeter*)(*i))->paintComponent(painter);
         }
     }
 }
@@ -75,7 +77,7 @@ void ComponentManager::addEMF(int x, int y)
     this->leftClick=false;
     EMF *temp = new EMF(this);
     temp->setPosition(x-temp->getWidth()/2,y-temp->getHeight()/2);
-    elements->insert(elements->end(),(Element*)temp);
+    elements->append((Element*)temp);
 }
 
 void ComponentManager::addDiode(int x, int y)
@@ -85,7 +87,13 @@ void ComponentManager::addDiode(int x, int y)
     temp->setPosition(x-temp->getWidth()/2,y-temp->getHeight()/2);
     temp->setPainter(painter);
     elements->append((Element*)temp);
-    emit addDiode(temp);
+    emit addedDiode(temp);
+}
+
+void ComponentManager::addDiode(Diode *d)
+{
+    elements->insert(elements->end(),(Element*)d);
+    emit addedDiode(d);
 }
 
 void ComponentManager::addGround(int x, int y)
@@ -102,6 +110,24 @@ void ComponentManager::addAmperemeter(int x, int y)
     Amperemeter* temp = new Amperemeter();
     temp->setPosition(x,y);
     this->meters->append((Element*)temp);
+}
+
+void ComponentManager::addVoltmeter(int x, int y)
+{
+    this->leftClick = false;
+    Voltmeter* voltmeter = new Voltmeter();
+    Terminal* upTerminal = new Terminal();
+    Terminal* downTerminal = new Terminal();
+    voltmeter->setDownTerminal(downTerminal);
+    voltmeter->setUpterminal(upTerminal);
+    voltmeter->setPosition(x,y);
+    upTerminal->setPosition(x-20,y);
+    downTerminal->setPosition(x+30,y);
+    upTerminal->setColor(QColor("Red"));
+    downTerminal->setColor(QColor("Blue"));
+    this->meters->append((Element*)voltmeter);
+    this->meters->append((Element*)upTerminal);
+    this->meters->append((Element*)downTerminal);
 }
 
 void ComponentManager::setPainter(QPainter *painter)
@@ -163,7 +189,6 @@ void ComponentManager::moveElement(int x, int y)
     {
         selected->setPosition(x-dx,y-dy);
     }
-
 }
 
 Element* ComponentManager::getElementByCoordinates(int x, int y)
@@ -217,6 +242,7 @@ void ComponentManager::deleteItem()
         }
         delete deleteWires;
     }
+    emit elementDeleted();
     deleteMutex=false;
 }
 
@@ -231,12 +257,25 @@ void ComponentManager::leftClickReleased()
               ((Amperemeter*)selected)->setWire((*j));
            }
         }
+    } else if(selected!=NULL && selected->getName()=="Terminal") {
+        QList<Wire*>::iterator j;
+        for(j=wires->begin();j!=wires->end();j++)
+        {
+           if((this->wirePart=(*j)->isSelected(selected->getX()+10,selected->getY()+10))>0)
+           {
+              ((Terminal*)selected)->setConnectedWire((*j));
+               this->leftClick=false;
+               return;
+           }
+        }
+        ((Terminal*)(selected))->setConnectedWire(NULL);
     }
     this->leftClick=false;
 }
 
 void ComponentManager::addWire(Wire *w)
 {
+    QObject::connect(w,SIGNAL(addWire(Wire*)),this,SLOT(addWire(Wire*)));
     this->wires->append(w);
     emit wireAdded(w);
 }
@@ -320,20 +359,32 @@ void ComponentManager::mouseMoved(int x, int y)
     }
 }
 
-void ComponentManager::addElement(QString elem, int x, int y)
+void ComponentManager::addElement(int elemType, int x, int y)
 {
-    if(elem == "Резистор")  {
+    switch (elemType) {
+    case 0:
         this->addResistor(x,y);
-    } else if(elem == "ЭДС") {
+        break;
+    case 1:
         this->addEMF(x,y);
-    } else if(elem == "Провод") {
-        this->connect(x,y);
-    } else if(elem == "Заземление") {
-        this->addGround(x,y);
-    } else if(elem == "Диод") {
+        break;
+    case 2:
         this->addDiode(x,y);
-    } else if(elem == "Амперметр") {
+        break;
+    case 3:
+        this->addGround(x,y);
+        break;
+    case 4:
+        this->connect(x,y);
+        break;
+    case 5:
         this->addAmperemeter(x,y);
+        break;
+    case 6:
+        this->addVoltmeter(x,y);
+        break;
+    default:
+        break;
     }
 }
 
@@ -346,8 +397,8 @@ void ComponentManager::connect(int x, int y)
         if(pointedConnector!=NULL)
         {
             drawWire = new Wire(this);
-            drawWire->startConnection(pointedConnector);
-            drawWire->getPath()->insert(drawWire->getPath()->end(),new QPoint(pointedConnector->getX(),pointedConnector->getY()));
+
+            drawWire->getPath()->append(new QPoint(pointedConnector->getX(),pointedConnector->getY()));
             pointedConnector->setConnection(drawWire);
             drawingWire=true;
             //делаем 2 точки для построения провода
@@ -355,9 +406,9 @@ void ComponentManager::connect(int x, int y)
             this->wireEnd2 = new QPoint(pointedConnector->getX(),pointedConnector->getY());
             drawWire->addPoint(wireEnd1);
             drawWire->addPoint(wireEnd2);
+            drawWire->startConnection(pointedConnector);
             this->drawType=pointed->getType();
-
-            this->wires->insert(wires->end(),drawWire);
+            this->wires->append(drawWire);
             QObject::connect(drawWire,SIGNAL(addWire(Wire*)),this,SLOT(addWire(Wire*)));
 
         }
@@ -396,6 +447,11 @@ void ComponentManager::connect(int x, int y)
 QList<Element *>* ComponentManager::getElements()
 {
     return this->elements;
+}
+
+QList<Element *> *ComponentManager::getMeters()
+{
+    return this->meters;
 }
 
 QList<Wire *>* ComponentManager::getWires()

@@ -3,12 +3,16 @@
 #include "src/c++/Elements/resistor.h"
 #include "src/c++/Elements/ground.h"
 #include "src/c++/Elements/diode.h"
+#include "src/c++/Elements/amperemeter.h"
+#include "src/c++/Elements/terminal.h"
+#include "src/c++/Elements/voltmeter.h"
 #include <math.h>
 #include <QDebug>
 
 VisualisationManager::VisualisationManager(QObject *parent) : QObject(parent)
 {
-
+    this->meters = NULL;
+    this->elements = NULL;
 }
 
 VisualisationManager::~VisualisationManager()
@@ -26,7 +30,12 @@ void VisualisationManager::setElements(QList<Element *> *elements)
     this->elements = elements;
 }
 
-int *VisualisationManager::getColor(int potential, int maxPotential, int *container)
+void VisualisationManager::setMeters(QList<Element *> *meters)
+{
+    this->meters = meters;
+}
+
+int *VisualisationManager::getColor(double potential, double maxPotential, int *container)
 {
     if(potential>0) {
         int color = (double)potential/maxPotential*255;
@@ -46,15 +55,15 @@ int *VisualisationManager::getColor(int potential, int maxPotential, int *contai
     return container;
 }
 
-int VisualisationManager::getRadius(int maxPower, int power)
+int VisualisationManager::getRadius(double maxPower, double power)
 {
-    return power/maxPower*50;
+    return static_cast<int>((power/maxPower)*50+0.5);
 }
 
 void VisualisationManager::updateVusualisation(QPainter *painter)
 {
     //поиск максимального потенциала
-    int maxPotential=potentials[0];
+    double maxPotential=potentials[0];
     for(int i=0;i<numb;i++) {
         if(potentials[i]>maxPotential) {
             maxPotential=potentials[i];
@@ -63,16 +72,18 @@ void VisualisationManager::updateVusualisation(QPainter *painter)
 
     //поиск максимальной мощности
     QVector<int> power;
-    int maxPower=0;
+    double maxPower=0;
+    double tmpPower;
     QList<Element*>::iterator j;
     for(j=elements->begin();j!=elements->end();j++) {
         //p=U^2/R
         if((*j)->getName()=="Res") {
             Resistor* resTemp = (Resistor*)(*j);
-            if(potentials[resTemp->getConnectedWire1()->getNumber()]-potentials[resTemp->getConnectedWire2()->getNumber()]>maxPower) {
-                maxPower=pow(potentials[resTemp->getConnectedWire1()->getNumber()]-potentials[resTemp->getConnectedWire2()->getNumber()],2)*resTemp->getValue();
+            tmpPower = pow(potentials[resTemp->getConnectedWire1()->getNumber()]-potentials[resTemp->getConnectedWire2()->getNumber()],2)*resTemp->getValue();
+            if(tmpPower>maxPower) {
+                maxPower=tmpPower;
             }
-            power.append(potentials[resTemp->getConnectedWire1()->getNumber()]-potentials[resTemp->getConnectedWire2()->getNumber()]);
+            //power.append(potentials[resTemp->getConnectedWire1()->getNumber()]-potentials[resTemp->getConnectedWire2()->getNumber()]);
         }
     }
 
@@ -99,7 +110,8 @@ void VisualisationManager::updateVusualisation(QPainter *painter)
             } else {
               colorContainer2 = getColor(potentials[tmpNumb],maxPotential,colorContainer2);
             }
-            //int power = pow(potentials[resTemp->getConnectedWire1()->getNumber()]-potentials[resTemp->getConnectedWire2()->getNumber()],2)*resTemp->getValue();
+            //double power = pow(potentials[resTemp->getConnectedWire1()->getNumber()]-potentials[resTemp->getConnectedWire2()->getNumber()],2)*resTemp->getValue();
+            //qDebug()<<"Power:"<<power;
             resTemp->visualisation(colorContainer1,colorContainer2,painter,getRadius(maxPower,pow(potentials[resTemp->getConnectedWire1()->getNumber()]-potentials[resTemp->getConnectedWire2()->getNumber()],2)*resTemp->getValue()));
         } else if((*j)->getName()=="Emf") {
             EMF* emfTemp = (EMF*)(*j);
@@ -146,7 +158,21 @@ void VisualisationManager::updateVusualisation(QPainter *painter)
         }
     }
 
-
+    //визуализация измеряющих устройств
+    if(meters!=NULL) {
+        for(j=meters->begin();j!=meters->end();j++) {
+            if((*j)->getName()=="Amper") {
+                Amperemeter* amper = (Amperemeter*)(*j);
+                amper->paintComponent(painter);
+            } else if((*j)->getName()=="Voltmeter") {
+                Voltmeter* voltmeter = (Voltmeter*)(*j);
+                voltmeter->paintComponent(painter);
+            } else if((*j)->getName()=="Terminal") {
+                Terminal* terminal = (Terminal*)(*j);
+                terminal->paintComponent(painter);
+            }
+        }
+    }
 
     delete colorContainer1;
     delete colorContainer2;

@@ -16,7 +16,7 @@
 #include <QMenuBar>
 
 /**
- * @brief The OGLRender class
+ * @brief The OGLRender class OpenGL окно для отрисовки
  */
 class OGLRender : public QGLWidget
 {
@@ -28,12 +28,6 @@ public:
      * @brief OGLRender конструктор класса
      */
     OGLRender();
-
-    /**
-     * @brief getComboBox
-     * @return
-     */
-    QComboBox* getComboBox();
 
     void initializeGL();
 
@@ -55,9 +49,24 @@ public:
 private:    
 
     /**
-     * @brief cohesionError выводить ли ошибку о связности элементов
+     * @brief drawGrid отрисовка сетки
      */
-    bool cohesionError;
+    void drawGrid();
+
+    /**
+     * @brief hideAllPanesl скрывает все панели на экране
+     */
+    void hideAllPanesl();
+
+    /**
+     * @brief error выводить ли ошибку
+     */
+    bool error;
+
+    /**
+     * @brief errorText текст ошибки
+     */
+    QString errorText;
 
     /**
      * @brief componentIndex номер элемента в списке
@@ -65,28 +74,27 @@ private:
     int componentIndex;
 
     /**
-     * @brief resistorPanelVisible
+     * @brief resistorPanelVisible флаг видимости настроек парметров резистора
      */
     bool resistorPanelVisible=false;
 
     /**
-     * @brief emfPanelVisible
+     * @brief emfPanelVisible флаг видимости панели настроек ЭДС
      */
     bool emfPanelVisible=false;
 
-
     /**
-      * @brief voltagePanel
+      * @brief voltagePanel менеджер компановки элементов для напряжения на ЭДС
       */
      QHBoxLayout* voltagePanel;
 
     /**
-     * @brief voltageLabel
+     * @brief voltageLabel лэйбл напряжения
      */
     QLabel* voltageLabel;
 
     /**
-     * @brief voltageSpinBox
+     * @brief voltageSpinBox спин бокс для вытавления напряженя на ЭДС
      */
     QDoubleSpinBox* voltageSpinBox;
 
@@ -96,26 +104,27 @@ private:
     QVBoxLayout *elemPanel;
 
     /**
-     * @brief resistanceLabel
+     * @brief resistanceLabel лэйбл сопротивления резистора
      */
     QLabel* resistanceLabel;
 
     /**
-     * @brief powerLabel
+     * @brief powerLabel лэйбл мощности резистора
      */
     QLabel* powerLabel;
 
     /**
-     * @brief power
+     * @brief power комбобокс для выставления мощности
      */
     QComboBox* power;
 
     /**
-     * @brief resistanceSpinBox
+     * @brief resistanceSpinBox спин бокс для настройки сопротивления на резисторе
      */
     QDoubleSpinBox* resistanceSpinBox;
 
     /**
+       //TODO удалить
      * @brief elementList список элементов для работы
      */
     QComboBox *elementList;
@@ -137,12 +146,12 @@ private:
     bool enableVisualisation;
 
     /**
-     * @brief selectedRes
+     * @brief selectedRes выбранный на UI резистор
      */
     Resistor* selectedRes;
 
     /**
-     * @brief selectedEmf
+     * @brief selectedEmf выбранный на UI ЭДС
      */
     EMF* selectedEmf;
 
@@ -165,7 +174,13 @@ public slots:
 
     void editingElementFinished();
 
+    /**
+     * @brief valueChanged
+     */
+    void valueChanged();
+
     void startButtonPressed();
+
     void enableVisualisationSlot();
 
     /**
@@ -173,17 +188,23 @@ public slots:
      */
     void stopVisualisationSlot();
 
-    void setCohesionError();
+    /**
+     * @brief setError установка флага ошибки и ее текста
+     * @param errorText текст ошибки
+     */
+    void setError(QString errorText);
+
+    void elementDeleted();
 
 signals:
 
     /**
-     * @brief recalculate
+     * @brief recalculate перерасчет схемы
      */
     void recalculate();
 
     /**
-     * @brief paintComponents
+     * @brief paintComponents отрисовка элементов
      */
     void paintComponents();
 
@@ -238,6 +259,8 @@ signals:
      * @brief releaseLock
      */
     void releaseLock();
+
+
 };
 
 #endif // OGLRENDER_H

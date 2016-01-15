@@ -34,7 +34,8 @@ signals:
     /**
      * @brief cohesionError
      */
-    void cohesionError();
+    void error(QString errorText);
+
 public slots:
 
     /**

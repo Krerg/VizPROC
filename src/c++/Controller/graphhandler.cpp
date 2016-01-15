@@ -1,4 +1,5 @@
 #include "graphhandler.h"
+#include "src/c++/Util/stringvalues.h"
 
 GraphHandler::GraphHandler(QObject *parent) : QObject(parent)
 {
@@ -32,15 +33,44 @@ bool GraphHandler::handleElement(Element *elem)
 void GraphHandler::handle()
 {
     if(elements==NULL) {
+        emit error("Внутренняя ошибка");
         return;
     }
+
+    if(elements->size()==0) {
+        emit error("Пустая схема");
+        return;
+    }
+
+    bool hasEmf = false;
+    bool hasGround = false;
     QList<Element*>::Iterator i;
     for(i=elements->begin();i!=elements->end();i++) {
         if(handleElement((*i))) {
-            emit cohesionError();
+            emit error("Не все элементы соединены");
             return;
         }
+
+        if((*i)->getName()==StringValues::EMF_NAME) {
+            hasEmf = true;
+        }
+
+        if((*i)->getName()==StringValues::GROUND_NAME) {
+            hasGround = true;
+        }
+
     }
+
+    if(!hasEmf) {
+        emit error("Нету ЭДС");
+        return;
+    }
+
+    if(!hasGround) {
+        emit error("Нету заземления");
+        return;
+    }
+
     emit start();
 }
 

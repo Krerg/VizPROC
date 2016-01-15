@@ -111,7 +111,18 @@ public:
      */
     int getSpeed();
 
+    /**
+     * @brief getMaxPower
+     * @return
+     */
+    QString getMaxPower();
+
 private:
+
+    /**
+     * @brief maxPower
+     */
+    double maxPower;
 
     /**
      * @brief resistance сопротивление резистора
@@ -180,6 +191,12 @@ public slots:
      * @param resistance
      */
     void setResistance(double resistance);
+
+    /**
+     * @brief setMaxPower
+     * @param power
+     */
+    void setMaxPower(QString power);
 };
 
 #endif // RESISTOR_H

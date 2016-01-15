@@ -1,5 +1,6 @@
 #include "ground.h"
 #include <QtOpenGL/QGLWidget>
+#include "src/c++/Util/stringvalues.h"
 
 Ground::Ground(QObject *parent) :
     QObject(parent)
@@ -144,7 +145,7 @@ void Ground::connect(int x, int y)
 
 QString Ground::getName()
 {
-    return "Ground";
+    return StringValues::GROUND_NAME;
 }
 
 void Ground::changeOrientation()

@@ -17,13 +17,13 @@ public:
     explicit LUMatrix(QObject *parent = 0);
 
     /**
-     * @brief setA
+     * @brief setA установка матрицы A
      * @param a
      */
     void setA(double** a);
 
     /**
-     * @brief setB
+     * @brief setB установка матрицы B
      * @param b
      */
     void setB(double* b);

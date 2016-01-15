@@ -3,6 +3,7 @@
 #include <QtOpenGL/QGLWidget>
 #include "src/c++/Elements/element.h"
 #include <QLinearGradient>
+#include "src/c++/Util/stringvalues.h"
 
 Resistor::Resistor(QObject *parent) :
     QObject(parent)
@@ -22,11 +23,17 @@ Resistor::Resistor(QObject *parent) :
     this->c1->setPosition(x,y+height/2);
     this->c2->setPosition(x+width,y+height/2);
     this->resistance = 1;
+    this->maxPower = 0.125;
 }
 
 Resistor::~Resistor()
 {
     qDebug()<<"Bye resistor";
+}
+
+QString Resistor::getMaxPower()
+{
+    return QString::number(maxPower);
 }
 
 void Resistor::setPosition(int x, int y)
@@ -240,6 +247,11 @@ void Resistor::setResistance(double resistance)
     this->resistance = resistance;
 }
 
+void Resistor::setMaxPower(QString power)
+{
+    this->maxPower = power.toDouble();
+}
+
 bool Resistor::getType()
 {
     if(this->orientation == this->HORIZONTAL_ORIENTATION)
@@ -252,7 +264,7 @@ bool Resistor::getType()
 
 QString Resistor::getName()
 {
-    return this->name;
+    return StringValues::RESISTOR_NAME;
 }
 
 void Resistor::visualisation(int *container1, int *container2, QPainter *painter, int radius)
@@ -288,9 +300,6 @@ void Resistor::visualisation(int *container1, int *container2, QPainter *painter
         painter->drawLine(QPointF(x+pinLength,y+height),QPointF(x+pinLength+width,y+height));
         painter->drawLine(QPointF(x+pinLength+width,y),QPointF(x+pinLength+width,y+height));
         painter->drawLine(QPointF(x+pinLength+width,y+height/2),QPointF(x+2*pinLength+width,y+height/2));
-
-
-
     } else {
         QLinearGradient lg = QLinearGradient(QPointF(x,y+pinLength),QPointF(x,y+pinLength+width));
         lg.setCoordinateMode(QGradient::ObjectBoundingMode );
