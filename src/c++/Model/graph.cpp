@@ -224,8 +224,13 @@ bool Graph::hasCycle(int vertexNumber1, int vertexNumber2)
 
 void Graph::nullSafeAddDirectEdge(Branch *branch, int vertexNumber1, int vertexNumber2)
 {
+    if(vertexNumber1>vertexNumber2) {
+        nullSafeAddDirectEdge(branch,vertexNumber2,vertexNumber1);
+        return;
+    }
     if(!adjacencyMatrix[vertexNumber1][vertexNumber2]) {
         adjacencyMatrix[vertexNumber1][vertexNumber2] = new QList<Branch*>();
+        adjacencyMatrix[vertexNumber2][vertexNumber1] = adjacencyMatrix[vertexNumber1][vertexNumber2];
     } else if(adjacencyMatrix[vertexNumber1][vertexNumber2]->size()==1) {
         if(!adjacencyMatrix[vertexNumber1][vertexNumber2]->first()->isDiodeBranch() && !branch->isDiodeBranch()) {
             adjacencyMatrix[vertexNumber1][vertexNumber2]->first()->unionBranch(branch);
@@ -234,6 +239,7 @@ void Graph::nullSafeAddDirectEdge(Branch *branch, int vertexNumber1, int vertexN
     }
 
     adjacencyMatrix[vertexNumber1][vertexNumber2]->append(branch);
+
 }
 
 void Graph::clearAllocatedArray()

@@ -35,7 +35,7 @@ WorkBench::WorkBench::WorkBench(WindowManager* wm,ComponentManager* cm,QWidget *
     stopButton->setVisible(false);
    //
    playButton = new QPushButton();
-   playButton->setIcon(QIcon("C:/Users/amylniko/Documents/env/er/VizPROC-master/resource/play_button.png"));
+   playButton->setIcon(QIcon(":/resource/play_button.png"));
    playButton->setStyleSheet(styleSheet2);
    playButton->setFixedWidth(30);
    playButton->setFixedHeight(30);

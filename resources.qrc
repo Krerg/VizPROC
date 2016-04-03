@@ -1,0 +1,6 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource>
+    <file>resource/play_button.png</file>
+	<file>resource/play_button_hover.png</file>        
+</qresource>
+</RCC>

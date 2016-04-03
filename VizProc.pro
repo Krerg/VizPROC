@@ -104,3 +104,4 @@ HEADERS  += src/c++/View/startscreen.h \
     src/c++/Util/circuitutils.h \
     src/c++/Util/wirehandler.h
 FORMS    +=
+RESOURCES += resources.qrc
