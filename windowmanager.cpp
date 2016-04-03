@@ -39,7 +39,7 @@ WorkBench *WindowManager::openWorkBench(ComponentManager *cm)
 
 void WindowManager::openProject()
 {
-    ComponentManager* cm = new ComponentManager();
-    FileHandler::openFile(cm);
-    WorkBench* workBench = openWorkBench(cm);
+    WorkBench* workBench = new WorkBench(this);
+    workBench->connectComponents();
+    FileHandler::openFile(workBench->getComponentManager());
 }

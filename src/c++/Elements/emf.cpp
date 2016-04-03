@@ -18,9 +18,11 @@ EMF::EMF(QObject *parent) :
     this->c2 = new Connector(this);
     this->c2->setParentElement(this);
     this->setConnectorPosition();
-    //this->conductivity = 10000000;
     this->conductivity = 600;
-    this->voltage = 1;
+    this->voltage = 2.5;
+    this->connectors = new QList<Connector*>();
+    connectors->append(c1);
+    connectors->append(c2);
 }
 
 EMF::~EMF()
@@ -242,9 +244,6 @@ void EMF::changeOrientation()
 
 QList<Connector *> *EMF::getConnectors()
 {
-    QList<Connector*>* connectors = new QList<Connector*>();
-    connectors->append(c1);
-    connectors->append(c2);
     return connectors;
 }
 

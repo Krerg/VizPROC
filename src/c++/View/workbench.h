@@ -179,6 +179,11 @@ private:
     QLabel* lbl;
 
     void initApplicationContext();
+
+    /**
+     * @brief initVisualisationHandlers
+     */
+    void initVisualizationHandlers();
 protected:
 
     /**

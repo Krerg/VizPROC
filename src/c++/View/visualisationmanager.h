@@ -5,6 +5,7 @@
 #include <QPainter>
 #include "src/c++/Elements/wire.h"
 #include "src/c++/Elements/wire.h"
+#include "src/c++/Visualization/visualization.h"
 
 /**
  * @brief The VisualisationManager class класс, отвечающий за визуализацию схемы
@@ -20,7 +21,26 @@ public:
     void setWires(QList<Wire*>* wires);
     void setElements(QList<Element*>* elements);
     void setMeters(QList<Element*> *meters);
+
+    /**
+     * @brief subscribe подписка обработчика визуализации на события изменений в схеме
+     * @param handler обработчик визуализаций
+     */
+    void subscribe(Visualization* handler);
+
+    /**
+     * @brief unsubscribe отписка обработчика от обновлений
+     * @param handler обработчик визуализации
+     */
+    void unsubscribe(Visualization* handler);
+
 private:
+
+    /**
+     * @brief handlers список обработчиков визуализации
+     */
+    QList<Visualization*> *handlers;
+
     /**
      * @brief potentials потенциалы
      */
@@ -68,9 +88,17 @@ private:
      * @return
      */
     int getRadius(double maxPower, double power);
+
+
 signals:
     void enableVisualisation();
 public slots:
+
+    /**
+     * @brief stop остановка всех обработчиков визулизациии
+     */
+    void stop();
+
     /**
      * @brief updateVusualisation обновление состояния проводов
      * @param painter
@@ -82,7 +110,7 @@ public slots:
      * @param graph граф
      * @param x потенциалы точек
      */
-    void startVisualisation(QMap<Wire*,int*> *graph, double* x,int numb);
+    void startVisualisation(QList<Branch*> *branches, double* x,int numb);
 };
 
 #endif // VISUALISATIONMANAGER_H

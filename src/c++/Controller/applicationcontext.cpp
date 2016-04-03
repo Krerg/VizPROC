@@ -37,7 +37,7 @@ void ApplicationContext::setModel(Model *model)
     if(MODEL==NULL) {
         this->MODEL = model;
     } else {
-        //TODO
+        //TODO throw an custom exception
     }
 }
 
@@ -46,7 +46,7 @@ void ApplicationContext::setWindowManager(WindowManager *wm)
     if(WINDOW_MANAGER==NULL) {
         this->WINDOW_MANAGER = wm;
     } else {
-        //TODO
+        //TODO throw an custom exception
     }
 }
 

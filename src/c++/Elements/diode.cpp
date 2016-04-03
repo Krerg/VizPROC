@@ -16,6 +16,9 @@ Diode::Diode(QObject *parent) : QObject(parent)
     this->orientation = this->HORIZONTAL_ORIENTATION;
     this->opened = false;
     //this->render - new QPainter();
+    connectors = new QList<Connector*>();
+    connectors->append(c1);
+    connectors->append(c2);
 }
 
 void Diode::paintComponent()
@@ -162,9 +165,6 @@ int Diode::getY()
 
 QList<Connector *> *Diode::getConnectors()
 {
-    QList<Connector*>* connectors = new QList<Connector*>();
-    connectors->append(c1);
-    connectors->append(c2);
     return connectors;
 }
 
@@ -308,7 +308,7 @@ void Diode::visualisation(int *container1, int *container2, QPainter *painter, i
 
 Diode::~Diode()
 {
-
+    delete connectors;
 }
 
 void Diode::setConnectorPosition()

@@ -22,11 +22,11 @@ bool GraphHandler::handleElement(Element *elem)
     QList<Connector*>::Iterator i;
     for(i=connectors->begin();i!=connectors->end();i++) {
         if((*i)->getConnectedWire()==NULL) {
-            delete connectors;
+            //delete connectors;
             return true;
         }
     }
-    delete connectors;
+    //delete connectors;
     return false;
 }
 

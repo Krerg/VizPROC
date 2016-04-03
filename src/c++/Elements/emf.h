@@ -112,6 +112,8 @@ public:
     virtual ~EMF();
 private:
 
+    QList<Connector*> *connectors;
+
     /**
      * @brief voltage напряжение на ЭДС
      */

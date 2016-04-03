@@ -9,6 +9,7 @@
 #include "src/c++/Util/filehandler.h"
 #include "src/c++/Util/stylesheetvalues.h"
 #include "src/c++/Controller/applicationcontext.h"
+#include "src/c++/Visualization/amperagevisualisationhandler.h"
 
 WorkBench::WorkBench::WorkBench(WindowManager* wm,ComponentManager* cm,QWidget *parent) :
     componentManager(cm),QWidget(parent)
@@ -162,6 +163,7 @@ WorkBench::WorkBench::WorkBench(WindowManager* wm,ComponentManager* cm,QWidget *
    guiButtons->append(groundButton);
 
    initApplicationContext();
+   initVisualizationHandlers();
 
 }
 void WorkBench::connectComponents()
@@ -201,13 +203,14 @@ void WorkBench::connectComponents()
     QObject::connect(graphHandler,SIGNAL(error(QString)),canvas,SLOT(setError(QString)));
     QObject::connect(graphHandler,SIGNAL(start()),model,SLOT(start()));
     QObject::connect(model,SIGNAL(setLock()),eventHandler,SLOT(setLock()));
+    QObject::connect(model,SIGNAL(curcuitError(QString)),canvas,SLOT(setError(QString)));
     QObject::connect(canvas,SIGNAL(releaseLock()),eventHandler,SLOT(releaseLock()));
 
     //пересчет схемы
     QObject::connect(canvas,SIGNAL(recalculate()),model,SLOT(start()));
 
     //подготовка обработчика визуализации
-    QObject::connect(model,SIGNAL(startVisualisation(QMap<Wire*,int*>*,double*,int)),visualisationManager,SLOT(startVisualisation(QMap<Wire*,int*>*,double*,int)));
+    QObject::connect(model,SIGNAL(startVisualisation(QList<Branch*>*,double*,int)),visualisationManager,SLOT(startVisualisation(QList<Branch*>*,double*,int)));
 
     //установка флага визуализации
     QObject::connect(visualisationManager,SIGNAL(enableVisualisation()),canvas,SLOT(enableVisualisationSlot()));
@@ -283,6 +286,12 @@ void WorkBench::initApplicationContext()
     ApplicationContext::getInstance()->setModel(model);
     ApplicationContext::getInstance()->setUpdateThread(refresher);
     ApplicationContext::getInstance()->setWindowManager(wm);
+}
+
+void WorkBench::initVisualizationHandlers()
+{
+    AmperageVisualisationHandler* amperageVisualisationHandler = new AmperageVisualisationHandler(((QObject*)this));
+    visualisationManager->subscribe((Visualization*)amperageVisualisationHandler);
 }
 
 void WorkBench::buttonPressed()

@@ -35,19 +35,84 @@ public:
     /**
      * @brief addElement
      * @param elem
+     * @param append
+     * @param check
      */
-    void addElement(Element* elem);
+    void addElement(Element* elem, bool append, bool check);
 
     /**
      * @brief addWire
      * @param w
      */
-    void addWire(Wire* w);
+    void addWire(Wire* w, bool append);
+
+    void setVertexNumber1(int vertexNumber);
+
+    void setVertexNumber2(int vertexNumber);
+
+    int getVertexNumber1();
+
+    int getVertexNumber2();
+
+    /**
+     * @brief getAmperage
+     * @return
+     */
+    double getAmperage();
+
+    /**
+     * @brief setAmperage
+     * @param amperage
+     */
+    void setAmperage(double amperage);
 
     ~Branch();
 
+    bool isHasEmf();
+
+    void open();
+
+    /**
+     * @brief getBranchElements возвращает списко элементов в ветви
+     * @return
+     */
+    QList<Element *> *getBranchElements();
+
+    /**
+     * @brief getBranchWires
+     * @return
+     */
+    QList<Wire *> *getBranchWires();
+
 private:
 
+    void close();
+
+    bool hasEmf;
+
+    /**
+     * @brief opened
+     */
+    bool opened;
+
+    /**
+     * @brief vertexNumber1 номер первой присоединенной вершины
+     */
+    int vertexNumber1;
+
+    /**
+     * @brief vertexNumber2 номер второй присоединенной вершины
+     */
+    int vertexNumber2;
+
+    /**
+     * @brief amperage сила тока на ветви
+     */
+    double amperage;
+
+    /**
+     * @brief isDiode переменная указывающая диодная ли ветвь
+     */
     bool isDiode;
 
     /**

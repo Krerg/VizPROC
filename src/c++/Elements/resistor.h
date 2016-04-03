@@ -119,6 +119,8 @@ public:
 
 private:
 
+    QList<Connector*> *connectors;
+
     /**
      * @brief maxPower
      */

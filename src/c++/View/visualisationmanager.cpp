@@ -8,11 +8,14 @@
 #include "src/c++/Elements/voltmeter.h"
 #include <math.h>
 #include <QDebug>
+#include "src/c++/Controller/applicationcontext.h"
+#include "src/c++/Event/nextstepevent.h"
 
 VisualisationManager::VisualisationManager(QObject *parent) : QObject(parent)
 {
     this->meters = NULL;
     this->elements = NULL;
+    this->handlers = new QList<Visualization*>();
 }
 
 VisualisationManager::~VisualisationManager()
@@ -33,6 +36,16 @@ void VisualisationManager::setElements(QList<Element *> *elements)
 void VisualisationManager::setMeters(QList<Element *> *meters)
 {
     this->meters = meters;
+}
+
+void VisualisationManager::subscribe(Visualization *handler)
+{
+    this->handlers->append(handler);
+}
+
+void VisualisationManager::unsubscribe(Visualization *handler)
+{
+    this->handlers->removeAll(handler);
 }
 
 int *VisualisationManager::getColor(double potential, double maxPotential, int *container)
@@ -58,6 +71,15 @@ int *VisualisationManager::getColor(double potential, double maxPotential, int *
 int VisualisationManager::getRadius(double maxPower, double power)
 {
     return static_cast<int>((power/maxPower)*50+0.5);
+}
+
+void VisualisationManager::stop()
+{
+    DestroyEvent* destroyEvent = new DestroyEvent();
+    foreach (Visualization* vis, *handlers) {
+        vis->destroy(destroyEvent);
+    }
+    delete destroyEvent;
 }
 
 void VisualisationManager::updateVusualisation(QPainter *painter)
@@ -137,6 +159,16 @@ void VisualisationManager::updateVusualisation(QPainter *painter)
             groundTemp->visualisation(painter);
         } else if((*j)->getName()=="Diode") {
             Diode* diodeTemp = (Diode*)(*j);
+            if(!diodeTemp->isOpened()) {
+                colorContainer1[0]=0;
+                colorContainer1[1]=0;
+                colorContainer1[2]=0;
+
+                colorContainer2[0]=0;
+                colorContainer2[1]=0;
+                colorContainer2[2]=0;
+            }
+
             diodeTemp->visualisation(colorContainer1,colorContainer2,painter,5);
         }
     }
@@ -144,19 +176,22 @@ void VisualisationManager::updateVusualisation(QPainter *painter)
     //визуализация проводов
     QList<Wire*>::iterator i;
     for(i=wires->begin();i!=wires->end();i++) {
-        if(!(*i)->isGround()) {
-            (*i)->setSpeed(1);
-            (*i)->initParticles();
+        if(!(*i)->isGround() && (*i)->isOpened()) {
             (*i)->visualisation(getColor(potentials[(*i)->getNumber()],maxPotential,colorContainer1),painter);
         } else {
             colorContainer1[0]=0;
             colorContainer1[1]=0;
             colorContainer1[2]=0;
-            (*i)->setSpeed(1);
-            (*i)->initParticles();
             (*i)->visualisation(colorContainer1,painter);
         }
     }
+
+    NextStepEvent* nse = new NextStepEvent();
+
+    foreach (Visualization* vis, *handlers) {
+        vis->nextStep(NULL);
+    }
+    delete nse;
 
     //визуализация измеряющих устройств
     if(meters!=NULL) {
@@ -179,9 +214,8 @@ void VisualisationManager::updateVusualisation(QPainter *painter)
 }
 
 
-void VisualisationManager::startVisualisation(QMap<Wire *, int *> *graph, double *x, int numb)
+void VisualisationManager::startVisualisation(QList<Branch*>* branches, double *x, int numb)
 {
-    this->graph = graph;
     this->potentials = x;
     this->numb = numb;
 
@@ -195,6 +229,16 @@ void VisualisationManager::startVisualisation(QMap<Wire *, int *> *graph, double
 //        qDebug()<<(*i)->initSpeed();
 //    }
 
+    InitEvent* initEvent = new InitEvent();
+    initEvent->setX(x);
+    initEvent->setBranches(branches);
+    //TODO set branches
+
+    foreach (Visualization* vis, *handlers) {
+        vis->init(initEvent);
+    }
+
+    delete initEvent;
     emit enableVisualisation();
 }
 

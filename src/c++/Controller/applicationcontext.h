@@ -49,25 +49,25 @@ public:
      * @brief getComponentManager
      * @return
      */
-    ComponentManager* getComponentManager();
+    static ComponentManager* getComponentManager();
 
     /**
      * @brief getUpdateThread
      * @return
      */
-    UpdateThread* getUpdateThread();
+    static UpdateThread* getUpdateThread();
 
     /**
      * @brief getModel
      * @return
      */
-    Model* getModel();
+    static Model* getModel();
 
     /**
      * @brief getWindowManager
      * @return
      */
-    WindowManager *getWindowManager();
+    static WindowManager *getWindowManager();
 
 private:
 
