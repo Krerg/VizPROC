@@ -17,6 +17,7 @@ AmperageVisualisationHandler::AmperageVisualisationHandler(QObject *parent) :
 
 void AmperageVisualisationHandler::nextStep(NextStepEvent *event)
 {
+
     foreach (Wire* w, *ApplicationContext::getInstance()->getComponentManager()->getWires()) {
         w->initParticles();
     }
@@ -29,6 +30,9 @@ void AmperageVisualisationHandler::destroy(DestroyEvent *event)
 
 void AmperageVisualisationHandler::init(InitEvent *event)
 {
+    if(event->getBranches()==NULL) {
+        return;
+    }
     double tmpAmperage = 0.0;
     bool wasUninit=true;
     while(true) {
@@ -87,8 +91,9 @@ void AmperageVisualisationHandler::setAmperageOnWires(QList<Branch *> *connected
     double amperage = 0.0;
     int centralVertexNumber = -1;
     int anotherVertexNumber = - 1;
-
+    int k=1;
     foreach (Branch* connectedBranch, *connectedBranches) {
+        k=1;
         if(connectedBranch == branch ) {
             continue;
         }
@@ -105,10 +110,13 @@ void AmperageVisualisationHandler::setAmperageOnWires(QList<Branch *> *connected
             centralVertexNumber = branch->getVertexNumber2();
             anotherVertexNumber = connectedBranch->getVertexNumber1();
         }
+        if(connectedBranch->isHasEmf()) {
+            k=-1;
+        }
         if(CircuitUtils::getAmperage(centralVertexNumber,x)<CircuitUtils::getAmperage(anotherVertexNumber,x)) {
-            amperage+=connectedBranch->getAmperage();
+            amperage+=connectedBranch->getAmperage()*k;
         } else {
-            amperage-=connectedBranch->getAmperage();
+            amperage-=connectedBranch->getAmperage()*k;
         }
     }
     setAmperageOnWires(branch,amperage,x);
@@ -228,17 +236,17 @@ bool AmperageVisualisationHandler::trySeyAmperageOnWire(Wire *wire)
             //ConstValues::FIRST_POINT_EQUAL
             case 1:
                 if((*it).first->getSpeed()>0) {
-                    wireAmperage-=(*it).first->getAmperage();
-                } else {
                     wireAmperage+=(*it).first->getAmperage();
+                } else {
+                    wireAmperage-=(*it).first->getAmperage();
                 }
                 break;
             //ConstValues::LAST_POINT_EQUAL
             case 2:
                 if((*it).first->getSpeed()>0) {
-                    wireAmperage+=(*it).first->getAmperage();
-                } else {
                     wireAmperage-=(*it).first->getAmperage();
+                } else {
+                    wireAmperage+=(*it).first->getAmperage();
                 }
                 break;
         }

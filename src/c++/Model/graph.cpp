@@ -2,6 +2,7 @@
 #include "src/c++/Util/stringvalues.h"
 #include "src/c++/Util/constvalues.h"
 #include "src/c++/Elements/emf.h"
+#include <QDebug>
 
 Graph::Graph(QObject *parent) :
     QObject(parent)
@@ -262,12 +263,15 @@ void Graph::deleteAdjencyMatrix()
     }
 
     for(int i=0;i<matrixSize;i++) {
-        for(int j=0;j<matrixSize;j++) {
-            if(adjacencyMatrix[i][j]!=NULL)
+        for(int j=0;j<i+1;j++) {
+            if(adjacencyMatrix[i][j]!=NULL) {
                 delete adjacencyMatrix[i][j];
+                adjacencyMatrix[i][j] = NULL;
+            }
+
         }
-        delete[] adjacencyMatrix[i];
     }
+    qDebug()<<"1112222";
     delete[] adjacencyMatrix;
 
     matrixSize=0;
