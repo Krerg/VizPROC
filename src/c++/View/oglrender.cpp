@@ -88,8 +88,7 @@ OGLRender::OGLRender() :
 
     this->error = false;
     this->errorText="";
-
-
+    this->renderLock = false;
 }
 
 OGLRender::~OGLRender()
@@ -233,6 +232,10 @@ void OGLRender::mouseDoubleClickEvent(QMouseEvent *event)
 void OGLRender::paintEvent(QPaintEvent *event)
 {
 
+    if(renderLock) {
+        return;
+    }
+
 //    w->initParticles();
     QPainter painter;
     painter.begin(this);
@@ -264,6 +267,7 @@ void OGLRender::paintEvent(QPaintEvent *event)
     }
     painter.endNativePainting();
     painter.end();
+    glFlush();
 }
 
 void OGLRender::wheelEvent(QWheelEvent *event)
@@ -274,6 +278,16 @@ void OGLRender::wheelEvent(QWheelEvent *event)
 void OGLRender::keyPressEvent(QKeyEvent *event)
 {
     emit keyPressed(event);
+}
+
+void OGLRender::setRenderLock()
+{
+    this->renderLock=true;
+}
+
+void OGLRender::unsetRenderLock()
+{
+    this->renderLock=false;
 }
 
 void OGLRender::editingElementFinished()
@@ -298,11 +312,13 @@ void OGLRender::startButtonPressed()
 
 void OGLRender::enableVisualisationSlot()
 {
+    qDebug()<<"Visualisation enabled";
     this->enableVisualisation = true;
 }
 
 void OGLRender::stopVisualisationSlot()
 {
+    qDebug()<<"Visualisation stopped";
     this->enableVisualisation=false;
     emit releaseLock();
 }

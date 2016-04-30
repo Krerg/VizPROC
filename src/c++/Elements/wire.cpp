@@ -9,6 +9,8 @@
 #include "src/c++/Elements/emf.h"
 #include "src/c++/Elements/resistor.h"
 #include "src/c++/Elements/wireconnector.h"
+#include "src/c++/Util/constvalues.h"
+#include "src/c++/Util/stringvalues.h"
 
 Wire::Wire(QObject *parent) :
     QObject(parent)
@@ -28,6 +30,8 @@ Wire::Wire(QObject *parent) :
     this->potential = 0.0;
     this->wireConnector = NULL;
     this->savedFlag = false;
+    this->opened = true;
+    this->amperage = ConstValues::BRANCH_AMPERAGE_UNKNOWN;
 }
 
 void Wire::addPoint(QPoint *point)
@@ -101,10 +105,11 @@ void Wire::visualisation(int *color, QPainter* painter)
         painter->drawLine(*start,*path->at(i));
         start = path->at(i);
     }
-
-    QList<Particle*>::iterator j;
-    for(j=particleList->begin();j!=particleList->end();j++) {
-        (*j)->visualisation(painter);
+    if(opened) {
+        QList<Particle*>::iterator j;
+        for(j=particleList->begin();j!=particleList->end();j++) {
+            (*j)->visualisation(painter);
+        }
     }
     if(this->wireConnector!=NULL) {
         wireConnector->paintComponent();
@@ -386,13 +391,15 @@ QList<Element*>* Wire::getConnectedElements()
 QList<Element*>* Wire::getAllConnectedElements()
 {
     QList<Element*>* list = new QList<Element*>();
-
+    QList<Element*>* connectedElems;
     if(this->wires->size()!=0)
     {
         QList<Wire*>::iterator i;
         for(i=wires->begin();i!=wires->end();i++)
         {
-            list->append(*((*i)->getConnectedElements()));
+            connectedElems = (*i)->getConnectedElements();
+            list->append(*(connectedElems));
+            delete connectedElems;
         }
     } else {
         list->append(this->connected1->getParentElement());
@@ -415,9 +422,11 @@ bool Wire::isGround()
     {
         if((*i)->getName()=="Ground")
         {
+            delete list;
             return true;
         }
     }
+    delete list;
     return false;
 }
 
@@ -433,7 +442,7 @@ double Wire::getPotential()
 
 void Wire::initParticles()
 {
-    if(this->connected1!=NULL && this->connected1->getParentElement()->getName()=="Ground") {
+    if(this->connected1!=NULL && this->connected1->getParentElement()->getName()=="Ground" || !opened) {
         return;
     }
     //вот это надор убрать по-хорошему
@@ -444,7 +453,7 @@ void Wire::initParticles()
     particleList->clear();
 
 
-    int dist = 6;
+    int dist = 10;
     QPoint* start = path->at(0);
     QPoint* next = path->at(1);
     int currentX;
@@ -598,6 +607,21 @@ void Wire::setSpeed(int speed)
     this->speed = speed;
 }
 
+int Wire::getSpeed()
+{
+    return speed;
+}
+
+bool Wire::groundConnected()
+{
+    if(this->getConneted1()!=NULL && this->getConneted1()->getParentElement()->getName()==StringValues::GROUND_NAME) {
+        return true;
+    } else if (this->getConneted2()!=NULL && this->getConneted2()->getParentElement()->getName()==StringValues::GROUND_NAME) {
+        return true;
+    }
+    return false;
+}
+
 void Wire::removeConnector(Connector *c)
 {
     if(this->connected1 == c) {
@@ -605,6 +629,11 @@ void Wire::removeConnector(Connector *c)
     } else if(this->connected2 == c) {
         connected2 = NULL;
     }
+}
+
+WireConnector* Wire::getWireConnector()
+{
+    return this->wireConnector;
 }
 
 Connector *Wire::getConneted1()
@@ -615,6 +644,11 @@ Connector *Wire::getConneted1()
 Connector *Wire::getConneted2()
 {
     return this->connected2;
+}
+
+bool Wire::isOpened()
+{
+    return opened;
 }
 
 bool Wire::isSaved()
@@ -651,3 +685,23 @@ void Wire::clear()
         delete particleList;
     }
 }
+
+void Wire::close()
+{
+    this->opened = false;
+}
+
+void Wire::open()
+{
+    this->opened = true;
+}
+double Wire::getAmperage() const
+{
+    return amperage;
+}
+
+void Wire::setAmperage(double value)
+{
+    amperage = value;
+}
+

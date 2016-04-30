@@ -180,10 +180,27 @@ public:
     void setSpeed(int speed);
 
     /**
+     * @brief getSpeed
+     */
+    int getSpeed();
+
+    /**
+     * @brief groundConnected проверка на то, что к данному проводнику присоединено заземление
+     * @return true если присоединено, в остальных случаях false
+     */
+    bool groundConnected();
+
+    /**
      * @brief removeConnector удаление коннектора из провода
      * @param c удаляемый коннектор
      */
     void removeConnector(Connector* c);
+
+    /**
+     * @brief getWireConnector
+     * @return
+     */
+    WireConnector *getWireConnector();
 
     /**
      * @brief getConneted1
@@ -198,7 +215,13 @@ public:
     Connector* getConneted2();
 
     /**
-     * @brief isSaved
+     * @brief isOpened возвращает флаг, показывающий открыта ли ветвь, содержащая этот провод
+     * @return true если открыта, в противном случае false
+     */
+    bool isOpened();
+
+    /**
+     * @brief isSaved (TODO перенсти надо логику в другое место)
      * @return true если провод сохранен в файл
      */
     bool isSaved();
@@ -217,12 +240,31 @@ public:
      * @brief clear
      */
     void clear();
+
+    /**
+     * @brief close
+     */
+    void close();
+
+    /**
+     * @brief open
+     */
+    void open();
+
+    double getAmperage() const;
+    void setAmperage(double value);
+
 private:
 
     /**
      * @brief savedFlag флаг, для сохранения в файл
      */
     bool savedFlag;
+
+    /**
+     * @brief amperage сила тока на проводнике
+     */
+    double amperage;
 
     /**
      * @brief path путь, по которому будет рисоваться провод
@@ -289,6 +331,10 @@ private:
      */
     WireConnector* wireConnector;
 
+    /**
+     * @brief opened флаг, показывающий открыта ли ветвь, содержащая этот провод
+     */
+    bool opened;
 
 signals:
     void addWire(Wire* w);

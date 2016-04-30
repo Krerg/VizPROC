@@ -10,6 +10,7 @@
 #include "src/c++/Model/lumatrix.h"
 #include "src/c++/Elements/diode.h"
 #include "src/c++/Model/diodebranch.h"
+#include "src/c++/Model/graph.h"
 
 /**
  * @brief The Graph class класс, который представляет схему в виде графа
@@ -20,22 +21,52 @@ class Model : public QObject
 public:
 
     /**
+     * @brief isDiodeBranchCheck
+     * @return
+     */
+    static bool isDiodeBranchCheck();
+
+    /**
      * @brief Graph конструктор класса
      * @param parent указатель на родительский элемент
      */
     explicit Model(QObject *parent = 0);
 
-private:
     /**
-     * @brief getNewNumber
-     * @return уникальный номер для вершины
+     * @brief getConnectedBranches
+     * @param branch
+     * @return
      */
-    int getNewNumber();
+    QList<Branch *> *getConnectedBranches(int vertexNumber);
+
+private:
 
     /**
-     * @brief lastFreeNumber последний свободный номер для добавления потенциала
+     * @brief DIODE_BRANCH_CHECK
      */
-    int lastFreeNumber;
+    static bool DIODE_BRANCH_CHECK;
+
+    /**
+     * @brief potentialsNumber
+     */
+    int potentialsNumber;
+
+    /**
+     * @brief calculate @brief calculate производит расчет текущего графа
+     * @return
+     */
+    double* calculate();
+
+    /**
+     * @brief deleteCircuitArray
+     */
+    void deleteCircuitArray();
+
+    /**
+     * @brief getEmptyResult возвращает пустой результат схемы, где все потенциалы равны 0
+     * @return
+     */
+    double* getEmptyResult();
 
     /**
      * @brief array массив, который представляет собой решение схемы
@@ -48,10 +79,10 @@ private:
     float **leftpart;
 
     /**
-     * @brief graph граф схемы,
-     * который содержит потенциалы
+     * @brief graph пре-граф схемы,
+     * который содержит потенциалы и информацию о них
      */
-    QMap<Wire*,int*> *graph;
+    QMap<Wire*,int*> *preGraph;
 
     /**
      * @brief showMatrix вывод матрицы на экран (для отладки)
@@ -82,25 +113,48 @@ private:
     QList<Diode*>* diodes;
 
     /**
-     * @brief diodesBranches список диодных ветвей
-     */
-    QList<DiodeBranch*>* diodesBranches;
-
-    /**
      * @brief checkCohesion
      * @return
      */
     bool checkCohesion();
 
+    /**
+     * @brief initCurciutArray инициализирует массив
+     */
+    void initCurciutArray();
+
+    /**
+     * @brief clearCurcuitArray очищает массив
+     */
+    void clearCurcuitArray();
+
+    /**
+     * @brief allocateBranches
+     */
+    void allocateBranches(bool wireCheck);
+
+    Graph* graph;
+
+    ~Model();
+
 signals:
-    void startVisualisation(QMap<Wire*,int*> *graph, double* x, int numb);
+    void startVisualisation(QList<Branch*>*, double* x, int numb);
 
     void hideStartButton();
+
+    void setRenderLock();
 
     /**
      * @brief setLock
      */
     void setLock();
+
+    /**
+     * @brief curcuitError сигнал об ошибке в схеме
+     * @param errorMessage
+     */
+    void circuitError(QString errorMessage);
+
 public slots:
     /**
      * @brief addVertex добавление вершины(потенциала в граф)

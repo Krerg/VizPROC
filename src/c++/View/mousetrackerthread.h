@@ -2,7 +2,7 @@
 #define MOUSETRACKERTHREAD_H
 
 #include <QThread>
-#include <QGLWidget>
+#include <QtOpenGL/QGLWidget>
 
 /**
  * @brief The mouseTrackerThread class класс-поток, который следит за перемещением мыши

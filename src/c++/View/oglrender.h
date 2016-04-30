@@ -64,6 +64,11 @@ private:
     bool error;
 
     /**
+     * @brief renderLock
+     */
+    bool renderLock;
+
+    /**
      * @brief errorText текст ошибки
      */
     QString errorText;
@@ -171,6 +176,10 @@ protected:
     void wheelEvent(QWheelEvent *event);
     void keyPressEvent(QKeyEvent *event);
 public slots:
+
+    void setRenderLock();
+
+    void unsetRenderLock();
 
     void editingElementFinished();
 

@@ -39,7 +39,6 @@ void FileHandler::saveFile(ComponentManager *cm)
     QXmlStreamWriter writer(&f);
     writer.setAutoFormatting(true);
     writer.writeStartDocument("1.0");
-    writer.writeComment("Test file");
         writer.writeStartElement("Circuit"); //<Circuit>
             writer.writeStartElement("Elements"); //<Elements>
                 int savingNumber=0;
@@ -138,6 +137,15 @@ void FileHandler::saveFile(ComponentManager *cm)
                                         writer.writeAttribute("Element",QString::number(connector2->getParentElement()->getSavingNumber()));
                                     writer.writeEndElement();
                                 }
+
+                                if((*k)->getWireConnector()!=NULL) {
+                                    writer.writeStartElement("Connector"); //<connector>
+                                        WireConnector* wireConnector = (*k)->getWireConnector();
+                                        writer.writeAttribute("x",QString::number(wireConnector->getX()));
+                                        writer.writeAttribute("y",QString::number(wireConnector->getY()));
+                                    writer.writeEndElement(); //</connector>
+                                }
+
                             writer.writeEndElement(); //</Wire>
                             (*k)->setSavedFlag();
                         }
@@ -217,7 +225,7 @@ void FileHandler::openFile(ComponentManager *cm)
                         cm->addResistor(tmpRes);
                         tmpRes=NULL;
                     } else if (reader.isStartElement() && reader.name().toString() == "EMF") {
-                        //считывание атрибутов резистора
+
                         tmpEmf = new EMF();
                         while (true) {
                             //считывание элементов
@@ -254,7 +262,7 @@ void FileHandler::openFile(ComponentManager *cm)
                         tmpEmf->setPosition(x,y);
                         cm->addEMF(tmpEmf);
                     } else if (reader.isStartElement() && reader.name().toString() == "Ground") {
-                        //считывание атрибутов резистора
+
                         groundTemp = new Ground();
                         while (true) {
                             //считывание элементов
@@ -291,7 +299,7 @@ void FileHandler::openFile(ComponentManager *cm)
                         groundTemp->setPosition(x,y);
                         cm->addGround(groundTemp);
                     } else if (reader.isStartElement() && reader.name().toString() == "Diode") {
-                        //считывание атрибутов резистора
+
                         diodeTemp = new Diode();
                         while (true) {
                             //считывание элементов
@@ -388,15 +396,19 @@ Wire *FileHandler::readWire(ComponentManager *cm, QXmlStreamReader *reader)
             readPath(reader,wire);
         }
         if(reader->name()=="Connected1" && reader->attributes().length()>0) {
-            //qDebug()<<"Connected1";
             int elemIndex = reader->attributes().at(0).value().toInt();
             connectWireFirstPointToElement(wire,cm->getElements()->at(elemIndex));
         }
         if(reader->name()=="Connected2" && reader->attributes().length()>0) {
-            //qDebug()<<"Connected2";
             int elemIndex = reader->attributes().at(0).value().toInt();
             connectWireLastPointToElement(wire,cm->getElements()->at(elemIndex));
             //setsConnected2
+        }
+        if(reader->name()=="Connector" && reader->attributes().length()>0) {
+            int xConnector = reader->attributes().at(0).value().toInt();
+            int yConnector = reader->attributes().at(1).value().toInt();
+            WireConnector* wireConnector = new WireConnector(xConnector,yConnector);
+            wire->setWireConnector(wireConnector);
         }
     }
     return wire;
@@ -430,7 +442,7 @@ void FileHandler::connectWireFirstPointToElement(Wire *w, Element *elem)
             break;
         }
     }
-    delete connectors;
+    //delete connectors;
 }
 
 void FileHandler::connectWireLastPointToElement(Wire *w, Element *elem)
@@ -444,7 +456,7 @@ void FileHandler::connectWireLastPointToElement(Wire *w, Element *elem)
             break;
         }
     }
-    delete connectors;
+    //delete connectors;
 }
 
 

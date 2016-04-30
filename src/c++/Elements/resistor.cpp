@@ -24,10 +24,14 @@ Resistor::Resistor(QObject *parent) :
     this->c2->setPosition(x+width,y+height/2);
     this->resistance = 1;
     this->maxPower = 0.125;
+    this->connectors = new QList<Connector*>();
+    connectors->append(c1);
+    connectors->append(c2);
 }
 
 Resistor::~Resistor()
 {
+    delete connectors;
     qDebug()<<"Bye resistor";
 }
 
@@ -224,9 +228,6 @@ void Resistor::changeOrientation()
 
 QList<Connector *> *Resistor::getConnectors()
 {
-    QList<Connector*>* connectors = new QList<Connector*>();
-    connectors->append(c1);
-    connectors->append(c2);
     return connectors;
 }
 

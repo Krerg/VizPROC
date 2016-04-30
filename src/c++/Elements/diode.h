@@ -102,6 +102,8 @@ public:
     ~Diode();
 private:
 
+    QList<Connector*> *connectors;
+
     /**
      * @brief HORIZONTAL_ORIENTATION
      */

@@ -9,6 +9,7 @@
 #include "src/c++/Util/filehandler.h"
 #include "src/c++/Util/stylesheetvalues.h"
 #include "src/c++/Controller/applicationcontext.h"
+#include "src/c++/Visualization/amperagevisualisationhandler.h"
 
 WorkBench::WorkBench::WorkBench(WindowManager* wm,ComponentManager* cm,QWidget *parent) :
     componentManager(cm),QWidget(parent)
@@ -27,56 +28,56 @@ WorkBench::WorkBench::WorkBench(WindowManager* wm,ComponentManager* cm,QWidget *
    QString styleSheet2 = "QPushButton {width:1200px;height:40px;color: white;font-weight: 700;text-decoration: none;padding: .5em 2em;outline: none;border: 2px solid;border-radius: 1px; background: rgb(45,45,45)}  QPushButton:hover { border-color: rgb(255,255,255)}";
 
    stopButton = new QPushButton();
-   stopButton->setIcon(QIcon("C:/Users/amylniko/Documents/env/er/VizPROC-master/resource/stop_button.png"));
+   stopButton->setIcon(QIcon(":/resource/stop_button.png"));
    stopButton->setStyleSheet(styleSheet2);
    stopButton->setFixedWidth(30);
    stopButton->setFixedHeight(30);
     stopButton->setVisible(false);
    //
    playButton = new QPushButton();
-   playButton->setIcon(QIcon("C:/Users/amylniko/Documents/env/er/VizPROC-master/resource/play_button.png"));
+   playButton->setIcon(QIcon(":/resource/play_button.png"));
    playButton->setStyleSheet(styleSheet2);
    playButton->setFixedWidth(30);
    playButton->setFixedHeight(30);
 
    resistorButton = new QPushButton();
-   resistorButton->setIcon(QIcon("C:/Users/amylniko/Documents/env/er/VizPROC-master/resource/resistor_button.png"));
+   resistorButton->setIcon(QIcon(":/resource/resistor_button.png"));
    resistorButton->setStyleSheet(styleSheet2);
    resistorButton->setFixedSize(30,30);
    resistorButton->setIconSize(QSize(25,25));
 
    emfButton = new QPushButton();
-   emfButton->setIcon(QIcon("C:/Users/amylniko/Documents/env/er/VizPROC-master/resource/emf_button.png"));
+   emfButton->setIcon(QIcon(":/resource/emf_button.png"));
    emfButton->setStyleSheet(styleSheet2);
    emfButton->setFixedSize(30,30);
    emfButton->setIconSize(QSize(23,23));
 
    diodeButton = new QPushButton();
-   diodeButton->setIcon(QIcon("C:/Users/amylniko/Documents/env/er/VizPROC-master/resource/diode_button.png"));
+   diodeButton->setIcon(QIcon(":/resource/diode_button.png"));
    diodeButton->setStyleSheet(styleSheet2);
    diodeButton->setFixedSize(30,30);
    diodeButton->setIconSize(QSize(23,23));
 
    groundButton = new QPushButton();
-   groundButton->setIcon(QIcon("C:/Users/amylniko/Documents/env/er/VizPROC-master/resource/ground_button.png"));
+   groundButton->setIcon(QIcon(":/resource/ground_button.png"));
    groundButton->setStyleSheet(styleSheet2);
    groundButton->setFixedSize(30,30);
    groundButton->setIconSize(QSize(17,17));
 
    wireButton = new QPushButton();
-   wireButton->setIcon(QIcon("C:/Users/amylniko/Documents/env/er/VizPROC-master/resource/wire_button.png"));
+   wireButton->setIcon(QIcon(":/resource/wire_button.png"));
    wireButton->setStyleSheet(styleSheet2);
    wireButton->setFixedSize(30,30);
    wireButton->setIconSize(QSize(23,23));
 
    amperemeterButton = new QPushButton();
-   amperemeterButton->setIcon(QIcon("C:/Users/amylniko/Documents/env/er/VizPROC-master/resource/amperemeter_button.png"));
+   amperemeterButton->setIcon(QIcon(":/resource/amperemeter_button.png"));
    amperemeterButton->setStyleSheet(styleSheet2);
    amperemeterButton->setFixedSize(30,30);
    amperemeterButton->setIconSize(QSize(23,23));
 
    voltmeterButton = new QPushButton();
-   voltmeterButton->setIcon(QIcon("C:/Users/amylniko/Documents/env/er/VizPROC-master/resource/voltmeter_button.png"));
+   voltmeterButton->setIcon(QIcon(":/resource/voltmeter_button.png"));
    voltmeterButton->setStyleSheet(styleSheet2);
    voltmeterButton->setFixedSize(30,30);
    voltmeterButton->setIconSize(QSize(23,23));
@@ -162,6 +163,7 @@ WorkBench::WorkBench::WorkBench(WindowManager* wm,ComponentManager* cm,QWidget *
    guiButtons->append(groundButton);
 
    initApplicationContext();
+   initVisualizationHandlers();
 
 }
 void WorkBench::connectComponents()
@@ -201,16 +203,19 @@ void WorkBench::connectComponents()
     QObject::connect(graphHandler,SIGNAL(error(QString)),canvas,SLOT(setError(QString)));
     QObject::connect(graphHandler,SIGNAL(start()),model,SLOT(start()));
     QObject::connect(model,SIGNAL(setLock()),eventHandler,SLOT(setLock()));
+    QObject::connect(model,SIGNAL(setRenderLock()),canvas,SLOT(setRenderLock()));
+    QObject::connect(model,SIGNAL(curcuitError(QString)),canvas,SLOT(setError(QString)));
     QObject::connect(canvas,SIGNAL(releaseLock()),eventHandler,SLOT(releaseLock()));
 
     //пересчет схемы
     QObject::connect(canvas,SIGNAL(recalculate()),model,SLOT(start()));
 
     //подготовка обработчика визуализации
-    QObject::connect(model,SIGNAL(startVisualisation(QMap<Wire*,int*>*,double*,int)),visualisationManager,SLOT(startVisualisation(QMap<Wire*,int*>*,double*,int)));
+    QObject::connect(model,SIGNAL(startVisualisation(QList<Branch*>*,double*,int)),visualisationManager,SLOT(startVisualisation(QList<Branch*>*,double*,int)));
 
     //установка флага визуализации
     QObject::connect(visualisationManager,SIGNAL(enableVisualisation()),canvas,SLOT(enableVisualisationSlot()));
+    QObject::connect(visualisationManager,SIGNAL(unsetRenderLock()),canvas,SLOT(unsetRenderLock()));
 
     //обновление визуализации
     QObject::connect(canvas,SIGNAL(updateVisualisation(QPainter*)),visualisationManager,SLOT(updateVusualisation(QPainter*)));
@@ -285,6 +290,12 @@ void WorkBench::initApplicationContext()
     ApplicationContext::getInstance()->setWindowManager(wm);
 }
 
+void WorkBench::initVisualizationHandlers()
+{
+    AmperageVisualisationHandler* amperageVisualisationHandler = new AmperageVisualisationHandler(((QObject*)this));
+    visualisationManager->subscribe((Visualization*)amperageVisualisationHandler);
+}
+
 void WorkBench::buttonPressed()
 {
     if(activatedButton!=NULL) {
@@ -327,7 +338,9 @@ void WorkBench::openFile()
 
 void WorkBench::playButtonHide()
 {
+
     playButton->setVisible(false);
+    qDebug()<<"dd";
     stopButton->setVisible(true);
 }
 

@@ -1,0 +1,13 @@
+<!DOCTYPE RCC> <RCC version ="1.0">
+        <qresource>
+                <file>resource/diode_button.png</file>
+                <file>resource/resistor_button.png</file>
+                <file>resource/emf_button.png</file>
+                <file>resource/ground_button.png</file>
+                <file>resource/voltmeter_button.png</file>
+                <file>resource/amperemeter_button.png</file>
+                <file>resource/wire_button.png</file>
+                <file>resource/play_button.png</file>
+                <file>resource/stop_button.png</file>
+        </qresource>
+</RCC>

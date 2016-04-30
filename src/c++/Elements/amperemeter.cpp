@@ -1,6 +1,7 @@
 #include "amperemeter.h"
 #include <QDebug>
 #include <math.h>
+#include <QString>
 
 Amperemeter::Amperemeter(QObject *parent) : QObject(parent)
 {
@@ -23,7 +24,7 @@ void Amperemeter::paintComponent(QPainter *painter)
 
     painter->drawText(x+8,y+14,"А");
     if(attachedWire!=NULL) {
-        painter->drawText(x+5,y+31,"4А");
+        painter->drawText(x+5,y+31,QString::number(attachedWire->getAmperage())+"А");
     }
 }
 

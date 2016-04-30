@@ -4,14 +4,12 @@
 #
 #-------------------------------------------------
 
-QT       += core gui \
-            opengl
+QT       += core gui opengl
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = VizProc
 TEMPLATE = app
-
 
 SOURCES += main.cpp\
         src/c++/View/startscreen.cpp \
@@ -47,7 +45,17 @@ SOURCES += main.cpp\
     src/c++/Model/model.cpp \
     src/c++/Controller/applicationcontext.cpp \
     src/c++/Model/branch.cpp \
-    src/c++/Model/graph.cpp
+    src/c++/Model/graph.cpp \
+    src/c++/Util/constvalues.cpp \
+    src/c++/Exception/multidirectionekementsexception.cpp \
+    src/c++/Visualization/amperagevisualisationhandler.cpp \
+    src/c++/Visualization/visualization.cpp \
+    src/c++/Event/initevent.cpp \
+    src/c++/Event/nextstepevent.cpp \
+    src/c++/Event/destroyevent.cpp \
+    src/c++/Model/branchhandler.cpp \
+    src/c++/Util/circuitutils.cpp \
+    src/c++/Util/wirehandler.cpp
 
 HEADERS  += src/c++/View/startscreen.h \
     windowmanager.h \
@@ -83,5 +91,16 @@ HEADERS  += src/c++/View/startscreen.h \
     src/c++/Model/model.h \
     src/c++/Controller/applicationcontext.h \
     src/c++/Model/branch.h \
-    src/c++/Model/graph.h
+    src/c++/Model/graph.h \
+    src/c++/Util/constvalues.h \
+    src/c++/Exception/multidirectionekementsexception.h \
+    src/c++/Visualization/amperagevisualisationhandler.h \
+    src/c++/Visualization/visualization.h \
+    src/c++/Event/initevent.h \
+    src/c++/Event/nextstepevent.h \
+    src/c++/Event/destroyevent.h \
+    src/c++/Model/branchhandler.h \
+    src/c++/Util/circuitutils.h \
+    src/c++/Util/wirehandler.h
 FORMS    +=
+RESOURCES += resources.qrc

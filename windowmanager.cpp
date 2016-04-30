@@ -19,6 +19,7 @@ void WindowManager::start()
 
 WorkBench* WindowManager::openWorkBench()
 {
+    sc->hide();
     if(sc!=NULL)
         delete sc;
     sc = NULL;
@@ -29,6 +30,7 @@ WorkBench* WindowManager::openWorkBench()
 
 WorkBench *WindowManager::openWorkBench(ComponentManager *cm)
 {
+    sc->hide();
     if(sc!=NULL)
         delete sc;
     sc = NULL;
@@ -39,7 +41,11 @@ WorkBench *WindowManager::openWorkBench(ComponentManager *cm)
 
 void WindowManager::openProject()
 {
-    ComponentManager* cm = new ComponentManager();
-    FileHandler::openFile(cm);
-    WorkBench* workBench = openWorkBench(cm);
+    sc->hide();
+    if(sc!=NULL)
+        delete sc;
+    sc = NULL;
+    WorkBench* workBench = new WorkBench(this);
+    workBench->connectComponents();
+    FileHandler::openFile(workBench->getComponentManager());
 }
