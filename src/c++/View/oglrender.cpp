@@ -62,7 +62,7 @@ OGLRender::OGLRender() :
     QObject::connect(resistanceSpinBox,SIGNAL(editingFinished()),this,SLOT(editingElementFinished()));
     QObject::connect(voltageSpinBox,SIGNAL(editingFinished()),this,SLOT(editingElementFinished()));
     //QObject::connect(resistanceSpinBox,SIGNAL(valueChanged(double)),this,SLOT(valueChanged(double)));
-    QObject::connect(voltageSpinBox,SIGNAL(editingFinished()),this,SLOT(editingElementFinished()));
+    //QObject::connect(voltageSpinBox,SIGNAL(editingFinished()),this,SLOT(editingElementFinished()));
 
     elemPanel->addLayout(resistancePanel);
     elemPanel->addLayout(powerPanel);

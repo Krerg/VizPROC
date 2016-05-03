@@ -19,6 +19,7 @@ void Graph::addEdge(Branch *branch, int vertexNumber1, int vertexNumber2)
         if(branch->isDiodeBranch()) {
             this->diodeBranches->append(branch);
         }
+        branch->setParent(((QObject*)adjacencyMatrix));
         branch->setVertexNumber1(vertexNumber1);
         branch->setVertexNumber2(vertexNumber2);
         nullSafeAddDirectEdge(branch,vertexNumber1,vertexNumber2);
@@ -125,10 +126,7 @@ QString Graph::isolateDiodeBranches()
 bool Graph::matrixIsEmpty()
 {
     for(int i=0;i<matrixSize;i++) {
-        for(int j=0;j<=i;j++) {
-            if(i==j) {
-                continue;
-            }
+        for(int j=0;j<matrixSize;j++) {
             if(adjacencyMatrix[i][j]!=NULL && adjacencyMatrix[i][j]->size()>0) {
                 return false;
             }
@@ -395,7 +393,9 @@ void Graph::unionCycles(int vertexNumber1, int vertexNumber2)
 
         deleteEdge(vertexNumber1,vertexNumber2);
         firstBranch->unionBranch(secondBranch);
+        delete secondBranch;
         addEdge(firstBranch,vertexNumber1,vertexNumber1);
+
     } else {
         //TODO throw Exception
     }
@@ -462,6 +462,7 @@ void Graph::nullSafeDeleteDirectBranch(int vertexNumber1, int vertexNumber2, Bra
 
 bool Graph::checkDiodeBranchTreshold(double *calcResult, Branch *diodeBranch)
 {
+
     if(!diodeBranch->isDiodeBranch()) {
         return true;
     }
@@ -477,6 +478,8 @@ bool Graph::checkDiodeBranchTreshold(double *calcResult, Branch *diodeBranch)
             }
         }
     }
+
+
 
     double upPotential=0.0;
     if(!diodeBranch->getVertexNumber1()==0) {

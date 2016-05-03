@@ -22,7 +22,7 @@ void AmperageVisualisationHandler::nextStep(NextStepEvent *event)
 {
     foreach (Wire* w, *ApplicationContext::getInstance()->getComponentManager()->getWires()) {
         if(w->getSpeed()==ConstValues::POSITIVE_SPEED || w->getSpeed()==ConstValues::NEGATIVE_SPEED) {
-            //w->setSpeed(w->getSpeed()*getSpeed(maxAmperage,w->getAmperage()));
+            w->setSpeed(w->getSpeed()*getSpeed(maxAmperage,w->getAmperage()));
         }
         w->initParticles();
     }
