@@ -38,7 +38,7 @@ void AmperageVisualisationHandler::init(InitEvent *event)
     if(event->getBranches()==NULL) {
         return;
     }
-
+    clearWireAmperages();
     if(amperages!=NULL) {
         delete amperages;
     }
@@ -104,7 +104,7 @@ void AmperageVisualisationHandler::setAmperageOnWires(QList<Branch *> *connected
 {
     double amperage = 0.0;
     int centralVertexNumber = -1;
-    int anotherVertexNumber = - 1;
+    int anotherVertexNumber = -1;
     int k=1;
     foreach (Branch* connectedBranch, *connectedBranches) {
         k=1;
@@ -112,7 +112,7 @@ void AmperageVisualisationHandler::setAmperageOnWires(QList<Branch *> *connected
             continue;
         }
 
-        if(connectedBranch->isHasEmf()) {
+        if(branch->isHasEmf() || connectedBranch->isHasEmf()) {
             k=-1;
         }
 
@@ -379,6 +379,13 @@ int AmperageVisualisationHandler::getSpeed(double maxAmperage, double wireAmpera
         return 1;
     }
     return speed;
+}
+
+void AmperageVisualisationHandler::clearWireAmperages()
+{
+    foreach (Wire* w, *ApplicationContext::getComponentManager()->getWires()) {
+        w->setAmperage(ConstValues::BRANCH_AMPERAGE_UNKNOWN);
+    }
 }
 
 

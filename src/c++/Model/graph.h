@@ -22,15 +22,15 @@ public:
     explicit Graph(QObject *parent = 0);
 
     /**
-     * @brief addEdge
+     * @brief addEdge добавление ребра в граф
      * @param branch
      */
     void addEdge(Branch* branch, int vertexNumber1, int vertexNumber2);
 
     /**
-     * @brief getConnectedBranches
-     * @param vertexNumber
-     * @return
+     * @brief getConnectedBranches возвращает список ветвей, соединенных с данной вершиной
+     * @param vertexNumber номер вершины
+     * @return список ветвей
      */
     QList<Branch *> *getConnectedBranches(int vertexNumber);
 
@@ -41,8 +41,9 @@ public:
     QList<Branch *> *getAllBranches();
 
     /**
-     * @brief deleteEdge
-     * @param firstVertexNumber
+     * @brief deleteEdge удаление ребра из графа
+     * @param firstVertexNumber номер вершины 1
+     * @param secondVertexNumber номр вершины 2
      */
     void deleteEdge(int firstVertexNumber, int secondVertexNumber);
 
@@ -64,12 +65,12 @@ public:
     QString isolateDiodeBranches();
 
     /**
-     * @brief optimizeGraph
+     * @brief optimizeGraph оптимизация графа (объединение последовательных ветвей, циклов с ЭДС и тп)
      */
     void optimizeGraph();
 
     /**
-     * @brief clearAllocatedArray заполнение массива значениями NULL
+     * @brief clearAllocatedArray заполнение массива начальными значениями
      */
     void clearAllocatedArray();
 
@@ -114,7 +115,7 @@ private:
     int matrixSize;
 
     /**
-     * @brief nullSafeDeleteDirectEdge
+     * @brief nullSafeDeleteDirectEdge безопасное удаление ребра из графа
      * @param vertexNumber1
      * @param vertexNumber2
      */
@@ -143,27 +144,27 @@ private:
     bool hasCycle(int vertexNumber1, int vertexNumber2);
 
     /**
-     * @brief nullSafeAddDirectEdge
+     * @brief nullSafeAddDirectEdge безопасное добавление ребра в граф
      * @param vertexNumber1
      * @param vertexNumber2
      */
     void nullSafeAddDirectEdge(Branch* branch, int vertexNumber1, int vertexNumber2);
 
     /**
-     * @brief deleteAdjencyMatrix
+     * @brief deleteAdjencyMatrix очистка матрицы смежности
      */
     void deleteAdjencyMatrix();
 
     /**
-     * @brief unionEdge
-     * @param centralVertexNumber
-     * @param firstConnectedVertex
-     * @param secondConnectedVertex
+     * @brief unionEdges объединение двух ребер
+     * @param centralVertexNumber номер общей вершины
+     * @param firstConnectedVertex номер вершины у первого ребра
+     * @param secondConnectedVertex номер вершины у второго ребра
      */
     void unionEdges(int centralVertexNumber, int firstConnectedVertex, int secondConnectedVertex);
 
     /**
-     * @brief unionCycles
+     * @brief unionCycles объединение цикла в графе
      * @param vertexNumber1
      * @param vertexNumber2
      */

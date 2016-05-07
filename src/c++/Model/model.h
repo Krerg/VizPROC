@@ -47,7 +47,7 @@ private:
     static bool DIODE_BRANCH_CHECK;
 
     /**
-     * @brief potentialsNumber
+     * @brief potentialsNumber кол-ао потенциалов в текущей схеме
      */
     int potentialsNumber;
 
@@ -138,10 +138,22 @@ private:
     ~Model();
 
 signals:
+
+    /**
+     * @brief startVisualisation сигн
+     * @param x
+     * @param numb
+     */
     void startVisualisation(QList<Branch*>*, double* x, int numb);
 
+    /**
+     * @brief hideStartButton сигнал о том, что нжно скрыть кнопку рассчитать
+     */
     void hideStartButton();
 
+    /**
+     * @brief setRenderLock установка блокировки на рендер схемы
+     */
     void setRenderLock();
 
     /**

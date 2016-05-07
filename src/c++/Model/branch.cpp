@@ -61,6 +61,7 @@ void Branch::addElement(Element *elem, bool append, bool check)
 
 void Branch::addWire(Wire *w, bool append)
 {
+    w->setAmperage(ConstValues::BRANCH_AMPERAGE_UNKNOWN);
     if(!opened)
         w->close();
 

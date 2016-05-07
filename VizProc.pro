@@ -12,7 +12,6 @@ TARGET = VizProc
 TEMPLATE = app
 
 SOURCES += main.cpp\
-        src/c++/View/startscreen.cpp \
     windowmanager.cpp \
     src/c++/View/workbench.cpp \
     initcontroller.cpp \
@@ -55,10 +54,10 @@ SOURCES += main.cpp\
     src/c++/Event/destroyevent.cpp \
     src/c++/Model/branchhandler.cpp \
     src/c++/Util/circuitutils.cpp \
-    src/c++/Util/wirehandler.cpp
+    src/c++/Util/wirehandler.cpp \
+    src/c++/View/startscreen.cpp
 
-HEADERS  += src/c++/View/startscreen.h \
-    windowmanager.h \
+HEADERS  +=   windowmanager.h \
     src/c++/View/workbench.h \
     main.h \
     initcontroller.h \
@@ -101,6 +100,7 @@ HEADERS  += src/c++/View/startscreen.h \
     src/c++/Event/destroyevent.h \
     src/c++/Model/branchhandler.h \
     src/c++/Util/circuitutils.h \
-    src/c++/Util/wirehandler.h
+    src/c++/Util/wirehandler.h \
+    src/c++/View/startscreen.h
 FORMS    +=
 RESOURCES += resources.qrc

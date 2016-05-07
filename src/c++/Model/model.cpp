@@ -159,10 +159,10 @@ void Model::start()
     DIODE_BRANCH_CHECK = true;
     initCurciutArray();
     double *calculationResult = NULL;
+    graph->initGraph(potentialsNumber+1);
     if(diodes->size()<=0) {
         calculationResult = calculate();
     } else {
-        graph->initGraph(potentialsNumber+1);
         allocateBranches(false);
         graph->optimizeGraph();
         QString initStatus = graph->isolateDiodeBranches();

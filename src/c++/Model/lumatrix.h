@@ -29,8 +29,9 @@ public:
     void setB(double* b);
 
     /**
-     * @brief compute
-     * @return
+     * @brief compute вычисление ответа
+     * @param n кол-во неизвестных
+     * @return массив неизвестных размерностью n
      */
     double* compute(int n);
 

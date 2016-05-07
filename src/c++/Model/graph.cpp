@@ -66,21 +66,13 @@ void Graph::initGraph(int vertexNumber)
             this->adjacencyMatrix[i] = new QList<Branch*>*[vertexNumber];
     }
     clearAllocatedArray();
-    for(int i=vertexNumber-1;i>=0;i--) {
-        for(int j=vertexNumber-1;j>=i;j--) {
-            if(i==j) {
-                continue;
-            }
-            this->adjacencyMatrix[i][j] = this->adjacencyMatrix[j][i];
-        }
-    }
 
 }
 
 bool Graph::openNextBranch(double *calculationResult)
 {
     qDebug()<<"Enter if";
-    if(this->closedDiodeBranches!=NULL && this->closedDiodeBranches->size()>0) {
+    if(this->closedDiodeBranches!=  NULL && this->closedDiodeBranches->size()>0) {
         Branch* branch;
         while(true) {
             if(closedDiodeBranches->size()==0) {
@@ -154,6 +146,7 @@ void Graph::optimizeGraph()
             if(i==j) {
                 continue;
             }
+            QList<Branch*>* branch = adjacencyMatrix[i][j];
             if(adjacencyMatrix[i][j]!=NULL && adjacencyMatrix[i][j]->size()==1) {
                 connectedVertexes->append(j);
             } else if(adjacencyMatrix[i][j]!=NULL && adjacencyMatrix[i][j]->size()==2) {
@@ -264,8 +257,17 @@ void Graph::clearAllocatedArray()
     }
 
     for(int i=0;i<matrixSize;i++) {
-        for(int j=0;j<matrixSize;j++) {
+        for(int j=0;j<=i;j++) {
             adjacencyMatrix[i][j] = new QList<Branch*>();
+        }
+    }
+
+    for(int i=matrixSize-1;i>=0;i--) {
+        for(int j=matrixSize-1;j>=i;j--) {
+            if(i==j) {
+                continue;
+            }
+            this->adjacencyMatrix[i][j] = this->adjacencyMatrix[j][i];
         }
     }
 }

@@ -84,6 +84,11 @@ private:
     int getSpeed(double maxAmperage, double wireAmperage);
 
     /**
+     * @brief clearWireAmperages
+     */
+    void clearWireAmperages();
+
+    /**
      * @brief setAmperageOnWire
      * @param w
      * @param elem

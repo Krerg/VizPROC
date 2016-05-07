@@ -95,8 +95,12 @@ WorkBench::WorkBench::WorkBench(WindowManager* wm,ComponentManager* cm,QWidget *
    rightPanelLayout->addWidget(voltmeterButton);
 
    //this->setLayout(v1);
-   this->setFixedWidth(600);
-   this->setFixedHeight(400);
+
+   //this->setFixedWidth(750);
+   //this->setFixedHeight(500);
+
+   this->resize(750,500);
+
    this->show();
    if(componentManager==NULL) {
     this->componentManager = new ComponentManager(this);
@@ -148,7 +152,7 @@ WorkBench::WorkBench::WorkBench(WindowManager* wm,ComponentManager* cm,QWidget *
 
    QObject::connect(information,SIGNAL(triggered()),this,SLOT(openInformationWindow()));
 
-   menuBar->setFixedSize(600,21);
+   menuBar->setFixedSize(750,21);
 
    //запуск потоков
    refresher->start();

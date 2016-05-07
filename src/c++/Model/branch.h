@@ -33,10 +33,10 @@ public:
     bool isDiodeBranch();
 
     /**
-     * @brief addElement
-     * @param elem
-     * @param append
-     * @param check
+     * @brief addElement добавление элемента в ветвь
+     * @param elem сам элемент
+     * @param append добавление в конец или начало списка
+     * @param check проверка на диоды
      */
     void addElement(Element* elem, bool append, bool check);
 
@@ -46,8 +46,16 @@ public:
      */
     void addWire(Wire* w, bool append);
 
+    /**
+     * @brief setVertexNumber1
+     * @param vertexNumber
+     */
     void setVertexNumber1(int vertexNumber);
 
+    /**
+     * @brief setVertexNumber2
+     * @param vertexNumber
+     */
     void setVertexNumber2(int vertexNumber);
 
     int getVertexNumber1();
@@ -61,15 +69,22 @@ public:
     double getAmperage();
 
     /**
-     * @brief setAmperage
-     * @param amperage
+     * @brief setAmperage установка напряжения на ветви
+     * @param amperage напряжение на ветви
      */
     void setAmperage(double amperage);
 
     ~Branch();
 
+    /**
+     * @brief isHasEmf показывает содержит ли ветвь ЭДС
+     * @return true если содержит, в противном случае false
+     */
     bool isHasEmf();
 
+    /**
+     * @brief open открывает ветвь, для протекания через нее тока
+     */
     void open();
 
     /**
@@ -79,14 +94,14 @@ public:
     QList<Element *> *getBranchElements();
 
     /**
-     * @brief getBranchWires
+     * @brief getBranchWires врзвращает список проводов в ветви
      * @return
      */
     QList<Wire *> *getBranchWires();
 
     /**
-     * @brief getDiodeCount
-     * @return
+     * @brief getDiodeCount возвращает кол-во диодов в ветви
+     * @return кол-во диодов в ветви
      */
     int getDiodeCount();
 
